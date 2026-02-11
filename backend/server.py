@@ -297,7 +297,7 @@ async def exchange_session(data: SessionExchange, response: Response):
     value=session_token,
     httponly=True,
     secure=False,        # ✅ allow on http
-    samesite="lax",      # ✅ works on localhost
+    samesite="none",      # ✅ works on localhost
     path="/",
     max_age=7*24*60*60
     )
