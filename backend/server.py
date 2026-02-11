@@ -218,7 +218,7 @@ async def signup(user_data: UserSignup, response: Response):
     value=session_token,
     httponly=True,
     secure=True,        # ✅ allow on http
-    samesite="none",      # ✅ works on localhost
+    samesite="lax",      # ✅ works on localhost
     path="/",
     max_age=7*24*60*60
     )
@@ -250,7 +250,7 @@ async def login(credentials: UserLogin, response: Response):
     value=session_token,
     httponly=True,
     secure=True,        # ✅ allow on http
-    samesite="none",      # ✅ works on localhost
+    samesite="lax",      # ✅ works on localhost
     path="/",
     max_age=7*24*60*60
     )
@@ -317,7 +317,7 @@ async def exchange_session(data: SessionExchange, response: Response):
     value=session_token,
     httponly=True,
     secure=True,        # ✅ allow on http
-    samesite="none",      # ✅ works on localhost
+    samesite="lax",      # ✅ works on localhost
     path="/",
     max_age=7*24*60*60
     )
