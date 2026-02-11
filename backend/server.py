@@ -184,7 +184,7 @@ async def get_current_user(request: Request) -> User:
 # ============ AUTH ROUTES ============
 
 @api_router.post("/auth/signup")
-async def signup(user_data: UserSignup):
+async def signup(user_data: UserSignup, response: Response):
     # Check if user exists
     existing = await db.users.find_one({"email": user_data.email}, {"_id": 0})
     if existing:
@@ -212,6 +212,16 @@ async def signup(user_data: UserSignup):
         "created_at": datetime.now(timezone.utc).isoformat()
     }
     await db.user_sessions.insert_one(session_doc)
+
+    response.set_cookie(
+    key="session_token",
+    value=session_token,
+    httponly=True,
+    secure=True,        # ✅ allow on http
+    samesite="none",      # ✅ works on localhost
+    path="/",
+    max_age=7*24*60*60
+    )
     
     user_response = {k: v for k, v in user_doc.items() if k != "password_hash"}
     user_response['created_at'] = datetime.fromisoformat(user_response['created_at'])
@@ -219,7 +229,7 @@ async def signup(user_data: UserSignup):
     return {"user": User(**user_response), "session_token": session_token}
 
 @api_router.post("/auth/login")
-async def login(credentials: UserLogin):
+async def login(credentials: UserLogin, response: Response):
     # Find user
     user_doc = await db.users.find_one({"email": credentials.email})
     if not user_doc or not verify_password(credentials.password, user_doc["password_hash"]):
@@ -234,6 +244,16 @@ async def login(credentials: UserLogin):
         "created_at": datetime.now(timezone.utc).isoformat()
     }
     await db.user_sessions.insert_one(session_doc)
+
+    response.set_cookie(
+    key="session_token",
+    value=session_token,
+    httponly=True,
+    secure=True,        # ✅ allow on http
+    samesite="none",      # ✅ works on localhost
+    path="/",
+    max_age=7*24*60*60
+    )
     
     user_response = {k: v for k, v in user_doc.items() if k not in ["_id", "password_hash"]}
     if isinstance(user_response.get('created_at'), str):
