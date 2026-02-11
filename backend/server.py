@@ -296,7 +296,7 @@ async def exchange_session(data: SessionExchange, response: Response):
          key="session_token",
     value=session_token,
     httponly=True,
-    secure=False,        # ✅ allow on http
+    secure=True,        # ✅ allow on http
     samesite="none",      # ✅ works on localhost
     path="/",
     max_age=7*24*60*60
