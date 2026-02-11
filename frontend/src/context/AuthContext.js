@@ -30,14 +30,14 @@ export function AuthProvider({ children }) {
   };
 
   const login = async (email, password) => {
-    const response = await axios.post(`${API}/auth/login`, { email, password });
+    const response = await axios.post(`${API}/auth/login`, { email, password }, { withCredentials: true });
     setUser(response.data.user);
     setIsAuthenticated(true);
     return response.data;
   };
 
   const signup = async (email, password, name) => {
-    const response = await axios.post(`${API}/auth/signup`, { email, password, name });
+    const response = await axios.post(`${API}/auth/signup`, { email, password, name }, { withCredentials: true });
     setUser(response.data.user);
     setIsAuthenticated(true);
     return response.data;
