@@ -1,0 +1,190 @@
+{
+  "design_system": {
+    "identity": {
+      "name": "AI Portfolio Builder",
+      "persona": "E1 - The Anti-AI Designer",
+      "tone": "Professional, Minimalist, High-Tech, Creative",
+      "archetype": "Swiss High-Contrast + Kinetic Tech"
+    },
+    "typography": {
+      "font_family": {
+        "headings": "Outfit, sans-serif",
+        "body": "DM Sans, sans-serif",
+        "mono": "JetBrains Mono, monospace"
+      },
+      "scale": {
+        "h1": "text-5xl md:text-7xl font-bold tracking-tight",
+        "h2": "text-4xl md:text-5xl font-semibold tracking-tight",
+        "h3": "text-2xl md:text-3xl font-medium",
+        "body": "text-base md:text-lg leading-relaxed",
+        "caption": "text-sm text-muted-foreground uppercase tracking-widest"
+      },
+      "import_url": "https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;500;700;900&display=swap"
+    },
+    "colors": {
+      "theme_mode": "system",
+      "palette": {
+        "light": {
+          "background": "#FAFAFA",
+          "foreground": "#0A0A0A",
+          "card": "#FFFFFF",
+          "card_foreground": "#0A0A0A",
+          "primary": "#0F172A",
+          "primary_foreground": "#F8FAFC",
+          "secondary": "#F1F5F9",
+          "secondary_foreground": "#0F172A",
+          "muted": "#F1F5F9",
+          "muted_foreground": "#64748B",
+          "accent": "#F1F5F9",
+          "accent_foreground": "#0F172A",
+          "destructive": "#EF4444",
+          "destructive_foreground": "#F8FAFC",
+          "border": "#E2E8F0",
+          "input": "#E2E8F0",
+          "ring": "#0F172A"
+        },
+        "dark": {
+          "background": "#050505",
+          "foreground": "#FAFAFA",
+          "card": "#0A0A0B",
+          "card_foreground": "#FAFAFA",
+          "primary": "#FAFAFA",
+          "primary_foreground": "#0A0A0B",
+          "secondary": "#1E1E20",
+          "secondary_foreground": "#FAFAFA",
+          "muted": "#1E1E20",
+          "muted_foreground": "#A1A1AA",
+          "accent": "#1E1E20",
+          "accent_foreground": "#FAFAFA",
+          "destructive": "#7F1D1D",
+          "destructive_foreground": "#FAFAFA",
+          "border": "#27272A",
+          "input": "#27272A",
+          "ring": "#FAFAFA"
+        }
+      },
+      "special_colors": {
+        "brand_primary": "#4F46E5",
+        "brand_accent": "#F97316",
+        "success": "#22C55E",
+        "warning": "#EAB308",
+        "forbidden": ["#7351B7", "#1B93A4"]
+      }
+    },
+    "spacing": {
+      "container_padding": "p-6 md:p-12",
+      "section_gap": "gap-12 md:gap-24",
+      "grid_gap": "gap-6 md:gap-8",
+      "card_padding": "p-6 md:p-8"
+    },
+    "layout_strategies": {
+      "landing_page": {
+        "grid_type": "Bento Grid (Mode A: Tetris)",
+        "features": [
+          "Hero: Split screen or Centered with 3D/Abstract element",
+          "Features: Asymmetric Grid (8-4, 4-8, 4-4-4)",
+          "Pricing: Tracing Beam Cards"
+        ]
+      },
+      "dashboard": {
+        "grid_type": "High Density Grid (Mode B)",
+        "features": [
+          "Sidebar Navigation",
+          "Dense Data Cards",
+          "No glassmorphism on data layers (readability first)"
+        ]
+      },
+      "portfolio_templates": {
+        "minimal": "Single column, massive typography, lots of whitespace",
+        "modern": "Bento grid layout, subtle borders, dark mode default",
+        "creative": "Parallax scroll, abstract background shapes, non-standard navigation"
+      }
+    },
+    "visual_enhancers": {
+      "glassmorphism": {
+        "usage": "Overlays, Sticky Headers, Toasts",
+        "classes": "bg-background/80 backdrop-blur-xl border-b border-white/10"
+      },
+      "borders": {
+        "default": "border border-border",
+        "subtle": "border border-border/40",
+        "glow": "ring-1 ring-primary/20"
+      },
+      "shadows": {
+        "soft": "shadow-sm",
+        "floating": "shadow-xl shadow-black/5"
+      },
+      "gradients": {
+        "text_highlight": "bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60",
+        "subtle_bg": "bg-gradient-to-b from-background to-secondary/20"
+      }
+    },
+    "components": {
+      "buttons": {
+        "style": "Sharp corners or rounded-md. No full pill.",
+        "primary": "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm",
+        "secondary": "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        "outline": "border border-input bg-background hover:bg-accent hover:text-accent-foreground"
+      },
+      "cards": {
+        "style": "Flat, 1px border. No heavy shadows.",
+        "hover": "hover:border-primary/50 transition-colors duration-300"
+      },
+      "inputs": {
+        "style": "bg-background border-input focus:ring-2 focus:ring-ring focus:border-transparent"
+      }
+    },
+    "motion": {
+      "library": "framer-motion",
+      "types": {
+        "page_transition": "opacity: 0 -> 1, y: 20 -> 0",
+        "hover_lift": "y: -2px",
+        "stagger_children": "delay: 0.1s"
+      }
+    },
+    "media": {
+      "image_urls": {
+        "hero_background": "https://images.unsplash.com/photo-1605984522226-1b840e9c1de2?auto=format&fit=crop&q=80",
+        "abstract_texture": "https://images.unsplash.com/photo-1703027350678-becbec820b2a?auto=format&fit=crop&q=80",
+        "tech_accent": "https://images.unsplash.com/photo-1670834416076-103a2f7d1a27?auto=format&fit=crop&q=80",
+        "user_avatar_1": "https://images.unsplash.com/photo-1659353221237-6a1cfb73fd90?auto=format&fit=crop&q=80",
+        "placeholder_project": "https://images.unsplash.com/photo-1766866810622-4652cb6bd42e?auto=format&fit=crop&q=80"
+      }
+    },
+    "accessibility": {
+      "rules": [
+        "Contrast ratio 4.5:1 for normal text",
+        "Focus rings must be visible",
+        "All interactive elements need data-testid"
+      ]
+    },
+    "instructions_to_main_agent": [
+      "Follow the Identity & Mission of E1.",
+      "Use 'Outfit' for all Headings and 'DM Sans' for body text.",
+      "Implement the Bento Grid layout for the landing page features section.",
+      "Use the provided image URLs for the respective sections.",
+      "Ensure all interactive elements have data-testid attributes.",
+      "Use 'sonner' for toast notifications.",
+      "Do NOT use gradients for dark colors.",
+      "Do NOT use Inter font.",
+      "Keep the dashboard high-density and the marketing pages high-impact.",
+      "Respect the FORBIDDEN colors (#7351B7, #1B93A4)."
+    ]
+  },
+  "universal_guidelines": {
+    "do_not_use": [
+      "Inter font",
+      "Generic center layouts",
+      "AI assistant emojis",
+      "Transparent backgrounds without blur",
+      "transition: all"
+    ],
+    "must_do": [
+      "Use named exports for components",
+      "Use default exports for pages",
+      "Add data-testid to all interactive elements",
+      "Use 2-3x more spacing than typical",
+      "Layered shadows and textures"
+    ]
+  }
+}
