@@ -82,7 +82,6 @@ export default function CreatePortfolio() {
 
     const response = await axios.post(`${API}/ai/extract-resume`, fd, {
       withCredentials: true,
-      headers: { "Content-Type": "multipart/form-data" },
     });
 
     const rawAI = response.data?.structured_data;
