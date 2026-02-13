@@ -37,10 +37,6 @@ const splitText = (text) =>
     </motion.span>
   ));
 
-
-/* ---------------- Sections ---------------- */
-
-
 /* ---------------- Main ---------------- */
 export default function PublicPortfolio() {
   const { slug } = useParams();
@@ -123,11 +119,12 @@ const mouseY = useMotionValue(0);
     {portfolio.bio && (
       <section className="mb-16 rounded-2xl bg-slate-900/40 p-8 backdrop-blur">
         <h2
-          className="text-2xl font-semibold mb-4"
-          style={{ fontFamily: "Outfit" }}
-        >
-          About
-        </h2>
+  className="text-2xl font-semibold mb-4"
+  style={{ color: portfolio.theme_color }}
+>
+  About
+</h2>
+
         <p className="text-slate-300 leading-relaxed">
           {portfolio.bio}
         </p>
@@ -138,18 +135,12 @@ const mouseY = useMotionValue(0);
     {portfolio.skills?.length > 0 && (
       <section className="mb-16 rounded-2xl bg-slate-900/40 p-8 backdrop-blur">
         <h2
-          className="text-2xl font-semibold mb-4"
-          style={{ fontFamily: "Outfit" }}
-        >
-          Skills
-        </h2>
-
+  className="text-2xl font-semibold mb-4" style={{ color: portfolio.theme_color }}>Skills </h2>
         <div className="flex flex-wrap gap-3">
           {portfolio.skills.map((skill, index) => (
             <span
               key={index}
               className="px-4 py-2 rounded-full text-sm bg-slate-800 text-slate-200"
-              style={{ borderColor: portfolio.theme_color + "40" }}
             >
               {skill}
             </span>
@@ -161,26 +152,14 @@ const mouseY = useMotionValue(0);
     {/* Projects */}
     {portfolio.projects?.length > 0 && (
       <section className="mb-16">
-        <h2
-          className="text-3xl font-semibold mb-8"
-          style={{ fontFamily: "Outfit" }}
-        >
-          Projects
-        </h2>
-
+        <h2 className="text-2xl font-semibold mb-4" style={{ color: portfolio.theme_color }}>Projects</h2>
         <div className="space-y-8">
           {portfolio.projects.map((project, index) => (
             <div
               key={index}
               className="rounded-2xl bg-slate-900/40 p-6 backdrop-blur"
             >
-              <h3
-                className="text-xl font-semibold mb-2"
-                style={{ fontFamily: "Outfit" }}
-              >
-                {project.title}
-              </h3>
-
+              <h3 className="text-xl font-semibold mb-2"> {project.title} </h3>
               <p className="text-slate-400 mb-4">
                 {project.description}
               </p>
@@ -238,13 +217,7 @@ const mouseY = useMotionValue(0);
     {/* Experience */}
     {portfolio.experience?.length > 0 && (
       <section className="mb-16">
-        <h2
-          className="text-3xl font-semibold mb-8"
-          style={{ fontFamily: "Outfit" }}
-        >
-          Experience
-        </h2>
-
+        <h2 className="text-2xl font-semibold mb-4" style={{ color: portfolio.theme_color }}>  Experience</h2>
         <div className="space-y-8">
           {portfolio.experience.map((exp, i) => (
             <div
@@ -274,13 +247,7 @@ const mouseY = useMotionValue(0);
     {/* Education */}
     {portfolio.education?.length > 0 && (
       <section className="mb-16">
-        <h2
-          className="text-3xl font-semibold mb-8"
-          style={{ fontFamily: "Outfit" }}
-        >
-          Education
-        </h2>
-
+        <h2 className="text-2xl font-semibold mb-4" style={{ color: portfolio.theme_color }}>Education</h2>
         <div className="space-y-8">
           {portfolio.education.map((edu, i) => (
             <div
@@ -344,7 +311,7 @@ const mouseY = useMotionValue(0);
       <div className="mb-20">
         <h2
           className="text-4xl font-bold mb-8"
-          style={{ fontFamily: "Outfit" }}
+           style={{ fontFamily: "Outfit", color: portfolio.theme_color }}
         >
           Selected Work
         </h2>
@@ -352,13 +319,25 @@ const mouseY = useMotionValue(0);
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {portfolio.projects.map((project, index) => (
             <div
-              key={index}
-              className="p-8 bg-[#0A0A0B] rounded-2xl hover:bg-[#0F0F12] transition-colors"
-              style={{ gridRow: index % 3 === 0 ? "span 2" : "span 1" }}
-            >
+  key={index}
+  className="p-8 bg-[#0A0A0B] rounded-2xl transition-all"
+  style={{
+    gridRow: index % 3 === 0 ? "span 2" : "span 1",
+    border: "1px solid " + portfolio.theme_color + "33",
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.boxShadow = `0 0 40px ${portfolio.theme_color}55`;
+    e.currentTarget.style.transform = "translateY(-6px)";
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.boxShadow = "none";
+    e.currentTarget.style.transform = "translateY(0)";
+  }}
+>
+
               <h3
                 className="text-2xl font-bold mb-3"
-                style={{ fontFamily: "Outfit" }}
+                style={{ fontFamily: "Outfit", color: portfolio.theme_color }}
               >
                 {project.title}
               </h3>
@@ -391,6 +370,7 @@ const mouseY = useMotionValue(0);
                       variant="outline"
                       size="sm"
                       className="border-slate-700 text-white hover:bg-slate-800 gap-2"
+                      style={{ borderColor: portfolio.theme_color + "40" }}
                     >
                       <ExternalLink className="w-4 h-4" /> View Code
                     </Button>
@@ -407,6 +387,7 @@ const mouseY = useMotionValue(0);
                       variant="outline"
                       size="sm"
                       className="border-slate-700 text-white hover:bg-slate-800 gap-2"
+                      style={{ borderColor: portfolio.theme_color + "40" }}
                     >
                       <ExternalLink className="w-4 h-4" /> View Project
                     </Button>
@@ -424,15 +405,19 @@ const mouseY = useMotionValue(0);
       <div className="mb-20">
         <h2
           className="text-4xl font-bold mb-8"
-          style={{ fontFamily: "Outfit" }}
+           style={{ fontFamily: "Outfit", color: portfolio.theme_color }}
         >
           Experience
         </h2>
 
         <div className="space-y-6">
           {portfolio.experience.map((exp, i) => (
-            <div key={i} className="p-8 bg-[#0A0A0B] rounded-2xl">
-              <h3 className="text-2xl font-bold">{exp.title}</h3>
+            <div
+  key={i}
+  className="p-8 bg-[#0A0A0B] rounded-2xl transition-all"
+  style={{ border: "1px solid " + portfolio.theme_color + "33" }}
+>
+              <h3 className="text-2xl font-bold" style={{ fontFamily: "Outfit", color: portfolio.theme_color }}>{exp.title}</h3>
               <p className="text-gray-400">
                 {exp.company} • {exp.duration}
               </p>
@@ -448,15 +433,19 @@ const mouseY = useMotionValue(0);
       <div className="mb-20">
         <h2
           className="text-4xl font-bold mb-8"
-          style={{ fontFamily: "Outfit" }}
+           style={{ fontFamily: "Outfit", color: portfolio.theme_color }}
         >
           Education
         </h2>
 
         <div className="space-y-6">
           {portfolio.education.map((edu, i) => (
-            <div key={i} className="p-8 bg-[#0A0A0B] rounded-2xl">
-              <h3 className="text-2xl font-bold">{edu.degree}</h3>
+            <div
+  key={i}
+  className="p-8 bg-[#0A0A0B] rounded-2xl transition-all"
+  style={{ border: "1px solid " + portfolio.theme_color + "33" }}
+>
+              <h3 className="text-2xl font-bold" style={{ fontFamily: "Outfit", color: portfolio.theme_color }}>{edu.degree}</h3>
               <p className="text-gray-400">{edu.institution}</p>
               {edu.year && (
                 <p className="text-gray-500">{edu.year}</p>
@@ -473,7 +462,7 @@ const mouseY = useMotionValue(0);
         <div>
           <h2
             className="text-3xl font-bold mb-6"
-            style={{ fontFamily: "Outfit" }}
+             style={{ fontFamily: "Outfit", color: portfolio.theme_color }}
           >
             About Me
           </h2>
@@ -487,7 +476,7 @@ const mouseY = useMotionValue(0);
         <div>
           <h2
             className="text-3xl font-bold mb-6"
-            style={{ fontFamily: "Outfit" }}
+             style={{ fontFamily: "Outfit", color: portfolio.theme_color }}
           >
             Expertise
           </h2>
@@ -533,9 +522,14 @@ return (
 
     {/* Mouse Glow */}
     <motion.div
-      style={{ x: mouseX, y: mouseY }}
-      className="pointer-events-none fixed top-0 left-0 w-[300px] h-[300px] rounded-full bg-indigo-500/20 blur-[120px] z-10"
-    />
+  style={{
+    x: mouseX,
+    y: mouseY,
+    background: portfolio.theme_color
+  }}
+  className="pointer-events-none fixed top-0 left-0 w-[300px] h-[300px] rounded-full blur-[120px] opacity-30 z-10"
+/>
+
 
     {/* Parallax Background */}
     <motion.div
@@ -589,7 +583,7 @@ return (
           transition={{ duration: 1 }}
           className="text-center mb-8"
         >
-          <h2 className="text-5xl font-bold mb-8">About</h2>
+          <h2 className="text-5xl font-bold mb-8" style={{ color: portfolio.theme_color }}>About</h2>
           <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
             {portfolio.bio}
           </p>
@@ -599,7 +593,7 @@ return (
       {/* Projects */}
       {portfolio.projects?.length > 0 && (
         <section>
-          <h2 className="text-5xl font-bold mb-16 text-center">Projects</h2>
+          <h2 className="text-5xl font-bold mb-16 text-center" style={{ color: portfolio.theme_color }}>Projects</h2>
 
           <div className="grid md:grid-cols-2 gap-12 mb-8">
             {portfolio.projects.map((p, i) => (
@@ -609,8 +603,12 @@ return (
                 whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.9, delay: i * 0.1 }}
-                whileHover={{ rotateY: 15, rotateX: -15, scale: 1.07 }}
-                className="relative p-10 rounded-3xl bg-white/5 backdrop-blur border border-white/10 hover:shadow-[0_0_100px_rgba(99,102,241,0.4)] transform-gpu"
+                whileHover={{rotateY: 15, rotateX: -15, scale: 1.07, boxShadow: `0 0 80px ${portfolio.theme_color}99`}}
+                className="relative p-10 rounded-3xl bg-white/5 backdrop-blur border transform-gpu transition-all"
+                style={{
+                  borderColor: portfolio.theme_color + "44",
+                  boxShadow: `0 0 0px ${portfolio.theme_color}`
+                }}
               >
                 <h3 className="text-3xl font-bold mb-4">{p.title}</h3>
                 <p className="text-slate-400 mb-6">{p.description}</p>
@@ -627,17 +625,39 @@ return (
                 </div>
 
                 <div className="flex gap-4">
-                  {p.github_link && (
-                    <a href={p.github_link} target="_blank" rel="noreferrer">
-                      <Button variant="outline" size="sm">Code</Button>
-                    </a>
-                  )}
-                  {p.link && (
-                    <a href={p.link} target="_blank" rel="noreferrer">
-                      <Button variant="outline" size="sm">Live</Button>
-                    </a>
-                  )}
-                </div>
+              {p.github_link && (
+                <a href={p.github_link} target="_blank" rel="noreferrer">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="border transition-all duration-300 hover:-translate-y-1 hover:bg-transparent"
+                    style={{
+                      borderColor: portfolio.theme_color,
+                      color: portfolio.theme_color,
+                    }}
+                  >
+                    Code
+                  </Button>
+                </a>
+              )}
+            
+              {p.link && (
+                <a href={p.link} target="_blank" rel="noreferrer">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="border transition-all duration-300 hover:-translate-y-1 hover:bg-transparent"
+                    style={{
+                      borderColor: portfolio.theme_color,
+                      color: portfolio.theme_color,
+                    }}
+                  >
+                    Live
+                  </Button>
+                </a>
+              )}
+             </div>
+
               </motion.div>
             ))}
           </div>
@@ -653,14 +673,22 @@ return (
       viewport={{ once: true }}
       className="mb-20"
     >
-      <h2 className="text-3xl font-bold mb-8">Experience</h2>
+      <h2 className="text-3xl font-bold mb-8" style={{ color: portfolio.theme_color }}>Experience</h2>
       <div className="space-y-6">
         {portfolio.experience.map((exp, i) => (
-          <motion.div
-            key={i}
-            {...cardHover}
-            className="rounded-2xl bg-white/5 backdrop-blur p-6 border border-white/10 hover:border-white/30 hover:shadow-[0_0_40px_rgba(99,102,241,0.2)]"
-          >
+         <motion.div
+    key={i}
+    {...cardHover}
+    className="rounded-2xl bg-white/5 backdrop-blur p-6 border transition-all"
+    style={{
+      borderColor: portfolio.theme_color + "44",
+      boxShadow: "none",
+    }}
+    whileHover={{
+      boxShadow: `0 0 50px ${portfolio.theme_color}88`,
+      scale: 1.04,
+    }}
+  >
             <h3 className="text-xl font-semibold">{exp.title}</h3>
             <p className="text-slate-400 text-sm mb-2">
               {exp.company} • {exp.duration}
@@ -683,14 +711,22 @@ return (
       viewport={{ once: true }}
       className="mb-20"
     >
-      <h2 className="text-3xl font-bold mb-8">Education</h2>
+      <h2 className="text-3xl font-bold mb-8" style={{ color: portfolio.theme_color }}>Education</h2>
       <div className="space-y-6">
         {portfolio.education.map((edu, i) => (
           <motion.div
-            key={i}
-            {...cardHover}
-            className="rounded-2xl bg-white/5 backdrop-blur p-6 border border-white/10 hover:border-white/30 hover:shadow-[0_0_40px_rgba(168,85,247,0.2)]"
-          >
+    key={i}
+    {...cardHover}
+    className="rounded-2xl bg-white/5 backdrop-blur p-6 border transition-all"
+    style={{
+      borderColor: portfolio.theme_color + "44",
+      boxShadow: "none",
+    }}
+    whileHover={{
+      boxShadow: `0 0 50px ${portfolio.theme_color}88`,
+      scale: 1.04,
+    }}
+  >
             <h3 className="text-xl font-semibold">{edu.degree}</h3>
             <p className="text-slate-400">{edu.institution}</p>
             {edu.year && <p className="text-slate-500 text-sm">{edu.year}</p>}
@@ -707,6 +743,5 @@ return (
     </div>
   </div>
 );
-
 
 }

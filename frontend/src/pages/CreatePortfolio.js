@@ -82,6 +82,7 @@ export default function CreatePortfolio() {
 
     const response = await axios.post(`${API}/ai/extract-resume`, fd, {
       withCredentials: true,
+      headers: { "Content-Type": "multipart/form-data" },
     });
 
     const rawAI = response.data?.structured_data;
@@ -683,7 +684,7 @@ const response = await axios.post(`${API}/portfolios`, payload, {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
 
           <Input
-            placeholder="Year"
+            placeholder="Year of Graduation"
             value={edu.year}
             onChange={(e) => updateEducation(index, "year", e.target.value)}
             className="bg-slate-900/60 border-slate-800 text-white"

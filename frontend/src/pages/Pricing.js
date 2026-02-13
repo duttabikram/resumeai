@@ -87,7 +87,7 @@ const handleUpgrade = async () => {
     {
       name: "Pro",
       price: "₹199",
-      period: "month",
+      period: "forever",
       features: [
         "Unlimited Portfolios",
         "All Premium Templates",
@@ -97,7 +97,6 @@ const handleUpgrade = async () => {
         "Live Project Link Upload",
         "Custom Colors & Themes",
         "No Watermark",
-        "Priority Support",
         "Custom Domain (Coming Soon)",
       ],
       highlighted: true,
