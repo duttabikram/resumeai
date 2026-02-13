@@ -16,7 +16,7 @@ const handleUpgrade = async () => {
     // 1. Create order from backend (₹499 = 49900 paise if you want monthly)
     const orderRes = await axios.post(
       `${API}/subscription/create-order`,
-      { amount: 100 }, // 199 INR in paise
+      { amount: 100 }, // 1 INR in paise
       { withCredentials: true }
     );
 
@@ -31,26 +31,45 @@ const handleUpgrade = async () => {
       description: "Pro Subscription",
       order_id: order.id,
       handler: async function (response) {
-        try {
-          // 3. Verify payment on backend
-          await axios.post(
-            `${API}/subscription/verify`,
-            {
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-            },
-            { withCredentials: true }
-          );
-
-          toast.success("🎉 Payment successful! You are now Pro.");
-
-          // Optionally reload user / page
-          window.location.reload();
-        } catch (err) {
-          toast.error("Payment verification failed");
-        }
+  try {
+    // You can still call verify (optional, webhook is the real source of truth now)
+    await axios.post(
+      `${API}/subscription/verify`,
+      {
+        razorpay_order_id: response.razorpay_order_id,
+        razorpay_payment_id: response.razorpay_payment_id,
+        razorpay_signature: response.razorpay_signature,
       },
+      { withCredentials: true }
+    );
+
+    toast.success("🎉 Payment successful! Activating Pro...");
+
+    // ⏳ Poll subscription status until it becomes "pro"
+    const checkStatus = async () => {
+      try {
+        const res = await axios.get(`${API}/subscription/status`, {
+          withCredentials: true,
+        });
+
+        if (res.data.plan === "pro") {
+          toast.success("✅ Pro activated!");
+          window.location.reload();
+        } else {
+          setTimeout(checkStatus, 1500); // try again after 1.5s
+        }
+      } catch (e) {
+        // if request fails, try again
+        setTimeout(checkStatus, 2000);
+      }
+    };
+
+    checkStatus();
+  } catch (err) {
+    toast.error("Payment verification failed");
+  }
+},
+
       prefill: {
         email: user?.email || "",
         name: user?.name || "",

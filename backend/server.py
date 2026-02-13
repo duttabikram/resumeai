@@ -16,6 +16,8 @@ import razorpay
 from PyPDF2 import PdfReader
 import io
 from openai import OpenAI
+import json
+import os
 
 
 ROOT_DIR = Path(__file__).parent
@@ -561,14 +563,60 @@ async def get_github_repos(username: str, current_user: User = Depends(get_curre
 
 # ============ SUBSCRIPTION ROUTES ============
 
+@api_router.post("/webhook/razorpay")
+async def razorpay_webhook(request: Request):
+    payload = await request.body()
+    signature = request.headers.get("X-Razorpay-Signature")
+
+    try:
+        # Verify webhook signature
+        razorpay_client.utility.verify_webhook_signature(
+            payload.decode(),
+            signature,
+            os.getenv("RAZORPAY_WEBHOOK_SECRET")
+        )
+
+        data = json.loads(payload)
+
+        print("📩 Webhook received:", data.get("event"))
+
+        if data.get("event") == "payment.captured":
+            payment = data["payload"]["payment"]["entity"]
+            order_id = payment["order_id"]
+
+            # Fetch order details from Razorpay to get notes
+            order = razorpay_client.order.fetch(order_id)
+            user_id = order.get("notes", {}).get("user_id")
+
+            print("👤 User ID from order notes:", user_id)
+
+            if user_id:
+                result = await db.users.update_one(
+                    {"user_id": user_id},
+                    {"$set": {"subscription_plan": "pro"}}
+                )
+                print("📝 DB update result:", result.raw_result)
+
+        return {"status": "ok"}
+
+    except Exception as e:
+        print("❌ Webhook verification failed:", str(e))
+        raise HTTPException(status_code=400, detail="Invalid webhook")
+    
+
 @api_router.post("/subscription/create-order")
 async def create_subscription_order(order_data: RazorpayOrder, current_user: User = Depends(get_current_user)):
     try:
         razor_order = razorpay_client.order.create({
             "amount": order_data.amount,
             "currency": "INR",
-            "payment_capture": 1
+            "payment_capture": 1,
+            "notes": {
+                "user_id": str(current_user.user_id)  # 👈 attach user id here
+            }
         })
+
+        print("✅ Order created:", razor_order.get("id"))
         return razor_order
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Order creation failed: {str(e)}")
