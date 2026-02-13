@@ -43,9 +43,42 @@ export default function Landing() {
       {/* Background gradients */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.18),transparent_60%)]" />
+      
+      <motion.div
+       className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.25),transparent_65%)]"
+       animate={{ opacity: [0.3, 0.6, 0.3] }}
+       transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+       />
+
+      {/* Blue dust particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {Array.from({ length: 140 }).map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute rounded-full bg-sky-400/70 blur-[1.5px]"
+            style={{
+            width: Math.random() * 4 + 1.5 + "px",
+            height: Math.random() * 4 + 1.5 + "px",
+            top: Math.random() * 100 + "%",
+            left: Math.random() * 100 + "%",
+          }}
+
+            animate={{
+              y: [0, -40, 0],
+              opacity: [0.2, 1, 0.2],
+            }}
+            transition={{
+              duration: 6 + Math.random() * 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: Math.random() * 5,
+            }}
+          />
+        ))}
+      </div>
 
       {/* Navbar */}
-       <nav className="relative z-20 fixed top-0 left-0 right-0 backdrop-blur-md bg-slate-950/70 border-b border-white/5">
+      <nav className="relative z-20 fixed top-0 left-0 right-0 backdrop-blur-md bg-slate-950/70 border-b border-white/5">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link
             to="/"
@@ -56,9 +89,7 @@ export default function Landing() {
           </Link>
           <div className="flex items-center gap-4">
             <Link to="/pricing">
-              <Button variant="ghost" className="text-slate-300 hover:text-white">
-                Pricing
-              </Button>
+              <Button variant="ghost" className="text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition-colors"> Pricing</Button>
             </Link>
             <Link to="/signup">
               <Button className="bg-sky-500 hover:bg-sky-400 text-black font-semibold">
@@ -71,19 +102,18 @@ export default function Landing() {
 
       {/* Hero Section */}
       <section className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 text-center pt-24">
-      {/* Background resume image */}
-      <div className="absolute inset-0 -z-10 flex items-center justify-center overflow-hidden">
-        <img
-          src="/resume_preview.jpg"
-          alt="Resume preview background"
-          className="max-w-4xl w-full opacity-10 blur-[1px] rotate-[-6deg] select-none pointer-events-none"
-        />
-      </div>
-
+        {/* Background resume image */}
+        <div className="absolute inset-0 -z-10 flex items-center justify-center overflow-hidden">
+          <img
+            src="/resume_preview.jpg"
+            alt="Resume preview background"
+            className="max-w-4xl w-full opacity-10 blur-[1px] rotate-[-6deg] select-none pointer-events-none"
+          />
+        </div>
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+         initial={{ opacity: 0, y: 20 }}
+         animate={{ opacity: 1, y: 0 }}
+         transition={{ duration: 0.6 }}
         >
           {/* Badge */}
           <div className="mb-6 flex justify-center">
@@ -113,25 +143,14 @@ export default function Landing() {
           {/* Buttons */}
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link to="/signup">
-              <Button
-                size="lg"
-                className="bg-sky-500 hover:bg-sky-400 text-black font-semibold px-8 py-6 rounded-xl"
-              >
-                Start Building <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
+              <Button size="lg" className="bg-sky-500 hover:bg-sky-400 text-black font-semibold px-8 py-6 rounded-xl transition-all duration-300 hover:shadow-[0_0_30px_rgba(56,189,248,0.6)] hover:scale-[1.04]">Start Building <ArrowRight className="ml-2 w-5 h-5" /></Button>
             </Link>
             <Link to="/pricing">
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-slate-700 text-white hover:bg-slate-800 px-8 py-6 rounded-xl"
-              >
-                View Pricing
-              </Button>
+             <Button size="lg" variant="outline" className="border-slate-700/60 text-slate-200 bg-white/5 backdrop-blur hover:bg-white/10 hover:border-sky-400/50 hover:text-white px-8 py-6 rounded-xl transition-all duration-300 hover:shadow-[0_0_25px_rgba(56,189,248,0.35)]"> View Pricing</Button>
             </Link>
           </div>
 
-          {/* Subtle divider glow (no line, just light) */}
+          {/* Subtle divider glow */}
           <div className="mt-20 flex justify-center">
             <div className="h-24 w-24 rounded-full bg-sky-400/20 blur-3xl" />
           </div>
@@ -161,7 +180,8 @@ export default function Landing() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="rounded-xl bg-slate-900/40 p-6 backdrop-blur hover:bg-slate-900/60 transition-colors"
+                className="rounded-xl bg-slate-900/40 p-6 backdrop-blur transition-all duration-300 hover:bg-slate-900/70 hover:shadow-[0_0_40px_rgba(56,189,248,0.15)] hover:-translate-y-1"
+
               >
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-sky-500/10 text-sky-400">
                   {feature.icon}

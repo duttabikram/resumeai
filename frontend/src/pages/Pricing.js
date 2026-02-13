@@ -112,7 +112,7 @@ const handleUpgrade = async () => {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.18),transparent_60%)]" />
 
       {/* Navbar */}
-      <nav className="relative z-10 fixed top-0 left-0 right-0 backdrop-blur">
+       <nav className="relative z-20 fixed top-0 left-0 right-0 backdrop-blur-md bg-slate-950/70 border-b border-white/5">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link
             to="/"
@@ -124,19 +124,13 @@ const handleUpgrade = async () => {
           <div className="flex items-center gap-4">
             {user ? (
               <Link to="/dashboard">
-                <Button
-                  variant="outline"
-                  className="border-slate-700 text-white hover:bg-slate-800"
-                >
-                  Dashboard
-                </Button>
+                <Button variant="outline" className="border-slate-700/60 text-slate-200 bg-white/5 backdrop-blur hover:bg-white/10 hover:border-sky-400/50 hover:text-white transition-all duration-300 hover:shadow-[0_0_25px_rgba(56,189,248,0.35)]"> Dashboard</Button>
               </Link>
             ) : (
               <>
                 <Link to="/login">
                   <Button
-                    variant="ghost"
-                    className="text-slate-300 hover:text-white"
+                    variant="ghost" className="text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition-colors"
                   >
                     Login
                   </Button>
@@ -214,12 +208,20 @@ const handleUpgrade = async () => {
                     {plan.cta}
                   </Button>
                 ) : plan.name === "Pro" ? (
-                  <Button
-                    onClick={handleUpgrade}
-                    className="w-full bg-sky-500 hover:bg-sky-400 text-black font-semibold"
-                  >
-                    {plan.cta}
-                  </Button>
+                  !user ? (
+                   <Link to="/login">
+                     <Button className="w-full bg-sky-500 hover:bg-sky-400 text-black font-semibold">
+                       {plan.cta}
+                     </Button>
+                   </Link>
+                 ) : (
+                   <Button
+                     onClick={handleUpgrade}
+                     className="w-full bg-sky-500 hover:bg-sky-400 text-black font-semibold"
+                   >
+                     {plan.cta}
+                   </Button>
+                 )
                 ) : (
                   <Link to="/signup">
                     <Button
