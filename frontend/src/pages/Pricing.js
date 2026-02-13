@@ -16,7 +16,7 @@ const handleUpgrade = async () => {
     // 1. Create order from backend (₹499 = 49900 paise if you want monthly)
     const orderRes = await axios.post(
       `${API}/subscription/create-order`,
-      { amount: 19900 }, // 199 INR in paise
+      { amount: 100 }, // 199 INR in paise
       { withCredentials: true }
     );
 
@@ -86,7 +86,7 @@ const handleUpgrade = async () => {
     },
     {
       name: "Pro",
-      price: "₹199",
+      price: "₹1",
       period: "forever",
       features: [
         "Unlimited Portfolios",
