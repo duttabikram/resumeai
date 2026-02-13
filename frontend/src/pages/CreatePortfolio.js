@@ -186,7 +186,7 @@ const handleImportGithub = async () => {
     }));
 
     if (user?.subscription_plan === "free") {
-      toast.success("Projects imported (links available in Pro)");
+      toast.success(`Imported ${importedProjects.length} projects`);
     } else {
       toast.success(`Imported ${importedProjects.length} projects`);
     }
