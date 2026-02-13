@@ -143,6 +143,7 @@ export default function CreatePortfolio() {
     onDrop,
     accept: { "application/pdf": [".pdf"] },
     maxFiles: 1,
+    disabled: resumeLoading, // 👈 disable while loading
   });
 
 const handleImportGithub = async () => {
@@ -363,7 +364,7 @@ const response = await axios.post(`${API}/portfolios`, payload, {
                 {user?.subscription_plan === "free"
                   ? "Pro feature - Upgrade to use AI resume parsing"
                   : resumeLoading
-                  ? "Parsing resume..."
+                  ? "Parsing resume... please wait ⏳"
                   : "Or click to browse"}
               </p>
             </div>
