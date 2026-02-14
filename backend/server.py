@@ -139,6 +139,12 @@ class RazorpayVerify(BaseModel):
     razorpay_payment_id: str
     razorpay_signature: str
 
+
+# Health check route (for UptimeRobot / monitoring)
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
 # ============ AUTH HELPERS ============
 
 def hash_password(password: str) -> str:
