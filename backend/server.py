@@ -678,7 +678,9 @@ app.add_middleware(
     allow_credentials=True,
     allow_origins=[
         "http://localhost:3000",
-        "https://resumebuilderai-6rps.onrender.com",  # 👈 your frontend Render URL
+        "https://resumebuilderai-6rps.onrender.com", # 👈 your frontend Render URL
+        "https://portfolioai.site",  # 👈 your frontend Custom Domain URL
+        "https://www.portfolioai.site"  # 👈 your frontend Custom Domain URL
     ],
     allow_methods=["*"],
     allow_headers=["*"],
