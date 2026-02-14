@@ -343,9 +343,11 @@ const response = await axios.post(`${API}/portfolios`, payload, {
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Quick Start */}
           <div className="rounded-2xl bg-slate-900/40 p-6 backdrop-blur">
-            <h2 className="text-xl font-semibold text-white mb-4" style={{ fontFamily: "Outfit" }}>
-              Quick Start
-            </h2>
+            <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+  <span className="h-1 w-6 rounded-full bg-sky-400"></span>
+  Quick Start
+</h2>
+
 
             <div
               {...getRootProps()}
@@ -393,9 +395,11 @@ const response = await axios.post(`${API}/portfolios`, payload, {
 
           {/* Basic Info */}
           <div className="rounded-2xl bg-slate-900/40 p-6 backdrop-blur">
-            <h2 className="text-xl font-semibold text-white mb-4" style={{ fontFamily: "Outfit" }}>
-              Basic Information
-            </h2>
+            <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+  <span className="h-1 w-6 rounded-full bg-sky-400"></span>
+  Basic Information
+</h2>
+
 
             <div className="space-y-4">
               <div>
@@ -434,9 +438,13 @@ const response = await axios.post(`${API}/portfolios`, payload, {
 
           {/* Skills */}
           <div className="rounded-2xl bg-slate-900/40 p-6 backdrop-blur">
-            <h2 className="text-xl font-semibold text-white mb-4" style={{ fontFamily: "Outfit" }}>
-              Skills
-            </h2>
+            <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+  <span className="h-1 w-6 rounded-full bg-sky-400"></span>
+  Skills
+</h2>
+<p className="text-sm text-slate-400 mb-4">Add what skills u are good at</p>
+
+
 
             <div className="flex gap-2 mb-4">
               <Input
@@ -446,8 +454,8 @@ const response = await axios.post(`${API}/portfolios`, payload, {
                 className="bg-slate-950/60 border-slate-800 text-white"
                 placeholder="Add a skill"
               />
-              <Button type="button" onClick={addSkill} className="bg-sky-500 hover:bg-sky-400 text-black">
-                <Plus className="w-4 h-4" />
+              <Button type="button" onClick={addSkill} size="sm" className="bg-sky-500 hover:bg-sky-400 text-black">
+                <Plus className="w-4 h-4" />Add
               </Button>
             </div>
 
@@ -473,9 +481,11 @@ const response = await axios.post(`${API}/portfolios`, payload, {
           {/* Projects */}
           <div className="rounded-2xl bg-slate-900/40 p-6 backdrop-blur">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold text-white" style={{ fontFamily: "Outfit" }}>
-                Projects
-              </h2>
+              <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+  <span className="h-1 w-6 rounded-full bg-sky-400"></span>
+  Projects
+</h2>
+
               <Button
                 type="button"
                 onClick={addProject}
@@ -488,7 +498,11 @@ const response = await axios.post(`${API}/portfolios`, payload, {
 
             <div className="space-y-4">
               {formData.projects.map((project, index) => (
-                <div key={index} className="rounded-xl bg-slate-950/60 p-4 space-y-3">
+                <div key={index} className="rounded-xl bg-slate-950/60 p-4 space-y-3 
+                border border-white/5 
+                hover:border-sky-400/30 
+                hover:shadow-[0_0_30px_rgba(56,189,248,0.08)]
+                transition-all">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-white font-medium">
                       Project {index + 1}
@@ -567,9 +581,11 @@ const response = await axios.post(`${API}/portfolios`, payload, {
           {/* Experience */}
 <div className="rounded-2xl bg-slate-900/40 p-6 backdrop-blur">
   <div className="flex items-center justify-between mb-4">
-    <h2 className="text-xl font-semibold text-white" style={{ fontFamily: "Outfit" }}>
-      Experience
-    </h2>
+    <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+  <span className="h-1 w-6 rounded-full bg-sky-400"></span>
+  Experience
+</h2>
+
     <Button
       type="button"
       onClick={addExperience}
@@ -582,7 +598,11 @@ const response = await axios.post(`${API}/portfolios`, payload, {
 
   <div className="space-y-4">
     {formData.experience.map((exp, index) => (
-      <div key={index} className="rounded-xl bg-slate-950/60 p-4 space-y-3">
+      <div key={index} className="rounded-xl bg-slate-950/60 p-4 space-y-3 
+                border border-white/5 
+                hover:border-sky-400/30 
+                hover:shadow-[0_0_30px_rgba(56,189,248,0.08)]
+                transition-all">
         <div className="flex items-center justify-between">
           <span className="text-sm text-white font-medium">
             Experience {index + 1}
@@ -635,9 +655,11 @@ const response = await axios.post(`${API}/portfolios`, payload, {
         {/* Education */}
 <div className="rounded-2xl bg-slate-900/40 p-6 backdrop-blur">
   <div className="flex items-center justify-between mb-4">
-    <h2 className="text-xl font-semibold text-white" style={{ fontFamily: "Outfit" }}>
-      Education
-    </h2>
+    <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+  <span className="h-1 w-6 rounded-full bg-sky-400"></span>
+  Education
+</h2>
+
     <Button
       type="button"
       onClick={addEducation}
@@ -650,7 +672,11 @@ const response = await axios.post(`${API}/portfolios`, payload, {
 
   <div className="space-y-4">
     {formData.education.map((edu, index) => (
-      <div key={index} className="rounded-xl bg-slate-950/60 p-4 space-y-3">
+      <div key={index} className="rounded-xl bg-slate-950/60 p-4 space-y-3 
+                border border-white/5 
+                hover:border-sky-400/30 
+                hover:shadow-[0_0_30px_rgba(56,189,248,0.08)]
+                transition-all">
         <div className="flex items-center justify-between">
           <span className="text-sm text-white font-medium">
             Education {index + 1}

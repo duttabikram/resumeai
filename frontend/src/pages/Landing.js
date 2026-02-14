@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/context/AuthContext";
+
 import {
   ArrowRight,
   Sparkles,
@@ -11,6 +13,7 @@ import {
 } from "lucide-react";
 
 export default function Landing() {
+  const { user } = useAuth();
   const features = [
     {
       icon: <Sparkles className="w-6 h-6" />,
@@ -79,26 +82,46 @@ export default function Landing() {
 
       {/* Navbar */}
       <nav className="relative z-20 fixed top-0 left-0 right-0 backdrop-blur-md bg-slate-950/70 border-b border-white/5">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <Link
-            to="/"
-            className="flex items-center gap-2 text-white font-bold text-xl"
+  <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+    <Link
+      to="/"
+      className="flex items-center gap-2 text-white font-bold text-xl"
+    >
+      <Crown className="w-6 h-6 text-sky-400" />
+      <span style={{ fontFamily: "Outfit" }}>PortfolioAI</span>
+    </Link>
+
+    <div className="flex items-center gap-4">
+      {user ? (
+        <Link to="/dashboard">
+          <Button
+            variant="outline"
+            className="border-slate-700/60 text-slate-200 bg-white/5 backdrop-blur hover:bg-white/10 hover:border-sky-400/50 hover:text-white transition-all duration-300 hover:shadow-[0_0_25px_rgba(56,189,248,0.35)]"
           >
-            <Crown className="w-6 h-6 text-sky-400" />
-            <span style={{ fontFamily: "Outfit" }}>PortfolioAI</span>
+            Dashboard
+          </Button>
+        </Link>
+      ) : (
+        <>
+          <Link to="/pricing">
+            <Button
+              variant="ghost"
+              className="text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition-colors"
+            >
+              Pricing
+            </Button>
           </Link>
-          <div className="flex items-center gap-4">
-            <Link to="/pricing">
-              <Button variant="ghost" className="text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition-colors"> Pricing</Button>
-            </Link>
-            <Link to="/signup">
-              <Button className="bg-sky-500 hover:bg-sky-400 text-black font-semibold">
-                Get Started
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </nav>
+
+          <Link to="/signup">
+            <Button className="bg-sky-500 hover:bg-sky-400 text-black font-semibold">
+              Get Started
+            </Button>
+          </Link>
+        </>
+      )}
+    </div>
+  </div>
+</nav>
 
       {/* Hero Section */}
       <section className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 text-center pt-24">
