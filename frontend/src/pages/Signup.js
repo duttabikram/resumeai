@@ -20,12 +20,12 @@ export default function Signup() {
     setLoading(true);
 
     try {
-      await signup(email, password, name);
-      toast.success("Account created successfully!");
-      navigate("/dashboard");
-    } catch (error) {
-      toast.error(error.response?.data?.detail || "Signup failed");
-    } finally {
+  const res = await signup(email, password, name);
+  toast.success(res.message || "Check your email to verify your account");
+  navigate("/login");
+} catch (error) {
+  toast.error(error.response?.data?.detail || "Signup failed");
+} finally {
       setLoading(false);
     }
   };

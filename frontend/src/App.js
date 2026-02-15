@@ -13,6 +13,8 @@ import Settings from '@/pages/Settings';
 import PublicPortfolio from '@/pages/PublicPortfolio';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { Toaster } from '@/components/ui/sonner';
+import VerifyEmail from "@/pages/VerifyEmail";
+
 
 function AppRouter() {
   const location = useLocation();
@@ -30,6 +32,8 @@ function AppRouter() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/pricing" element={<Pricing />} />
         <Route path="/p/:slug" element={<PublicPortfolio />} />
+        <Route path="/verify" element={<VerifyEmail />} />
+
         
         <Route path="/dashboard" element={
           <ProtectedRoute>

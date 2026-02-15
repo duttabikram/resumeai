@@ -37,11 +37,15 @@ export function AuthProvider({ children }) {
   };
 
   const signup = async (email, password, name) => {
-    const response = await axios.post(`${API}/auth/signup`, { email, password, name }, { withCredentials: true });
-    setUser(response.data.user);
-    setIsAuthenticated(true);
-    return response.data;
-  };
+  const response = await axios.post(
+    `${API}/auth/signup`,
+    { email, password, name },
+    { withCredentials: true }
+  );
+  // ❌ Do NOT set user or auth here
+  // User must verify email first
+  return response.data;
+};
 
   const logout = async () => {
     await axios.post(`${API}/auth/logout`, {}, { withCredentials: true });

@@ -18,6 +18,7 @@ import io
 from openai import OpenAI
 import json
 import os
+from email_utils import send_verification_email
 
 
 ROOT_DIR = Path(__file__).parent
@@ -192,14 +193,14 @@ async def get_current_user(request: Request) -> User:
 # ============ AUTH ROUTES ============
 
 @api_router.post("/auth/signup")
-async def signup(user_data: UserSignup, response: Response):
-    # Check if user exists
-    existing = await db.users.find_one({"email": user_data.email}, {"_id": 0})
+async def signup(user_data: UserSignup):
+    existing = await db.users.find_one({"email": user_data.email})
     if existing:
         raise HTTPException(status_code=400, detail="Email already registered")
-    
-    # Create user
+
     user_id = f"user_{uuid.uuid4().hex[:12]}"
+    verification_token = uuid.uuid4().hex
+
     user_doc = {
         "user_id": user_id,
         "email": user_data.email,
@@ -207,42 +208,51 @@ async def signup(user_data: UserSignup, response: Response):
         "name": user_data.name,
         "picture": None,
         "subscription_plan": "free",
+        "is_verified": False,
+        "verification_token": verification_token,
         "created_at": datetime.now(timezone.utc).isoformat()
     }
-    await db.users.insert_one(user_doc)
-    
-    # Create session
-    session_token = f"session_{uuid.uuid4().hex}"
-    session_doc = {
-        "user_id": user_id,
-        "session_token": session_token,
-        "expires_at": (datetime.now(timezone.utc) + timedelta(days=7)).isoformat(),
-        "created_at": datetime.now(timezone.utc).isoformat()
-    }
-    await db.user_sessions.insert_one(session_doc)
 
-    response.set_cookie(
-    key="session_token",
-    value=session_token,
-    httponly=True,
-    secure=True,        # ✅ allow on http
-    samesite="none",      # ✅ works on cross-site
-    path="/",
-    max_age=7*24*60*60
+    await db.users.insert_one(user_doc)
+
+    verify_link = f"{os.environ.get('FRONTEND_URL')}/verify?token={verification_token}"
+
+    # Send email
+    await send_verification_email(user_data.email, verify_link)
+
+    return {"message": "Account created. Please check your email to verify your account."}
+
+
+@api_router.get("/auth/verify")
+async def verify_email(token: str):
+    user = await db.users.find_one({"verification_token": token})
+
+    if not user:
+        raise HTTPException(status_code=400, detail="Invalid or expired verification token")
+
+    if user.get("is_verified"):
+        return {"message": "Account already verified"}
+
+    await db.users.update_one(
+        {"user_id": user["user_id"]},
+        {
+            "$set": {"is_verified": True},
+            "$unset": {"verification_token": ""}
+        }
     )
-    
-    user_response = {k: v for k, v in user_doc.items() if k != "password_hash"}
-    user_response['created_at'] = datetime.fromisoformat(user_response['created_at'])
-    
-    return {"user": User(**user_response), "session_token": session_token}
+
+    return {"message": "Email verified successfully. You can now log in."}
+
 
 @api_router.post("/auth/login")
 async def login(credentials: UserLogin, response: Response):
-    # Find user
     user_doc = await db.users.find_one({"email": credentials.email})
     if not user_doc or not verify_password(credentials.password, user_doc["password_hash"]):
         raise HTTPException(status_code=401, detail="Invalid credentials")
-    
+
+    if not user_doc.get("is_verified"):
+        raise HTTPException(status_code=403, detail="Please verify your email before logging in")
+
     # Create session
     session_token = f"session_{uuid.uuid4().hex}"
     session_doc = {
@@ -254,19 +264,19 @@ async def login(credentials: UserLogin, response: Response):
     await db.user_sessions.insert_one(session_doc)
 
     response.set_cookie(
-    key="session_token",
-    value=session_token,
-    httponly=True,
-    secure=True,        # ✅ allow on http
-    samesite="none",      # ✅ works on cross-site
-    path="/",
-    max_age=7*24*60*60
+        key="session_token",
+        value=session_token,
+        httponly=True,
+        secure=True,
+        samesite="none",
+        path="/",
+        max_age=7*24*60*60
     )
-    
-    user_response = {k: v for k, v in user_doc.items() if k not in ["_id", "password_hash"]}
+
+    user_response = {k: v for k, v in user_doc.items() if k not in ["_id", "password_hash", "verification_token"]}
     if isinstance(user_response.get('created_at'), str):
         user_response['created_at'] = datetime.fromisoformat(user_response['created_at'])
-    
+
     return {"user": User(**user_response), "session_token": session_token}
 
 @api_router.post("/auth/session")
@@ -305,6 +315,7 @@ async def exchange_session(data: SessionExchange, response: Response):
             "name": session_data["name"],
             "picture": session_data.get("picture"),
             "subscription_plan": "free",
+            "is_verified": True,
             "created_at": datetime.now(timezone.utc).isoformat()
         }
         await db.users.insert_one(user_doc)
