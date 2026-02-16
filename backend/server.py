@@ -19,6 +19,9 @@ from openai import OpenAI
 import json
 import os
 from email_utils import send_verification_email
+import cloudinary
+import cloudinary.uploader
+from fastapi import Form
 
 
 ROOT_DIR = Path(__file__).parent
@@ -28,6 +31,13 @@ load_dotenv(ROOT_DIR / '.env')
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
+
+cloudinary.config(
+    cloud_name=os.environ.get("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.environ.get("CLOUDINARY_API_KEY"),
+    api_secret=os.environ.get("CLOUDINARY_API_SECRET"),
+)
+
 
 # Razorpay client
 razorpay_client = razorpay.Client(auth=(os.environ.get('RAZORPAY_KEY_ID', ''), os.environ.get('RAZORPAY_KEY_SECRET', '')))
@@ -101,6 +111,7 @@ class Portfolio(BaseModel):
     is_published: bool = False
     slug: Optional[str] = None
     github_username: Optional[str] = None
+    profile_image: Optional[str] = None   # ✅ ADD THIS
     created_at: datetime
     updated_at: datetime
 
@@ -371,32 +382,57 @@ async def get_portfolios(current_user: User = Depends(get_current_user)):
             p['updated_at'] = datetime.fromisoformat(p['updated_at'])
     return portfolios
 
+
 @api_router.post("/portfolios", response_model=Portfolio)
-async def create_portfolio(portfolio_data: PortfolioCreate, current_user: User = Depends(get_current_user)):
+async def create_portfolio(
+    data: str = Form(...),                 # JSON string
+    profile_image: UploadFile = File(None),
+    current_user: User = Depends(get_current_user)
+):
     # Check free plan limit
     if current_user.subscription_plan == "free":
         count = await db.portfolios.count_documents({"user_id": current_user.user_id})
         if count >= 1:
             raise HTTPException(status_code=403, detail="Free plan allows only 1 portfolio. Upgrade to Pro.")
-    
+
+    try:
+        portfolio_data = json.loads(data)
+    except:
+        raise HTTPException(status_code=400, detail="Invalid portfolio data")
+
     portfolio_id = f"portfolio_{uuid.uuid4().hex[:12]}"
     now = datetime.now(timezone.utc)
-    
-    portfolio_doc = portfolio_data.model_dump()
-    portfolio_doc.update({
+
+    image_url = None
+
+    if profile_image:
+        upload_result = cloudinary.uploader.upload(
+            await profile_image.read(),
+            folder="portfolio_profiles",
+            public_id=portfolio_id,
+            overwrite=True,
+            resource_type="image"
+        )
+        image_url = upload_result.get("secure_url")
+
+    portfolio_doc = {
+        **portfolio_data,
         "portfolio_id": portfolio_id,
         "user_id": current_user.user_id,
+        "profile_image": image_url,   # ✅ Cloud URL
         "is_published": False,
         "slug": None,
         "created_at": now.isoformat(),
         "updated_at": now.isoformat()
-    })
-    
+    }
+
     await db.portfolios.insert_one(portfolio_doc)
-    
-    portfolio_doc['created_at'] = now
-    portfolio_doc['updated_at'] = now
+
+    portfolio_doc["created_at"] = now
+    portfolio_doc["updated_at"] = now
+
     return Portfolio(**portfolio_doc)
+
 
 @api_router.get("/portfolios/{portfolio_id}", response_model=Portfolio)
 async def get_portfolio(portfolio_id: str, current_user: User = Depends(get_current_user)):

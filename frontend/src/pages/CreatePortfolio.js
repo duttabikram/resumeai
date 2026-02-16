@@ -64,6 +64,9 @@ export default function CreatePortfolio() {
   const [skillInput, setSkillInput] = useState("");
   const [githubLoading, setGithubLoading] = useState(false);
   const [resumeLoading, setResumeLoading] = useState(false);
+  const [profileImage, setProfileImage] = useState(null);
+const [previewImage, setPreviewImage] = useState(null);
+
 
   const onDrop = async (acceptedFiles) => {
   if (user?.subscription_plan === "free") {
@@ -198,6 +201,13 @@ const handleImportGithub = async () => {
   }
 };
 
+ const handleImageChange = (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  setProfileImage(file);
+  setPreviewImage(URL.createObjectURL(file));
+};
+
 
   const addSkill = () => {
     if (skillInput.trim()) {
@@ -291,31 +301,45 @@ const removeEducation = (index) => {
   }));
 };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
 
-    try {
-      const payload = {
-  ...formData,
-  projects: formData.projects.map((p) => ({
-    ...p,
-    link: normalizeUrl(p.link),
-    github_link: normalizeUrl(p.github_link),
-  })),
+  try {
+    const fd = new FormData();
+
+    const payload = {
+      ...formData,
+      projects: formData.projects.map((p) => ({
+        ...p,
+        link: normalizeUrl(p.link),
+        github_link: normalizeUrl(p.github_link),
+      })),
+    };
+
+    fd.append("data", JSON.stringify(payload));
+
+    if (profileImage) {
+      fd.append("profile_image", profileImage);
+    }
+
+    const response = await axios.post(`${API}/portfolios`, fd, {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    toast.success("Portfolio created successfully!");
+    navigate(`/portfolio/edit/${response.data.portfolio_id}`);
+  } catch (error) {
+    console.error(error);
+    toast.error(error.response?.data?.detail || "Failed to create portfolio");
+  } finally {
+    setLoading(false);
+  }
 };
 
-const response = await axios.post(`${API}/portfolios`, payload, {
-  withCredentials: true,
-});
-      toast.success("Portfolio created successfully!");
-      navigate(`/portfolio/edit/${response.data.portfolio_id}`);
-    } catch (error) {
-      toast.error(error.response?.data?.detail || "Failed to create portfolio");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
@@ -411,6 +435,35 @@ const response = await axios.post(`${API}/portfolios`, payload, {
                   placeholder="My Professional Portfolio"
                   required
                 />
+              </div>
+
+              <div>
+              <Label className="text-slate-300">Profile Picture</Label>
+              
+              <Input
+                type="file"
+                accept="image/*"
+                disabled={user?.subscription_plan === "free"}
+                onChange={handleImageChange}
+                className={`bg-slate-950/60 border-slate-800 text-white ${
+                  user?.subscription_plan === "free" ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+              />
+              
+              {user?.subscription_plan === "free" && (
+                <p className="mt-1 text-xs text-slate-400">
+                  🔒 Upgrade to Pro to upload a profile picture
+                </p>
+              )}
+              
+              {previewImage && user?.subscription_plan !== "free" && (
+                <img
+                  src={previewImage}
+                  alt="Preview"
+                  className="mt-4 w-32 h-32 object-cover rounded-full border border-slate-700"
+                />
+              )}
+              
               </div>
 
               <div>

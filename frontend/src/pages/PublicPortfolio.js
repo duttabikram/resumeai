@@ -546,6 +546,23 @@ return (
       style={{ scale: heroScale, opacity: heroOpacity }}
       className="relative z-20 min-h-screen flex flex-col items-center justify-center text-center px-6"
     >
+
+    {portfolio.profile_image && (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.8 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{ duration: 0.8 }}
+    className="mb-8"
+  >
+    <img
+      src={portfolio.profile_image}
+      alt="Profile"
+      className="w-36 h-36 md:w-44 md:h-44 rounded-full object-cover border-4 shadow-xl"
+      style={{ borderColor: portfolio.theme_color }}
+    />
+  </motion.div>
+)}
+
       <h1
         className="text-6xl md:text-8xl font-black tracking-tight mb-6"
         style={{ color: portfolio.theme_color }}
