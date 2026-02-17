@@ -590,10 +590,20 @@ Return JSON with: name, role, bio (2 sentences), skills (array), projects (array
 @api_router.get("/github/repos/{username}")
 async def get_github_repos(username: str, current_user: User = Depends(get_current_user)):
     try:
+        headers = {
+            "Accept": "application/vnd.github+json",
+            "User-Agent": "PortfolioAI",
+        }
+
+        github_token = os.getenv("GITHUB_TOKEN")
+        if github_token:
+            headers["Authorization"] = f"Bearer {github_token}"
+
         async with httpx.AsyncClient() as http_client:
             resp = await http_client.get(
                 f"https://api.github.com/users/{username}/repos",
-                params={"sort": "updated", "per_page": 10}
+                params={"sort": "updated", "per_page": 10},
+                headers=headers
             )
             resp.raise_for_status()
             repos = resp.json()
@@ -603,16 +613,18 @@ async def get_github_repos(username: str, current_user: User = Depends(get_curre
             for repo in repos:
                 if not repo.get('fork'):  # Skip forked repos
                     projects.append({
-                        "title": repo['name'],
-                        "description": repo['description'] or "No description",
-                        "tech_stack": [repo.get('language')] if repo.get('language') else [],
-                        "link": repo['html_url'],
-                        "github_link": repo['html_url']
+                        "title": repo["name"],
+                        "description": repo["description"] or "No description",
+                        "tech_stack": [repo.get("language")] if repo.get("language") else [],
+                        "link": repo["html_url"],
+                        "github_link": repo["html_url"],
                     })
             
             return {"projects": projects}
+
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to fetch GitHub repos: {str(e)}")
+
 
 # ============ SUBSCRIPTION ROUTES ============
 
