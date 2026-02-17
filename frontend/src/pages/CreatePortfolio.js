@@ -455,7 +455,12 @@ const handleSubmit = async (e) => {
                   🔒 Upgrade to Pro to upload a profile picture
                 </p>
               )}
-              
+               {user?.subscription_plan === "pro" && (
+                <p className="mt-1 text-xs text-sky-400">
+                  ✨ Your profile picture will shine in the Creative template
+                </p>
+              )}
+             
               {previewImage && user?.subscription_plan !== "free" && (
                 <img
                   src={previewImage}
