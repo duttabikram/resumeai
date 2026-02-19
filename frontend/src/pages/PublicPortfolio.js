@@ -495,11 +495,7 @@ const mouseY = useMotionValue(0);
         </div>
       )}
     </div>
-
-    <div className="text-center pt-12 text-gray-600 text-sm">
-      Built with AI Portfolio Builder
-    </div>
-
+    
   </div>
 </div>
     );
@@ -755,9 +751,6 @@ return (
 )}
     </div>
 
-    <div className="relative z-20 text-center py-20 text-slate-500">
-      Built with AI Portfolio Builder
-    </div>
   </div>
 );
 
