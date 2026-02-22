@@ -16,7 +16,7 @@ const handleUpgrade = async () => {
     // 1. Create order from backend (₹499 = 49900 paise if you want monthly)
     const orderRes = await axios.post(
       `${API}/subscription/create-order`,
-      { amount: 100 }, // 1 INR in paise
+      { amount: 9900 }, // 99 INR in paise
       { withCredentials: true }
     );
 
@@ -96,6 +96,7 @@ const handleUpgrade = async () => {
       features: [
         "1 Portfolio",
         "Basic Templates",
+        "GitHub Integration",
         "Manual Content Entry",
         "Portfolio Watermark",
         "Public Portfolio Link",
@@ -105,18 +106,19 @@ const handleUpgrade = async () => {
     },
     {
       name: "Pro",
-      price: "₹1",
+      price: "₹99",
       period: "forever",
       features: [
-        "Unlimited Portfolios",
+        "5 Portfolios",
         "All Premium Templates",
         "AI Content Generation",
         "AI Resume Parsing",
         "GitHub Integration",
         "Live Project Link Upload",
         "Custom Colors & Themes",
+        "Image Upload",
         "No Watermark",
-        "Custom Domain (Coming Soon)",
+        "Public Portfolio Link",
       ],
       highlighted: true,
       current: user?.subscription_plan === "pro",

@@ -67,7 +67,7 @@ export default function CreatePortfolio() {
   const [profileImage, setProfileImage] = useState(null);
 const [previewImage, setPreviewImage] = useState(null);
 
-const MAX_IMAGE_SIZE_MB = 2;
+const MAX_IMAGE_SIZE_MB = 1;
 const MAX_IMAGE_SIZE_BYTES = MAX_IMAGE_SIZE_MB * 1024 * 1024;
 
 

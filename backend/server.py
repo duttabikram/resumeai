@@ -394,6 +394,12 @@ async def create_portfolio(
         count = await db.portfolios.count_documents({"user_id": current_user.user_id})
         if count >= 1:
             raise HTTPException(status_code=403, detail="Free plan allows only 1 portfolio. Upgrade to Pro.")
+    
+    # Check pro plan limit
+    if current_user.subscription_plan == "pro":
+        count = await db.portfolios.count_documents({"user_id": current_user.user_id})
+        if count >= 5:  # 👈 set your desired limit
+            raise HTTPException(status_code=403, detail="Pro plan allows only 5 portfolios.")    
 
     try:
         portfolio_data = json.loads(data)
@@ -409,10 +415,10 @@ async def create_portfolio(
          # ✅ Read file
         contents = await profile_image.read()
 
-        # ✅ Size check (2 MB max)
-        MAX_SIZE = 2 * 1024 * 1024  # 2 MB
+        # ✅ Size check (1 MB max)
+        MAX_SIZE = 1 * 1024 * 1024  # 1 MB
         if len(contents) > MAX_SIZE:
-            raise HTTPException(status_code=400, detail="Image too large. Max size is 2MB.")
+            raise HTTPException(status_code=400, detail="Image too large. Max size is 1MB.")
          
         # ✅ Upload to Cloudinary (optionally limit dimensions too)
         upload_result = cloudinary.uploader.upload(
