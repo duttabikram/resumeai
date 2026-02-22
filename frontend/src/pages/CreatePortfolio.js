@@ -369,7 +369,7 @@ const handleSubmit = async (e) => {
        <nav className="relative z-20 fixed top-0 left-0 right-0 backdrop-blur-md bg-slate-950/70 border-b border-white/5">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center gap-4">
           <Link to="/dashboard">
-            <Button variant="ghost" size="icon" className="text-slate-300 hover:text-white">
+            <Button variant="ghost" size="icon" className="text-slate-300 bg-white/5 backdrop-blur border border-white/10 rounded-lg hover:text-white hover:bg-white/10 hover:border-sky-400/40 transition-all duration-300 hover:shadow-[0_0_12px_rgba(56,189,248,0.35)]">
               <ArrowLeft className="w-5 h-5" />
             </Button>
           </Link>
@@ -827,16 +827,25 @@ const handleSubmit = async (e) => {
             </div>
 
             <div>
-              <Label className="text-slate-300">Theme Color</Label>
-              <Input
-                type="color"
-                value={formData.theme_color}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, theme_color: e.target.value }))
-                }
-                className="h-12 w-full bg-transparent border-slate-800"
-              />
-            </div>
+  <Label className="text-slate-300">Theme Color</Label>
+  <Input
+    type="color"
+    value={formData.theme_color}
+    onChange={(e) =>
+      setFormData((prev) => ({ ...prev, theme_color: e.target.value }))
+    }
+    disabled={user?.subscription_plan === "free"}
+    className={`h-12 w-full bg-transparent border-slate-800 ${
+      user?.subscription_plan === "free" ? "opacity-50 cursor-not-allowed" : ""
+    }`}
+  />
+
+  {user?.subscription_plan === "free" && (
+    <p className="mt-1 text-xs text-slate-400">
+      🔒 Upgrade to Pro to customize theme color
+    </p>
+  )}
+</div>
           </div>
 
           {/* Actions */}

@@ -95,9 +95,7 @@ export default function Dashboard() {
     <Button
       variant="ghost"
       size="icon"
-      className="text-slate-300 bg-white/5 backdrop-blur border border-white/10 rounded-lg
-                 hover:text-white hover:bg-white/10 hover:border-sky-400/40
-                 transition-all duration-300 hover:shadow-[0_0_12px_rgba(56,189,248,0.35)]"
+      className="text-slate-300 bg-white/5 backdrop-blur border border-white/10 rounded-lg hover:text-white hover:bg-white/10 hover:border-sky-400/40 transition-all duration-300 hover:shadow-[0_0_12px_rgba(56,189,248,0.35)]"
     >
       <SettingsIcon className="w-4 h-4" />
     </Button>
@@ -106,9 +104,7 @@ export default function Dashboard() {
   <Button
     variant="ghost"
     size="icon"
-    className="text-slate-300 bg-white/5 backdrop-blur border border-white/10 rounded-lg
-               hover:text-red-400 hover:bg-white/10 hover:border-red-400/40
-               transition-all duration-300 hover:shadow-[0_0_12px_rgba(248,113,113,0.35)]"
+    className="text-slate-300 bg-white/5 backdrop-blur border border-white/10 rounded-lg hover:text-red-400 hover:bg-white/10 hover:border-red-400/40 transition-all duration-300 hover:shadow-[0_0_12px_rgba(248,113,113,0.35)]"
     onClick={handleLogout}
   >
     <LogOut className="w-4 h-4" />
@@ -240,7 +236,7 @@ export default function Dashboard() {
                     variant="ghost"
                     size="sm"
                     onClick={() => handleDelete(portfolio.portfolio_id)}
-                    className="text-slate-300 hover:text-red-400"
+                    className="text-slate-300 bg-white/5 backdrop-blur border border-white/10 rounded-lg hover:text-red-400 hover:bg-white/10 hover:border-red-400/40 transition-all duration-300 hover:shadow-[0_0_12px_rgba(248,113,113,0.35)]"
                   >
                     <Trash2 className="w-4 h-4" />
                   </Button>
