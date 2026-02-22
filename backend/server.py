@@ -406,12 +406,26 @@ async def create_portfolio(
     image_url = None
 
     if profile_image:
+         # ✅ Read file
+        contents = await profile_image.read()
+
+        # ✅ Size check (2 MB max)
+        MAX_SIZE = 2 * 1024 * 1024  # 2 MB
+        if len(contents) > MAX_SIZE:
+            raise HTTPException(status_code=400, detail="Image too large. Max size is 2MB.")
+         
+        # ✅ Upload to Cloudinary (optionally limit dimensions too)
         upload_result = cloudinary.uploader.upload(
-            await profile_image.read(),
+            contents,
             folder="portfolio_profiles",
             public_id=portfolio_id,
             overwrite=True,
-            resource_type="image"
+            resource_type="image",
+            width=1024,
+            height=1024,
+            crop="limit",
+            quality="auto",
+            fetch_format="auto"
         )
         image_url = upload_result.get("secure_url")
 

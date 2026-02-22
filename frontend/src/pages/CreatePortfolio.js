@@ -67,6 +67,9 @@ export default function CreatePortfolio() {
   const [profileImage, setProfileImage] = useState(null);
 const [previewImage, setPreviewImage] = useState(null);
 
+const MAX_IMAGE_SIZE_MB = 2;
+const MAX_IMAGE_SIZE_BYTES = MAX_IMAGE_SIZE_MB * 1024 * 1024;
+
 
   const onDrop = async (acceptedFiles) => {
   if (user?.subscription_plan === "free") {
@@ -204,6 +207,21 @@ const handleImportGithub = async () => {
  const handleImageChange = (e) => {
   const file = e.target.files[0];
   if (!file) return;
+
+    // ✅ Size check
+  if (file.size > MAX_IMAGE_SIZE_BYTES) {
+    toast.error(`Image too large. Max size is ${MAX_IMAGE_SIZE_MB}MB.`);
+    e.target.value = ""; // reset input
+    return;
+  }
+
+    // (Optional) Type check
+  if (!file.type.startsWith("image/")) {
+    toast.error("Please select a valid image file.");
+    e.target.value = "";
+    return;
+  }
+
   setProfileImage(file);
   setPreviewImage(URL.createObjectURL(file));
 };
