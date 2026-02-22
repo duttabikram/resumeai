@@ -710,7 +710,7 @@ const handleSubmit = async (e) => {
         </div>
 
           <Input
-            placeholder="Duration (e.g. In years)"
+            placeholder="Duration (e.g. July 2025 – Jan 2026)"
             value={exp.duration}
             onChange={(e) => updateExperience(index, "duration", e.target.value)}
             className="bg-slate-900/60 border-slate-800 text-white"
@@ -787,7 +787,7 @@ const handleSubmit = async (e) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
 
           <Input
-            placeholder="Year of Graduation"
+            placeholder="Duration (e.g. July 2022 – Jan 2026)"
             value={edu.year}
             onChange={(e) => updateEducation(index, "year", e.target.value)}
             className="bg-slate-900/60 border-slate-800 text-white"

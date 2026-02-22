@@ -24,6 +24,21 @@ const cardHover = {
   transition: { type: "spring", stiffness: 200, damping: 15 },
 };
 
+const crazyCard = {
+  hidden: { opacity: 0, y: 40, rotateX: -15, scale: 0.9 },
+  show: {
+    opacity: 1,
+    y: 0,
+    rotateX: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 120,
+      damping: 12,
+    },
+  },
+};
+
 const splitText = (text) =>
   text.split("").map((char, i) => (
     <motion.span
@@ -417,7 +432,7 @@ const mouseY = useMotionValue(0);
   className="p-8 bg-[#0A0A0B] rounded-2xl transition-all"
   style={{ border: "1px solid " + portfolio.theme_color + "33" }}
 >
-              <h3 className="text-2xl font-bold" style={{ fontFamily: "Outfit", color: portfolio.theme_color }}>{exp.title}</h3>
+              <h3 className="text-2xl font-bold" style={{ color: portfolio.theme_color }}>{exp.title}</h3>
               <p className="text-gray-400">
                 {exp.company} • {exp.duration}
               </p>
@@ -431,12 +446,7 @@ const mouseY = useMotionValue(0);
     {/* Education */}
     {portfolio.education?.length > 0 && (
       <div className="mb-20">
-        <h2
-          className="text-4xl font-bold mb-8"
-           style={{ fontFamily: "Outfit", color: portfolio.theme_color }}
-        >
-          Education
-        </h2>
+        <h2 className="text-4xl font-bold mb-8" style={{ fontFamily: "Outfit", color: portfolio.theme_color }}>Education</h2>
 
         <div className="space-y-6">
           {portfolio.education.map((edu, i) => (
@@ -445,7 +455,7 @@ const mouseY = useMotionValue(0);
   className="p-8 bg-[#0A0A0B] rounded-2xl transition-all"
   style={{ border: "1px solid " + portfolio.theme_color + "33" }}
 >
-              <h3 className="text-2xl font-bold" style={{ fontFamily: "Outfit", color: portfolio.theme_color }}>{edu.degree}</h3>
+              <h3 className="text-2xl font-bold" style={{ color: portfolio.theme_color }}>{edu.degree}</h3>
               <p className="text-gray-400">{edu.institution}</p>
               {edu.year && (
                 <p className="text-gray-500">{edu.year}</p>
@@ -623,7 +633,7 @@ return (
                   boxShadow: `0 0 0px ${portfolio.theme_color}`
                 }}
               >
-                <h3 className="text-3xl font-bold mb-4">{p.title}</h3>
+                <h3 className="text-3xl font-bold mb-4" style={{ color: portfolio.theme_color }}>{p.title}</h3>
                 <p className="text-slate-400 mb-6">{p.description}</p>
 
                 <div className="flex flex-wrap gap-2 mb-8">
@@ -689,26 +699,44 @@ return (
       <h2 className="text-3xl font-bold mb-8" style={{ color: portfolio.theme_color }}>Experience</h2>
       <div className="space-y-6">
         {portfolio.experience.map((exp, i) => (
-         <motion.div
+  <motion.div
     key={i}
-    {...cardHover}
-    className="rounded-2xl bg-white/5 backdrop-blur p-6 border transition-all"
-    style={{
-      borderColor: portfolio.theme_color + "44",
-      boxShadow: "none",
-    }}
+    variants={crazyCard}
+    initial="hidden"
+    whileInView="show"
+    viewport={{ once: true }}
     whileHover={{
-      boxShadow: `0 0 50px ${portfolio.theme_color}88`,
-      scale: 1.04,
+      scale: 1.08,
+      rotateX: 8,
+      rotateY: -8,
+      y: -8,
+      boxShadow: `0 0 80px ${portfolio.theme_color}cc`,
+    }}
+    transition={{ type: "spring", stiffness: 200, damping: 12 }}
+    className="relative rounded-2xl bg-white/5 backdrop-blur p-6 border overflow-hidden"
+    style={{
+      borderColor: portfolio.theme_color + "66",
     }}
   >
-            <h3 className="text-xl font-semibold">{exp.title}</h3>
-            <p className="text-slate-400 text-sm mb-2">
-              {exp.company} • {exp.duration}
-            </p>
-            <p className="text-slate-300">{exp.description}</p>
-          </motion.div>
-        ))}
+    {/* Glow layer */}
+    <motion.div
+      className="absolute inset-0 opacity-30"
+      style={{
+        background: `radial-gradient(circle at top left, ${portfolio.theme_color}55, transparent 60%)`,
+      }}
+      animate={{ opacity: [0.2, 0.5, 0.2] }}
+      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+    />
+
+    <div className="relative z-10">
+      <h3 className="text-xl font-semibold">{exp.title}</h3>
+      <p className="text-slate-400 text-sm mb-2">
+        {exp.company} • {exp.duration}
+      </p>
+      <p className="text-slate-300">{exp.description}</p>
+    </div>
+  </motion.div>
+))}
       </div>
     </motion.section>
     </section>
@@ -728,22 +756,41 @@ return (
       <div className="space-y-6">
         {portfolio.education.map((edu, i) => (
           <motion.div
-    key={i}
-    {...cardHover}
-    className="rounded-2xl bg-white/5 backdrop-blur p-6 border transition-all"
+  key={i}
+  variants={crazyCard}
+  initial="hidden"
+  whileInView="show"
+  viewport={{ once: true }}
+  whileHover={{
+    scale: 1.08,
+    rotateX: 8,
+    rotateY: -8,
+    y: -8,
+    boxShadow: `0 0 80px ${portfolio.theme_color}cc`,
+  }}
+  transition={{ type: "spring", stiffness: 200, damping: 12 }}
+  className="relative rounded-2xl bg-white/5 backdrop-blur p-6 border overflow-hidden"
+  style={{
+    borderColor: portfolio.theme_color + "66",
+  }}
+>
+  {/* 🔥 Animated glow layer */}
+  <motion.div
+    className="absolute inset-0 opacity-30"
     style={{
-      borderColor: portfolio.theme_color + "44",
-      boxShadow: "none",
+      background: `radial-gradient(circle at top left, ${portfolio.theme_color}55, transparent 60%)`,
     }}
-    whileHover={{
-      boxShadow: `0 0 50px ${portfolio.theme_color}88`,
-      scale: 1.04,
-    }}
-  >
-            <h3 className="text-xl font-semibold">{edu.degree}</h3>
-            <p className="text-slate-400">{edu.institution}</p>
-            {edu.year && <p className="text-slate-500 text-sm">{edu.year}</p>}
-          </motion.div>
+    animate={{ opacity: [0.2, 0.5, 0.2] }}
+    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+  />
+
+  {/* Content */}
+  <div className="relative z-10">
+    <h3 className="text-xl font-semibold">{edu.degree}</h3>
+    <p className="text-slate-400">{edu.institution}</p>
+    {edu.year && <p className="text-slate-500 text-sm">{edu.year}</p>}
+  </div>
+</motion.div>
         ))}
       </div>
     </motion.section>
