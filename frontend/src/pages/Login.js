@@ -37,6 +37,11 @@ export default function Login() {
     )}`;
   };
 
+  const handleGoogleSignupSelf = () => {
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+  window.location.href = `${BACKEND_URL}/api/auth/google/login`;
+};
+
   return (
     <div className="relative min-h-screen overflow-hidden bg-background text-foreground flex items-center justify-center px-6">
       {/* Background gradients */}
@@ -124,7 +129,7 @@ export default function Login() {
           <Button
             variant="outline"
             className="w-full border-slate-700 text-white hover:bg-slate-800"
-            onClick={handleGoogleLogin}
+            onClick={handleGoogleSignupSelf}
             data-testid="login-google-btn"
           >
             <Mail className="mr-2 w-4 h-4" />

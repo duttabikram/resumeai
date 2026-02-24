@@ -22,6 +22,12 @@ from email_utils import send_verification_email
 import cloudinary
 import cloudinary.uploader
 from fastapi import Form
+from fastapi.responses import RedirectResponse
+from urllib.parse import urlencode
+
+GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth"
+GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token"
+GOOGLE_USERINFO_URL = "https://www.googleapis.com/oauth2/v2/userinfo"
 
 
 ROOT_DIR = Path(__file__).parent
@@ -289,6 +295,106 @@ async def login(credentials: UserLogin, response: Response):
         user_response['created_at'] = datetime.fromisoformat(user_response['created_at'])
 
     return {"user": User(**user_response), "session_token": session_token}
+
+@api_router.get("/auth/google/login")
+async def google_login():
+    params = {
+        "client_id": os.getenv("GOOGLE_CLIENT_ID"),
+        "redirect_uri": os.getenv("GOOGLE_REDIRECT_URI"),
+        "response_type": "code",
+        "scope": "openid email profile",
+        "access_type": "offline",
+        "prompt": "consent"
+    }
+    url = f"{GOOGLE_AUTH_URL}?{urlencode(params)}"
+    return RedirectResponse(url)
+
+
+@api_router.get("/auth/google/callback")
+async def google_callback(code: str):
+    # 1. Exchange code for token
+    async with httpx.AsyncClient() as client_http:
+        token_resp = await client_http.post(
+            GOOGLE_TOKEN_URL,
+            data={
+                "client_id": os.getenv("GOOGLE_CLIENT_ID"),
+                "client_secret": os.getenv("GOOGLE_CLIENT_SECRET"),
+                "code": code,
+                "grant_type": "authorization_code",
+                "redirect_uri": os.getenv("GOOGLE_REDIRECT_URI"),
+            },
+            headers={"Content-Type": "application/x-www-form-urlencoded"},
+        )
+
+    token_data = token_resp.json()
+    access_token = token_data.get("access_token")
+
+    if not access_token:
+        raise HTTPException(status_code=400, detail="Failed to get access token from Google")
+
+    # 2. Get user info
+    async with httpx.AsyncClient() as client_http:
+        userinfo_resp = await client_http.get(
+            GOOGLE_USERINFO_URL,
+            headers={"Authorization": f"Bearer {access_token}"}
+        )
+
+    userinfo = userinfo_resp.json()
+
+    email = userinfo.get("email")
+    name = userinfo.get("name")
+    picture = userinfo.get("picture")
+
+    if not email:
+        raise HTTPException(status_code=400, detail="Failed to get user info from Google")
+
+    # 3. Find or create user
+    user_doc = await db.users.find_one({"email": email})
+
+    if user_doc:
+        user_id = user_doc["user_id"]
+        await db.users.update_one(
+            {"user_id": user_id},
+            {"$set": {"name": name, "picture": picture}}
+        )
+    else:
+        user_id = f"user_{uuid.uuid4().hex[:12]}"
+        user_doc = {
+            "user_id": user_id,
+            "email": email,
+            "name": name,
+            "picture": picture,
+            "subscription_plan": "free",
+            "is_verified": True,
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+        await db.users.insert_one(user_doc)
+
+    # 4. Create session
+    session_token = f"session_{uuid.uuid4().hex}"
+    session_doc = {
+        "user_id": user_id,
+        "session_token": session_token,
+        "expires_at": (datetime.now(timezone.utc) + timedelta(days=7)).isoformat(),
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+    await db.user_sessions.insert_one(session_doc)
+
+    # 5. Redirect + set cookie ON THE REDIRECT RESPONSE
+    frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000").rstrip("/")
+    redirect = RedirectResponse(f"{frontend_url}/dashboard", status_code=302)
+
+    redirect.set_cookie(
+        key="session_token",
+        value=session_token,
+        httponly=True,
+        secure=True,
+        samesite="none",  
+        path="/",
+        max_age=7 * 24 * 60 * 60
+    )
+
+    return redirect
 
 @api_router.post("/auth/session")
 async def exchange_session(data: SessionExchange, response: Response):
