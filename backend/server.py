@@ -24,6 +24,7 @@ import cloudinary.uploader
 from fastapi import Form
 from fastapi.responses import RedirectResponse
 from urllib.parse import urlencode
+from email_utils import send_contact_email
 
 GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth"
 GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token"
@@ -118,6 +119,12 @@ class Portfolio(BaseModel):
     slug: Optional[str] = None
     github_username: Optional[str] = None
     profile_image: Optional[str] = None   # ✅ ADD THIS
+       # ✅ ADD THESE
+    github_url: Optional[str] = None
+    linkedin_url: Optional[str] = None
+    twitter_url: Optional[str] = None
+    instagram_url: Optional[str] = None
+    email: Optional[EmailStr] = None
     created_at: datetime
     updated_at: datetime
 
@@ -132,6 +139,12 @@ class PortfolioCreate(BaseModel):
     template: str = "minimal"
     theme_color: str = "#4F46E5"
     github_username: Optional[str] = None
+        # ✅ ADD
+    github_url: Optional[str] = None
+    linkedin_url: Optional[str] = None
+    twitter_url: Optional[str] = None
+    instagram_url: Optional[str] = None
+    email: Optional[EmailStr] = None
 
 class PortfolioUpdate(BaseModel):
     name: Optional[str] = None
@@ -144,10 +157,21 @@ class PortfolioUpdate(BaseModel):
     template: Optional[str] = None
     theme_color: Optional[str] = None
     github_username: Optional[str] = None
+        # ✅ ADD
+    github_url: Optional[str] = None
+    linkedin_url: Optional[str] = None
+    twitter_url: Optional[str] = None
+    instagram_url: Optional[str] = None
+    email: Optional[EmailStr] = None
 
 class AIGenerateRequest(BaseModel):
     context: str
     type: str  # about, project, skills
+
+class ContactMessage(BaseModel):
+    name: str
+    email: EmailStr
+    message: str
 
 class RazorpayOrder(BaseModel):
     amount: int  # in paise
@@ -477,6 +501,35 @@ async def logout(request: Request, response: Response):
     return {"message": "Logged out"}
 
 # ============ PORTFOLIO ROUTES ============
+
+@api_router.post("/public/contact/{slug}")
+async def send_contact(slug: str, data: ContactMessage):
+
+    # 1️⃣ Find portfolio
+    portfolio = await db.portfolios.find_one(
+        {"slug": slug, "is_published": True}
+    )
+
+    if not portfolio:
+        raise HTTPException(status_code=404, detail="Portfolio not found")
+
+    # 2️⃣ Find portfolio owner
+    owner = await db.users.find_one(
+        {"user_id": portfolio["user_id"]}
+    )
+
+    if not owner:
+        raise HTTPException(status_code=404, detail="Owner not found")
+
+    # 3️⃣ Send email to owner
+    await send_contact_email(
+        to_email=owner["email"],
+        sender_name=data.name,
+        sender_email=data.email,
+        message=data.message
+    )
+
+    return {"message": "Message sent successfully"}
 
 @api_router.get("/portfolios", response_model=List[Portfolio])
 async def get_portfolios(current_user: User = Depends(get_current_user)):

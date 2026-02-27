@@ -59,6 +59,12 @@ export default function CreatePortfolio() {
     template: "minimal",
     theme_color: "#4F46E5",
     github_username: "",
+     // 👇 ADD THESE
+  github_url: "",
+  linkedin_url: "",
+  twitter_url: "",
+  instagram_url: "",
+  email: "",
   });
 
   const [skillInput, setSkillInput] = useState("");
@@ -333,6 +339,12 @@ const handleSubmit = async (e) => {
         link: normalizeUrl(p.link),
         github_link: normalizeUrl(p.github_link),
       })),
+  github_url: normalizeUrl(formData.github_url),
+  linkedin_url: normalizeUrl(formData.linkedin_url),
+  twitter_url: normalizeUrl(formData.twitter_url),
+  instagram_url: normalizeUrl(formData.instagram_url),
+    email: formData.email?.trim() || null,  // ✅ correct
+
     };
 
     fd.append("data", JSON.stringify(payload));
@@ -797,6 +809,87 @@ const handleSubmit = async (e) => {
         ))}
         </div>
         </div>
+
+{/* ================= SOCIAL LINKS ================= */}
+<div className="relative rounded-2xl bg-gradient-to-br from-slate-900/60 to-slate-950/60 backdrop-blur-xl border border-slate-800/50 p-10 overflow-hidden">
+
+  {/* 🔒 LOCK OVERLAY */}
+  {user?.subscription_plan === "free" && (
+    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm z-20 flex flex-col items-center justify-center text-center px-6">
+      <Crown className="w-8 h-8 text-sky-400 mb-3" />
+      <p className="text-white font-semibold mb-2">
+        Social Links are a Pro Feature
+      </p>
+      <p className="text-slate-400 text-sm">
+        Upgrade from your dashboard to unlock this section
+      </p>
+    </div>
+  )}
+
+  {/* CONTENT */}
+  <div className={user?.subscription_plan === "free" ? "opacity-40" : ""}>
+
+    <h2 className="text-2xl font-semibold text-white mb-8 flex items-center gap-3">
+      <span className="h-1.5 w-10 rounded-full bg-sky-400"></span>
+      Social Links
+    </h2>
+
+    <div className="space-y-6">
+
+      <Input
+        placeholder="GitHub Profile URL"
+        value={formData.github_url}
+        onChange={(e) =>
+          setFormData((prev) => ({ ...prev, github_url: e.target.value }))
+        }
+        className="bg-slate-950/70 border-slate-800 text-white h-12"
+        disabled
+      />
+
+      <Input
+        placeholder="LinkedIn Profile URL"
+        value={formData.linkedin_url}
+        onChange={(e) =>
+          setFormData((prev) => ({ ...prev, linkedin_url: e.target.value }))
+        }
+        className="bg-slate-950/70 border-slate-800 text-white h-12"
+        disabled
+      />
+
+      <Input
+        placeholder="Twitter Profile URL"
+        value={formData.twitter_url}
+        onChange={(e) =>
+          setFormData((prev) => ({ ...prev, twitter_url: e.target.value }))
+        }
+        className="bg-slate-950/70 border-slate-800 text-white h-12"
+        disabled
+      />
+
+      <Input
+        placeholder="Instagram Profile URL"
+        value={formData.instagram_url}
+        onChange={(e) =>
+          setFormData((prev) => ({ ...prev, instagram_url: e.target.value }))
+        }
+        className="bg-slate-950/70 border-slate-800 text-white h-12"
+        disabled
+      />
+
+      <Input
+        type="email"
+        placeholder="Public Contact Email"
+        value={formData.email}
+        onChange={(e) =>
+          setFormData((prev) => ({ ...prev, email: e.target.value }))
+        }
+        className="bg-slate-950/70 border-slate-800 text-white h-12"
+        disabled
+      />
+
+    </div>
+  </div>
+</div>
 
 
           {/* Template */}

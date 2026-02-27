@@ -4,6 +4,8 @@ import axios from "axios";
 import { ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, useScroll, useTransform, useMotionValue } from "framer-motion";
+import { Github, Linkedin, Twitter, Mail, Instagram } from "lucide-react";
+import  ContactForm  from '@/components/ContactForm';
 
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -37,6 +39,28 @@ const crazyCard = {
       damping: 12,
     },
   },
+};
+
+const SocialIcon = ({ href, icon, color }) => {
+  return (
+    <a href={href} target="_blank" rel="noreferrer">
+      <motion.div
+        whileHover={{
+          scale: 1.2,
+          rotate: 8,
+          boxShadow: `0 0 40px ${color}`,
+        }}
+        transition={{ type: "spring", stiffness: 300 }}
+        className="w-14 h-14 flex items-center justify-center rounded-xl border bg-white/5 backdrop-blur cursor-pointer"
+        style={{
+          borderColor: color + "66",
+          color: color,
+        }}
+      >
+        {icon}
+      </motion.div>
+    </a>
+  );
 };
 
 const splitText = (text) =>
@@ -110,6 +134,28 @@ const mouseY = useMotionValue(0);
       <div className="absolute top-1/3 -right-40 w-[500px] h-[500px] bg-purple-500/20 rounded-full blur-[120px] animate-pulse" />
     </>
   );
+
+  const SocialIcon = ({ href, icon, color }) => {
+  return (
+    <a href={href} target="_blank" rel="noreferrer">
+      <motion.div
+        whileHover={{
+          scale: 1.2,
+          rotate: 8,
+          boxShadow: `0 0 40px ${color}`,
+        }}
+        transition={{ type: "spring", stiffness: 300 }}
+        className="w-14 h-14 flex items-center justify-center rounded-xl border bg-white/5 backdrop-blur cursor-pointer"
+        style={{
+          borderColor: color + "66",
+          color: color,
+        }}
+      >
+        {icon}
+      </motion.div>
+    </a>
+  );
+};
 
   /* ================= MINIMAL ================= */
   if (portfolio.template === "minimal") {
@@ -319,6 +365,69 @@ const mouseY = useMotionValue(0);
         {portfolio.name}
       </h1>
       <p className="text-2xl text-gray-400">{portfolio.role}</p>
+{/* ================= SOCIAL LINKS ================= */}
+{(portfolio.github_url ||
+  portfolio.linkedin_url ||
+  portfolio.twitter_url ||
+  portfolio.instagram_url ||
+  portfolio.email) && (
+  <div className="flex gap-6 mt-6">
+
+    {portfolio.github_url && (
+      <a
+        href={portfolio.github_url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-gray-400 hover:text-white transition-all"
+      >
+        <Github className="w-5 h-5" />
+      </a>
+    )}
+
+    {portfolio.linkedin_url && (
+      <a
+        href={portfolio.linkedin_url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-gray-400 hover:text-white transition-all"
+      >
+        <Linkedin className="w-5 h-5" />
+      </a>
+    )}
+
+    {portfolio.twitter_url && (
+      <a
+        href={portfolio.twitter_url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-gray-400 hover:text-white transition-all"
+      >
+        <Twitter className="w-5 h-5" />
+      </a>
+    )}
+
+    {portfolio.instagram_url && (
+      <a
+        href={portfolio.instagram_url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-gray-400 hover:text-white transition-all"
+      >
+        <Instagram className="w-5 h-5" />
+      </a>
+    )}
+
+    {portfolio.email && (
+      <a
+        href={`mailto:${portfolio.email}`}
+        className="text-gray-400 hover:text-white transition-all"
+      >
+        <Mail className="w-5 h-5" />
+      </a>
+    )}
+
+  </div>
+)}
     </div>
 
     {/* Projects */}
@@ -585,13 +694,72 @@ return (
         {portfolio.role}
       </motion.p>
 
-      <motion.div
-        animate={{ y: [0, 10, 0] }}
-        transition={{ repeat: Infinity, duration: 1.5 }}
-        className="text-slate-400"
-      >
-        Scroll ↓
-      </motion.div>
+{/* ================= SOCIAL LINKS ================= */}
+{(portfolio.github_url ||
+  portfolio.linkedin_url ||
+  portfolio.twitter_url ||
+  portfolio.instagram_url ||
+  portfolio.email) && (
+  <motion.div
+    initial={{ opacity: 0, y: 40 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: 0.8, duration: 0.8 }}
+    className="flex flex-col items-center mt-12"
+  >
+
+    {/* Social Icons */}
+    <div className="flex justify-center gap-8">
+      {portfolio.github_url && (
+        <SocialIcon
+          href={portfolio.github_url}
+          icon={<Github size={22} />}
+          color={portfolio.theme_color}
+        />
+      )}
+
+      {portfolio.linkedin_url && (
+        <SocialIcon
+          href={portfolio.linkedin_url}
+          icon={<Linkedin size={22} />}
+          color={portfolio.theme_color}
+        />
+      )}
+
+      {portfolio.twitter_url && (
+        <SocialIcon
+          href={portfolio.twitter_url}
+          icon={<Twitter size={22} />}
+          color={portfolio.theme_color}
+        />
+      )}
+
+      {portfolio.instagram_url && (
+        <SocialIcon
+          href={portfolio.instagram_url}
+          icon={<Instagram size={22} />}
+          color={portfolio.theme_color}
+        />
+      )}
+
+      {portfolio.email && (
+        <SocialIcon
+          href={`mailto:${portfolio.email}`}
+          icon={<Mail size={22} />}
+          color={portfolio.theme_color}
+        />
+      )}
+    </div>
+  </motion.div>
+)}
+
+{/* ================= SCROLL INDICATOR ================= */}
+<motion.div
+  animate={{ y: [0, 12, 0] }}
+  transition={{ repeat: Infinity, duration: 1.5 }}
+  className="text-slate-400 mt-16"
+>
+  Scroll ↓
+</motion.div>
     </motion.section>
 
     {/* CONTENT */}
@@ -796,6 +964,32 @@ return (
     </motion.section>
     </section>
 )}
+
+{/* ================= CONTACT ================= */}
+<section className="relative z-20 max-w-4xl mx-auto px-6 pb-32">
+  <motion.div
+    initial={{ opacity: 0, y: 100 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.8 }}
+    className="bg-white/5 backdrop-blur-xl border rounded-3xl p-10 shadow-2xl"
+    style={{
+      borderColor: portfolio.theme_color + "44",
+    }}
+  >
+    <h2
+      className="text-4xl md:text-5xl font-bold text-center mb-10"
+      style={{ color: portfolio.theme_color }}
+    >
+      Get In Touch
+    </h2>
+
+    {/* 👇 This is the only thing inside */}
+    <ContactForm slug={portfolio.slug} portfolio={portfolio} />
+
+  </motion.div>
+</section>
+
     </div>
 
   </div>
