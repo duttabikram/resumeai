@@ -71,6 +71,7 @@ export default function CreatePortfolio() {
   const [githubLoading, setGithubLoading] = useState(false);
   const [resumeLoading, setResumeLoading] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
+  const [resumeFile, setResumeFile] = useState(null);
 const [previewImage, setPreviewImage] = useState(null);
 
 const MAX_IMAGE_SIZE_MB = 1;
@@ -353,6 +354,10 @@ const handleSubmit = async (e) => {
       fd.append("profile_image", profileImage);
     }
 
+    if (resumeFile) {
+      fd.append("resume_file", resumeFile);
+    }
+
     const response = await axios.post(`${API}/portfolios`, fd, {
       withCredentials: true,
       headers: {
@@ -468,6 +473,27 @@ const handleSubmit = async (e) => {
               </div>
 
               <div>
+
+              <Label className="text-slate-300">Upload Resume (PDF)</Label>
+              <Input
+                type="file"
+                accept="application/pdf"
+                disabled={user?.subscription_plan === "free"}
+                onChange={(e) => setResumeFile(e.target.files[0])}
+                className={`bg-slate-950/60 border-slate-800 text-white ${
+                                user?.subscription_plan === "free" ? "opacity-50 cursor-not-allowed" : ""
+                              }`}
+              />
+              {user?.subscription_plan === "free" && (
+                <p className="mt-1 text-xs text-slate-400">
+                  🔒 Upgrade to Pro to upload a pdf resume
+                </p>
+              )}
+               {user?.subscription_plan === "pro" && (
+                <p className="mt-1 text-xs text-sky-400">
+                  ✨ Your pdf resume will be viewed in the Creative template
+                </p>
+              )}
               <Label className="text-slate-300">Profile Picture</Label>
               
               <Input

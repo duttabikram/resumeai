@@ -119,6 +119,7 @@ class Portfolio(BaseModel):
     slug: Optional[str] = None
     github_username: Optional[str] = None
     profile_image: Optional[str] = None   # ✅ ADD THIS
+    resume_url: Optional[str] = None
        # ✅ ADD THESE
     github_url: Optional[str] = None
     linkedin_url: Optional[str] = None
@@ -139,6 +140,7 @@ class PortfolioCreate(BaseModel):
     template: str = "minimal"
     theme_color: str = "#4F46E5"
     github_username: Optional[str] = None
+    resume_url: Optional[str] = None
         # ✅ ADD
     github_url: Optional[str] = None
     linkedin_url: Optional[str] = None
@@ -157,6 +159,7 @@ class PortfolioUpdate(BaseModel):
     template: Optional[str] = None
     theme_color: Optional[str] = None
     github_username: Optional[str] = None
+    resume_url: Optional[str] = None
         # ✅ ADD
     github_url: Optional[str] = None
     linkedin_url: Optional[str] = None
@@ -546,6 +549,7 @@ async def get_portfolios(current_user: User = Depends(get_current_user)):
 async def create_portfolio(
     data: str = Form(...),                 # JSON string
     profile_image: UploadFile = File(None),
+     resume_file: UploadFile = File(None),   # 👈 ADD THIS
     current_user: User = Depends(get_current_user)
 ):
     # Check free plan limit
@@ -567,7 +571,8 @@ async def create_portfolio(
 
     portfolio_id = f"portfolio_{uuid.uuid4().hex[:12]}"
     now = datetime.now(timezone.utc)
-
+    
+    # ================= IMAGE FILE =================
     image_url = None
 
     if profile_image:
@@ -593,12 +598,40 @@ async def create_portfolio(
             fetch_format="auto"
         )
         image_url = upload_result.get("secure_url")
+     
+# ================= RESUME FILE =================
+    resume_url = None
+
+    if resume_file:
+    
+        # Check size (1MB max)
+        resume_file.file.seek(0, 2)
+        size = resume_file.file.tell()
+        MAX_SIZE = 1 * 1024 * 1024
+    
+        if size > MAX_SIZE:
+            raise HTTPException(status_code=400, detail="Resume too large. Max 1MB.")
+    
+        resume_file.file.seek(0)
+    
+        # Upload to Cloudinary
+        upload_result = cloudinary.uploader.upload(
+            resume_file.file,
+            folder="portfolio_resumes",
+            public_id=portfolio_id + "_resume.pdf",
+            resource_type="raw",
+            overwrite=True
+        )
+    
+        # ✅ Just use secure_url
+        resume_url = upload_result["secure_url"]
 
     portfolio_doc = {
         **portfolio_data,
         "portfolio_id": portfolio_id,
         "user_id": current_user.user_id,
         "profile_image": image_url,   # ✅ Cloud URL
+        "resume_url": resume_url,  # MUST be here
         "is_published": False,
         "slug": None,
         "created_at": now.isoformat(),

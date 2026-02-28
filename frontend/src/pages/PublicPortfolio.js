@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { motion, useScroll, useTransform, useMotionValue } from "framer-motion";
 import { Github, Linkedin, Twitter, Mail, Instagram } from "lucide-react";
 import  ContactForm  from '@/components/ContactForm';
+import { Download } from "lucide-react";
 
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -752,13 +753,45 @@ return (
   </motion.div>
 )}
 
-{/* ================= SCROLL INDICATOR ================= */}
+{/* ================= ACTION ROW ================= */}
 <motion.div
-  animate={{ y: [0, 12, 0] }}
-  transition={{ repeat: Infinity, duration: 1.5 }}
-  className="text-slate-400 mt-16"
+  initial={{ opacity: 0, y: 40 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 1, duration: 0.8 }}
+  className="flex items-center gap-10 mt-16"
 >
-  Scroll ↓
+  
+  {/* Resume Button */}
+  {portfolio.resume_url && (
+    <a
+      href={portfolio.resume_url}
+      target="_blank"
+      rel="noopener noreferrer"
+      download
+    >
+      <Button
+        variant="outline"
+        size="lg"
+        className="rounded-full px-6 py-3 transition-all duration-300 hover:-translate-y-1"
+        style={{
+          borderColor: portfolio.theme_color,
+          color: portfolio.theme_color,
+        }}
+      >
+        View Resume
+      </Button>
+    </a>
+  )}
+
+  {/* Scroll Indicator */}
+  <motion.div
+    animate={{ y: [0, 12, 0] }}
+    transition={{ repeat: Infinity, duration: 1.5 }}
+    className="text-slate-400"
+  >
+    Scroll ↓
+  </motion.div>
+
 </motion.div>
     </motion.section>
 
