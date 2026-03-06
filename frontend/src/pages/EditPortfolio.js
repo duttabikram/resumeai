@@ -9,9 +9,11 @@ import {
   Crown,
   ArrowLeft,
   Save,
+  Plus,
   Eye,
   Sparkles,
   Globe,
+  Trash2
 } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";
@@ -27,6 +29,7 @@ export default function EditPortfolio() {
   const [saving, setSaving] = useState(false);
   const [formData, setFormData] = useState(null);
   const [aiGenerating, setAiGenerating] = useState(false);
+  const [skillInput, setSkillInput] = useState("");
 
   useEffect(() => {
     fetchPortfolio();
@@ -60,6 +63,24 @@ export default function EditPortfolio() {
       setSaving(false);
     }
   };
+
+  const addSkill = () => {
+  if (!skillInput.trim()) return;
+
+  setFormData((prev) => ({
+    ...prev,
+    skills: [...prev.skills, skillInput.trim()],
+  }));
+
+  setSkillInput("");
+};
+
+const removeSkill = (index) => {
+  setFormData((prev) => ({
+    ...prev,
+    skills: prev.skills.filter((_, i) => i !== index),
+  }));
+};
 
   const handlePublish = async () => {
     if (!formData.is_published) {
@@ -252,49 +273,139 @@ export default function EditPortfolio() {
             Skills
           </h2>
 
-          <div className="flex flex-wrap gap-2">
-            {formData.skills?.map((skill, index) => (
-              <span
-                key={index}
-                className="px-3 py-1 bg-slate-800 text-slate-200 rounded-full text-sm"
-              >
-                {skill}
-              </span>
-            ))}
-          </div>
+          <div className="flex gap-2 mb-4">
+  <Input
+    placeholder="Add skill"
+    value={skillInput}
+    onChange={(e) => setSkillInput(e.target.value)}
+    onKeyDown={(e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        addSkill();
+      }
+    }}
+    className="bg-slate-950/60 border-slate-800 text-white"
+  />
+
+  <Button
+    type="button"
+    onClick={addSkill}
+    className="bg-sky-500 hover:bg-sky-400 text-black"
+  >
+    <Plus className="w-4 h-4" />Add
+  </Button>
+</div>
+
+<div className="flex flex-wrap gap-2">
+  {formData.skills?.map((skill, index) => (
+    <span
+      key={index}
+      className="px-3 py-1 bg-slate-800 text-slate-200 rounded-full text-sm flex items-center gap-2"
+    >
+      {skill}
+      <button
+        onClick={() => removeSkill(index)}
+        className="text-slate-400 hover:text-white"
+      >
+        ×
+      </button>
+    </span>
+  ))}
+</div>
         </div>
 
         {/* Projects */}
         <div className="rounded-2xl bg-slate-900/40 p-6 backdrop-blur">
+        <div className="flex items-center justify-between mb-4">
           <h2
             className="text-xl font-semibold text-white mb-4"
             style={{ fontFamily: "Outfit" }}
           >
             Projects
           </h2>
-
+<Button
+  type="button"
+  onClick={() =>
+    setFormData((prev) => ({
+      ...prev,
+      projects: [
+        ...prev.projects,
+        { title: "", description: "", tech_stack: [] },
+      ],
+    }))
+  }
+  className="bg-sky-500 hover:bg-sky-400 text-black mb-4"
+>
+ <Plus className="w-4 h-4 mr-2" /> Add
+</Button>
+</div>
           <div className="space-y-4">
-            {formData.projects?.map((project, index) => (
-              <div
-                key={index}
-                className="rounded-xl bg-slate-950/60 p-4 space-y-2"
-              >
-                <h4 className="font-medium text-white">{project.title}</h4>
-                <p className="text-sm text-slate-400">
-                  {project.description}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {project.tech_stack?.map((tech, i) => (
-                    <span
-                      key={i}
-                      className="text-xs px-2 py-1 bg-slate-800 text-slate-300 rounded"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
+{formData.projects?.map((project, index) => (
+  <div
+    key={index}
+    className="relative rounded-xl bg-slate-950/60 p-4 space-y-3 border border-white/5 hover:border-sky-400/30 transition-all"
+  >
+
+    {/* Header */}
+    <div className="flex items-center justify-between">
+      <span className="text-sm text-white font-medium">
+        Project {index + 1}
+      </span>
+
+      <Button
+        type="button"
+        variant="ghost"
+        size="sm"
+        onClick={() => {
+          const updated = formData.projects.filter((_, i) => i !== index);
+          setFormData({ ...formData, projects: updated });
+        }}
+        className="text-slate-400 hover:text-red-400"
+      >
+        <Trash2 className="w-4 h-4" />
+      </Button>
+    </div>
+
+    {/* Title */}
+    <Input
+      value={project.title}
+      placeholder="Project Title"
+      onChange={(e) => {
+        const updated = [...formData.projects];
+        updated[index].title = e.target.value;
+        setFormData({ ...formData, projects: updated });
+      }}
+      className="bg-slate-900/60 border-slate-800 text-white"
+    />
+
+    {/* Description */}
+    <Textarea
+      value={project.description}
+      placeholder="Description"
+      onChange={(e) => {
+        const updated = [...formData.projects];
+        updated[index].description = e.target.value;
+        setFormData({ ...formData, projects: updated });
+      }}
+      className="bg-slate-900/60 border-slate-800 text-white"
+    />
+
+    {/* Tech Stack */}
+    <Input
+      value={project.tech_stack?.join(", ")}
+      placeholder="Tech Stack (comma separated)"
+      onChange={(e) => {
+        const updated = [...formData.projects];
+        updated[index].tech_stack = e.target.value
+          .split(",")
+          .map((s) => s.trim());
+        setFormData({ ...formData, projects: updated });
+      }}
+      className="bg-slate-900/60 border-slate-800 text-white"
+    />
+
+  </div>
+))}
           </div>
         </div>
 
