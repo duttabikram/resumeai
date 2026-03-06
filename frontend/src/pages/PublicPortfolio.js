@@ -7,6 +7,7 @@ import { motion, useScroll, useTransform, useMotionValue } from "framer-motion";
 import { Github, Linkedin, Twitter, Mail, Instagram } from "lucide-react";
 import  ContactForm  from '@/components/ContactForm';
 import { Download } from "lucide-react";
+import { Share2, Link2 } from "lucide-react";
 
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -156,6 +157,24 @@ const mouseY = useMotionValue(0);
       </motion.div>
     </a>
   );
+};
+
+const handleShare = async () => {
+  const shareData = {
+    title: portfolio.name + "'s Portfolio",
+    text: `Check out ${portfolio.name}'s portfolio`,
+    url: window.location.href,
+  };
+
+  try {
+    if (navigator.share) {
+      await navigator.share(shareData);
+    } else {
+      alert("Sharing not supported on this browser");
+    }
+  } catch (err) {
+    console.log("Share cancelled", err);
+  }
 };
 
   /* ================= MINIMAL ================= */
@@ -630,7 +649,22 @@ return (
       mouseY.set(e.clientY - 150);
     }}
   >
-    {/* Scroll Progress Bar */}
+
+
+  {/* SHARE BUTTON */}
+  <div className="fixed top-6 right-6 z-50">
+    <motion.button
+      whileHover={{ scale: 1.15 }}
+      whileTap={{ scale: 0.9 }}
+      onClick={handleShare}
+      className="p-4 rounded-full shadow-xl"
+      style={{ background: portfolio.theme_color }}
+    >
+      <Share2 size={22} className="text-white" />
+    </motion.button>
+  </div>
+  
+      {/* Scroll Progress Bar */}
     <motion.div
       style={{ scaleX: scrollYProgress }}
       className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 origin-left z-50"
