@@ -489,11 +489,7 @@ const handleSubmit = async (e) => {
                   🔒 Upgrade to Pro to upload a pdf resume
                 </p>
               )}
-               {user?.subscription_plan === "pro" && (
-                <p className="mt-1 text-xs text-sky-400">
-                  ✨ Your pdf resume will be viewed in the Creative template
-                </p>
-              )}
+
               <Label className="text-slate-300">Profile Picture</Label>
               
               <Input
