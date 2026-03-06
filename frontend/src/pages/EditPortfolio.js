@@ -326,7 +326,8 @@ const removeSkill = (index) => {
       ...prev,
       projects: [
         ...prev.projects,
-        { title: "", description: "", tech_stack: [] },
+        { title: "", description: "", tech_stack: [],  link: "",
+        github_link: "", },
       ],
     }))
   }
@@ -339,7 +340,10 @@ const removeSkill = (index) => {
 {formData.projects?.map((project, index) => (
   <div
     key={index}
-    className="relative rounded-xl bg-slate-950/60 p-4 space-y-3 border border-white/5 hover:border-sky-400/30 transition-all"
+    className="rounded-xl bg-slate-950/60 p-4 space-y-3 
+    border border-white/5 
+    hover:border-sky-400/30 
+    transition-all"
   >
 
     {/* Header */}
@@ -356,13 +360,13 @@ const removeSkill = (index) => {
           const updated = formData.projects.filter((_, i) => i !== index);
           setFormData({ ...formData, projects: updated });
         }}
-        className="text-slate-400 hover:text-red-400"
+        className="text-slate-300 hover:text-red-400"
       >
         <Trash2 className="w-4 h-4" />
       </Button>
     </div>
 
-    {/* Title */}
+    {/* Project Title */}
     <Input
       value={project.title}
       placeholder="Project Title"
@@ -377,12 +381,13 @@ const removeSkill = (index) => {
     {/* Description */}
     <Textarea
       value={project.description}
-      placeholder="Description"
+      placeholder="Project Description"
       onChange={(e) => {
         const updated = [...formData.projects];
         updated[index].description = e.target.value;
         setFormData({ ...formData, projects: updated });
       }}
+      rows={3}
       className="bg-slate-900/60 border-slate-800 text-white"
     />
 
@@ -399,6 +404,48 @@ const removeSkill = (index) => {
       }}
       className="bg-slate-900/60 border-slate-800 text-white"
     />
+
+    {/* GitHub Link */}
+<Input
+  value={project.github_link || ""}
+  placeholder={
+    user?.subscription_plan === "free"
+      ? "🔒 Upgrade to Pro to add GitHub link"
+      : "GitHub Repository Link"
+  }
+  onChange={(e) => {
+    const updated = [...formData.projects];
+    updated[index].github_link = e.target.value;
+    setFormData({ ...formData, projects: updated });
+  }}
+  disabled={user?.subscription_plan === "free"}
+  className={`bg-slate-900/60 border-slate-800 text-white ${
+    user?.subscription_plan === "free"
+      ? "opacity-50 cursor-not-allowed"
+      : ""
+  }`}
+/>
+
+    {/* Live Project Link */}
+<Input
+  value={project.link || ""}
+  placeholder={
+    user?.subscription_plan === "free"
+      ? "🔒 Upgrade to Pro to add project link"
+      : "Live Project URL"
+  }
+  onChange={(e) => {
+    const updated = [...formData.projects];
+    updated[index].link = e.target.value;
+    setFormData({ ...formData, projects: updated });
+  }}
+  disabled={user?.subscription_plan === "free"}
+  className={`bg-slate-900/60 border-slate-800 text-white ${
+    user?.subscription_plan === "free"
+      ? "opacity-50 cursor-not-allowed"
+      : ""
+  }`}
+/>
 
   </div>
 ))}
