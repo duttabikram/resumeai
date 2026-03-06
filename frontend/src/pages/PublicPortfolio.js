@@ -465,6 +465,35 @@ const handleShare = async () => {
 
   </div>
 )}
+{/* Resume Button */}
+{portfolio.resume_url && (
+  <a
+    href={portfolio.resume_url}
+    target="_blank"
+    rel="noopener noreferrer"
+    download
+  >
+    <motion.button
+      whileHover={{ y: -3 }}
+      whileTap={{ scale: 0.95 }}
+      className="mt-8 px-6 py-3 rounded-xl border flex items-center gap-2 text-sm font-medium transition-all duration-300"
+      style={{
+        borderColor: portfolio.theme_color + "55",
+        color: portfolio.theme_color,
+        background: portfolio.theme_color + "10",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.boxShadow = `0 0 20px ${portfolio.theme_color}44`;
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow = "none";
+      }}
+    >
+      <ExternalLink className="w-4 h-4" />
+      View Resume
+    </motion.button>
+  </a>
+)}
     </div>
 
     {/* Projects */}
