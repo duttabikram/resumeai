@@ -155,13 +155,9 @@ const removeSkill = (index) => {
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link to="/dashboard">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-slate-300 hover:text-white"
-              >
-                <ArrowLeft className="w-5 h-5" />
-              </Button>
+              <Button variant="ghost" size="icon" className="text-slate-300 bg-white/5 backdrop-blur border border-white/10 rounded-lg hover:text-white hover:bg-white/10 hover:border-sky-400/40 transition-all duration-300 hover:shadow-[0_0_12px_rgba(56,189,248,0.35)]">
+              <ArrowLeft className="w-5 h-5" />
+            </Button>
             </Link>
             <div className="flex items-center gap-2 text-white font-bold text-xl">
               <Crown className="w-6 h-6 text-sky-400" />
