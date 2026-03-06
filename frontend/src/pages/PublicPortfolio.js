@@ -370,6 +370,23 @@ const handleShare = async () => {
   if (portfolio.template === "modern") {
     return (
       <div className="relative min-h-screen overflow-hidden bg-[#050505] text-white">
+
+          {/* SHARE BUTTON */}
+    <div className="fixed top-6 right-6 z-50">
+      <motion.button
+        whileHover={{ scale: 1.15 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={handleShare}
+        className="p-3 rounded-full shadow-xl backdrop-blur border"
+        style={{
+          background: portfolio.theme_color,
+          borderColor: portfolio.theme_color + "55",
+        }}
+      >
+        <Share2 size={20} className="text-white" />
+      </motion.button>
+    </div>
+    
   <div className="max-w-7xl mx-auto px-6 py-24">
 
     {/* Hero */}
