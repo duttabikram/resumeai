@@ -93,11 +93,11 @@ export default function Dashboard() {
         </Link>
       )}
 
-      {user?.subscription_plan === "pro" && (
-        <Badge className="bg-yellow-400/15 text-yellow-300 font-semibold border border-yellow-400/30 px-2 py-0.5 rounded-md hidden sm:inline">
-          Pro
-        </Badge>
-      )}
+{user?.subscription_plan === "pro" && (
+  <Badge className="bg-yellow-400/15 text-yellow-300 font-semibold border border-yellow-400/30 px-2 py-0.5 rounded-md text-xs sm:text-sm">
+    Pro
+  </Badge>
+)}
 
       <Link to="/settings">
         <Button
