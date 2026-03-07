@@ -848,12 +848,12 @@ return (
     initial={{ opacity: 0, scale: 0.8 }}
     animate={{ opacity: 1, scale: 1 }}
     transition={{ duration: 0.8 }}
-    className="mb-8"
+    className="mb-8 flex justify-center"
   >
     <img
       src={portfolio.profile_image}
       alt="Profile"
-      className="w-36 h-36 md:w-44 md:h-44 rounded-full object-cover border-4 shadow-xl"
+      className="w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-44 lg:h-44 rounded-full object-cover border-4 shadow-xl"
       style={{ borderColor: portfolio.theme_color }}
     />
   </motion.div>
