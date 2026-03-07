@@ -860,11 +860,11 @@ return (
 )}
 
       <h1
-        className="text-6xl md:text-8xl font-black tracking-tight mb-6 font-orbitron"
+        className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight mb-6 font-orbitron break-words"
         style={{
-  color: portfolio.theme_color,
-  textShadow: `0 0 20px ${portfolio.theme_color}`
-}}
+        color: portfolio.theme_color,
+        textShadow: `0 0 20px ${portfolio.theme_color}`
+      }}
       >
         {splitText(portfolio.name)}
       </h1>
