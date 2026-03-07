@@ -892,7 +892,7 @@ return (
   >
 
     {/* Social Icons */}
-    <div className="flex justify-center gap-8">
+    <div className="flex flex-wrap justify-center gap-5 md:gap-8 max-w-[320px] md:max-w-none mx-auto">
       {portfolio.github_url && (
         <SocialIcon
           href={portfolio.github_url}
