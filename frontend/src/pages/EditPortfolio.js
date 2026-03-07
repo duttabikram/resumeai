@@ -637,8 +637,16 @@ const removeSkill = (index) => {
           onChange={(e) =>
             updateEducation(index, "year", e.target.value)
           }
-          className="bg-slate-900/60 border-slate-800 text-white"
+          disabled={user?.subscription_plan === "free"}
+    className={`h-12 w-full bg-transparent border-slate-800 ${
+      user?.subscription_plan === "free" ? "opacity-50 cursor-not-allowed" : ""
+    }`}
         />
+        {user?.subscription_plan === "free" && (
+    <p className="mt-1 text-xs text-slate-400">
+      🔒 Upgrade to Pro to customize theme color
+    </p>
+  )}
       </div>
     ))}
   </div>
