@@ -778,13 +778,13 @@ style={{ background: portfolio.theme_color + "22" }}
 
 /* ================= CREATIVE (INSANE MODE) ================= */
 return (
-  <div
-    className="relative min-h-screen overflow-hidden text-white bg-black"
-    onMouseMove={(e) => {
-      mouseX.set(e.clientX - 150);
-      mouseY.set(e.clientY - 150);
-    }}
-  >
+<div
+  className="relative min-h-[100svh] overflow-hidden text-white bg-black"
+  onMouseMove={(e) => {
+    mouseX.set(e.clientX - 150);
+    mouseY.set(e.clientY - 150);
+  }}
+>
   <Stars />
   {/* 3D PLANET */}
   <Planet color={portfolio.theme_color} />
@@ -838,12 +838,12 @@ return (
 />
 
     {/* HERO */}
-    <motion.section
-      style={{ scale: heroScale, opacity: heroOpacity }}
-      className="relative z-20 min-h-screen flex flex-col items-center justify-center text-center px-6"
-    >
+<motion.section
+  style={{ scale: heroScale, opacity: heroOpacity }}
+  className="relative z-20 min-h-[100svh] flex flex-col items-center justify-center text-center px-6"
+>
 
-    {portfolio.profile_image && (
+{portfolio.profile_image && (
   <motion.div
     initial={{ opacity: 0, scale: 0.8 }}
     animate={{ opacity: 1, scale: 1 }}
@@ -854,26 +854,29 @@ return (
       src={portfolio.profile_image}
       alt="Profile"
       className="w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-44 lg:h-44 rounded-full object-cover border-4 shadow-xl"
-      style={{ borderColor: portfolio.theme_color }}
+      style={{
+        borderColor: portfolio.theme_color,
+        boxShadow: `0 0 25px ${portfolio.theme_color}`
+      }}
     />
   </motion.div>
 )}
 
-      <h1
-        className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight mb-6 font-orbitron break-words"
-        style={{
-        color: portfolio.theme_color,
-        textShadow: `0 0 20px ${portfolio.theme_color}`
-      }}
-      >
-        {splitText(portfolio.name)}
-      </h1>
+<h1
+  className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight mb-6 font-orbitron break-words"
+  style={{
+    color: portfolio.theme_color,
+    textShadow: `0 0 20px ${portfolio.theme_color}`
+  }}
+>
+  {splitText(portfolio.name)}
+</h1>
 
 <motion.p
   initial={{ opacity: 0 }}
   animate={{ opacity: 1 }}
   transition={{ delay: 0.6, duration: 1 }}
-  className="text-lg sm:text-xl md:text-2xl text-slate-300 mb-10 font-mono tracking-wide px-2"
+  className="text-lg sm:text-xl md:text-2xl text-slate-300 mb-10 font-mono tracking-wide px-2 max-w-xl"
 >
   <TypeRole text={portfolio.role} />
 </motion.p>
@@ -941,7 +944,7 @@ return (
   initial={{ opacity: 0, y: 40 }}
   animate={{ opacity: 1, y: 0 }}
   transition={{ delay: 1, duration: 0.8 }}
-  className="flex items-center gap-10 mt-16"
+  className="flex flex-col sm:flex-row items-center gap-6 sm:gap-10 mt-12"
 >
   
   {/* Resume Button */}
@@ -979,7 +982,7 @@ return (
     </motion.section>
 
     {/* CONTENT */}
-    <div className="relative z-20 max-w-6xl mx-auto px-6 py-32 space-y-40">
+    <div className="relative z-20 max-w-6xl mx-auto px-6 py-24 sm:py-32 space-y-24 sm:space-y-32 md:space-y-40">
 
       {/* About */}
       {portfolio.bio && (
@@ -991,7 +994,7 @@ return (
           transition={{ duration: 1 }}
           className="text-center mb-8"
         >
-          <h2 className="text-5xl font-bold mb-6 font-orbitron tracking-wider" style={{ color: portfolio.theme_color }}>About</h2>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 font-orbitron tracking-wider" style={{ color: portfolio.theme_color }}>About</h2>
           <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed font-space">
             {portfolio.bio}
           </p>
@@ -1004,7 +1007,7 @@ return (
 <section className="mb-16 overflow-hidden">
 
 <h2
-className="text-5xl font-bold text-center mb-8 font-orbitron tracking-wider"
+className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-8 font-orbitron tracking-wider"
 style={{ color: portfolio.theme_color }}
 >
 Tech Stack
@@ -1048,7 +1051,7 @@ ease: "linear"
       {/* Projects */}
       {portfolio.projects?.length > 0 && (
         <section className="mb-16">
-          <h2 className="text-5xl font-bold mb-10 text-center font-orbitron tracking-wider" style={{ color: portfolio.theme_color }}>Projects</h2>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-10 text-center font-orbitron tracking-wider" style={{ color: portfolio.theme_color }}>Projects</h2>
 
           <div className="grid md:grid-cols-2 gap-12 mb-8">
             {portfolio.projects.map((p, i) => (
@@ -1128,7 +1131,7 @@ ease: "linear"
       viewport={{ once: true }}
       className="mb-20"
     >
-      <h2 className="text-5xl font-bold mb-8 text-center font-orbitron tracking-wider" style={{ color: portfolio.theme_color }}>Experience</h2>
+      <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-8 text-center font-orbitron tracking-wider" style={{ color: portfolio.theme_color }}>Experience</h2>
       <div className="space-y-6">
         {portfolio.experience.map((exp, i) => (
   <motion.div
@@ -1184,7 +1187,7 @@ ease: "linear"
       viewport={{ once: true }}
       className="mb-20"
     >
-      <h2 className="text-5xl font-bold mb-8 text-center font-orbitron tracking-wider" style={{ color: portfolio.theme_color }}>Education</h2>
+      <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-8 text-center font-orbitron tracking-wider" style={{ color: portfolio.theme_color }}>Education</h2>
       <div className="space-y-6">
         {portfolio.education.map((edu, i) => (
           <motion.div
@@ -1253,7 +1256,7 @@ ease: "linear"
   >
 
     <h2
-      className="text-4xl md:text-5xl font-bold text-center mb-10 font-space"
+      className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-10 font-space"
       style={{ color: portfolio.theme_color }}
     >
       <TypeRole text="Let's Build Something Together" />
