@@ -869,11 +869,11 @@ return (
         {splitText(portfolio.name)}
       </h1>
 
-      <motion.p
+<motion.p
   initial={{ opacity: 0 }}
   animate={{ opacity: 1 }}
   transition={{ delay: 0.6, duration: 1 }}
-  className="text-2xl text-slate-300 mb-10 font-mono"
+  className="text-lg sm:text-xl md:text-2xl text-slate-300 mb-10 font-mono tracking-wide px-2"
 >
   <TypeRole text={portfolio.role} />
 </motion.p>
