@@ -637,6 +637,7 @@ const removeSkill = (index) => {
           onChange={(e) =>
             updateEducation(index, "year", e.target.value)
           }
+          className="bg-slate-900/60 border-slate-800 text-white"
         />
       </div>
     ))}
