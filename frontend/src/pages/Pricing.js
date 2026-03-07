@@ -27,7 +27,7 @@ const handleUpgrade = async () => {
       key: process.env.REACT_APP_RAZORPAY_KEY_ID, // Public key
       amount: order.amount,
       currency: order.currency,
-      name: "AI Portfolio Builder",
+      name: "Portfolio Builder",
       description: "Pro Subscription",
       order_id: order.id,
       handler: async function (response) {

@@ -129,7 +129,7 @@ export default function Dashboard() {
             <p className="text-slate-400">
               {user?.subscription_plan === "free"
                 ? "1 portfolio on Free plan"
-                : "Unlimited portfolios on Pro plan"}
+                : "5 portfolios on Pro plan"}
             </p>
           </div>
           <Link to="/portfolio/create">
