@@ -1014,7 +1014,7 @@ Tech Stack
 
 <motion.div
 className="flex gap-10 whitespace-nowrap"
-animate={{ x: ["0%", "-50%"] }}
+animate={{ x: ["0%", "-100%"] }}
 transition={{
 duration: 25,
 repeat: Infinity,
@@ -1039,13 +1039,9 @@ ease: "linear"
 >
   {skill}
 </motion.div>
-
 ))}
-
 </motion.div>
-
 </div>
-
 </section>
 )}
 
