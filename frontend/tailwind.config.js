@@ -12,6 +12,11 @@ module.exports = {
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
+		fontFamily: {
+      orbitron: ["Orbitron", "sans-serif"],
+      space: ["Space Grotesk", "sans-serif"],
+      mono: ["JetBrains Mono", "monospace"],
+    },
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',

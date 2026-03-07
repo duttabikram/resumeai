@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button";
 import { motion, useScroll, useTransform, useMotionValue } from "framer-motion";
 import { Github, Linkedin, Twitter, Mail, Instagram } from "lucide-react";
 import  ContactForm  from '@/components/ContactForm';
-import { Download } from "lucide-react";
-import { Share2, Link2 } from "lucide-react";
+import { Download, Share2, Link2 } from "lucide-react";
 import Planet from "@/components/Planet";
 import Stars from "@/components/Stars";
 import Rocket from "@/components/Rocket";
+import TypeRole from "@/components/TypeRole";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -373,28 +373,18 @@ const handleShare = async () => {
     return (
       <div className="relative min-h-screen overflow-hidden bg-[#050505] text-white">
 
-          {/* SHARE BUTTON */}
-    <div className="fixed top-6 right-6 z-50">
-  <motion.button
-    whileHover={{ scale: 1.08, rotate: 8 }}
-    whileTap={{ scale: 0.95 }}
-    onClick={handleShare}
-    className="w-12 h-12 rounded-full flex items-center justify-center backdrop-blur-xl border transition-all duration-300"
-    style={{
-      borderColor: portfolio.theme_color + "40",
-      background: "rgba(255,255,255,0.04)",
-      color: portfolio.theme_color,
-    }}
-    onMouseEnter={(e) => {
-      e.currentTarget.style.boxShadow = `0 0 18px ${portfolio.theme_color}55`;
-    }}
-    onMouseLeave={(e) => {
-      e.currentTarget.style.boxShadow = "none";
-    }}
-  >
-    <Share2 size={18} />
-  </motion.button>
-</div>
+  {/* SHARE BUTTON */}
+  <div className="fixed top-6 right-6 z-50">
+    <motion.button
+      whileHover={{ scale: 1.15 }}
+      whileTap={{ scale: 0.9 }}
+      onClick={handleShare}
+      className="p-4 rounded-full shadow-xl"
+      style={{ background: portfolio.theme_color }}
+    >
+      <Share2 size={22} className="text-white" />
+    </motion.button>
+  </div>
     
   <div className="max-w-7xl mx-auto px-6 py-24">
 
@@ -613,7 +603,7 @@ const handleShare = async () => {
           {portfolio.experience.map((exp, i) => (
             <div
   key={i}
-  className="p-8 bg-[#0A0A0B] rounded-2xl transition-all"
+  className="p-8 bg-[#0A0A0B] rounded-2xl transition-all mb-6"
   style={{ border: "1px solid " + portfolio.theme_color + "33" }}
 >
               <h3 className="text-2xl font-bold" style={{ color: portfolio.theme_color }}>{exp.title}</h3>
@@ -636,7 +626,7 @@ const handleShare = async () => {
           {portfolio.education.map((edu, i) => (
             <div
   key={i}
-  className="p-8 bg-[#0A0A0B] rounded-2xl transition-all"
+  className="p-8 bg-[#0A0A0B] rounded-2xl transition-all mb-6"
   style={{ border: "1px solid " + portfolio.theme_color + "33" }}
 >
               <h3 className="text-2xl font-bold" style={{ color: portfolio.theme_color }}>{edu.degree}</h3>
@@ -691,6 +681,97 @@ const handleShare = async () => {
     </div>
     
   </div>
+  {/* ================= FOOTER ================= */}
+<footer
+className="border-t mt-24 py-12 text-center"
+style={{ borderColor: portfolio.theme_color + "33" }}
+>
+
+<div className="max-w-6xl mx-auto px-6">
+
+{/* Name */}
+<h3
+className="text-xl font-semibold mb-2"
+style={{ color: portfolio.theme_color }}
+>
+{portfolio.name}
+</h3>
+
+<p className="text-gray-400 text-sm mb-6">
+{portfolio.role}
+</p>
+
+{/* Social Icons */}
+<div className="flex justify-center gap-6 mb-8">
+
+{portfolio.github_url && (
+<a
+href={portfolio.github_url}
+target="_blank"
+rel="noopener noreferrer"
+className="text-gray-500 hover:text-white transition"
+>
+<Github size={18}/>
+</a>
+)}
+
+{portfolio.linkedin_url && (
+<a
+href={portfolio.linkedin_url}
+target="_blank"
+rel="noopener noreferrer"
+className="text-gray-500 hover:text-white transition"
+>
+<Linkedin size={18}/>
+</a>
+)}
+
+{portfolio.twitter_url && (
+<a
+href={portfolio.twitter_url}
+target="_blank"
+rel="noopener noreferrer"
+className="text-gray-500 hover:text-white transition"
+>
+<Twitter size={18}/>
+</a>
+)}
+
+{portfolio.instagram_url && (
+<a
+href={portfolio.instagram_url}
+target="_blank"
+rel="noopener noreferrer"
+className="text-gray-500 hover:text-white transition"
+>
+<Instagram size={18}/>
+</a>
+)}
+
+{portfolio.email && (
+<a
+href={`mailto:${portfolio.email}`}
+className="text-gray-500 hover:text-white transition"
+>
+<Mail size={18}/>
+</a>
+)}
+
+</div>
+
+{/* Divider */}
+<div
+className="h-px w-full mb-6"
+style={{ background: portfolio.theme_color + "22" }}
+/>
+
+<p className="text-xs text-gray-600 mt-1">
+© {new Date().getFullYear()} {portfolio.name}
+</p>
+
+</div>
+
+</footer>
 </div>
     );
   }
@@ -710,18 +791,28 @@ return (
   <Rocket color={portfolio.theme_color} />
   
 
-  {/* SHARE BUTTON */}
-  <div className="fixed top-6 right-6 z-50">
-    <motion.button
-      whileHover={{ scale: 1.15 }}
-      whileTap={{ scale: 0.9 }}
-      onClick={handleShare}
-      className="p-4 rounded-full shadow-xl"
-      style={{ background: portfolio.theme_color }}
-    >
-      <Share2 size={22} className="text-white" />
-    </motion.button>
-  </div>
+          {/* SHARE BUTTON */}
+    <div className="fixed top-6 right-6 z-50">
+  <motion.button
+    whileHover={{ scale: 1.08, rotate: 8 }}
+    whileTap={{ scale: 0.95 }}
+    onClick={handleShare}
+    className="w-12 h-12 rounded-full flex items-center justify-center backdrop-blur-xl border transition-all duration-300"
+    style={{
+      borderColor: portfolio.theme_color + "40",
+      background: "rgba(255,255,255,0.04)",
+      color: portfolio.theme_color,
+    }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.boxShadow = `0 0 18px ${portfolio.theme_color}55`;
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.boxShadow = "none";
+    }}
+  >
+    <Share2 size={18} />
+  </motion.button>
+</div>
   
       {/* Scroll Progress Bar */}
     <motion.div
@@ -769,20 +860,23 @@ return (
 )}
 
       <h1
-        className="text-6xl md:text-8xl font-black tracking-tight mb-6"
-        style={{ color: portfolio.theme_color }}
+        className="text-6xl md:text-8xl font-black tracking-tight mb-6 font-orbitron"
+        style={{
+  color: portfolio.theme_color,
+  textShadow: `0 0 20px ${portfolio.theme_color}`
+}}
       >
         {splitText(portfolio.name)}
       </h1>
 
       <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.6, duration: 1 }}
-        className="text-2xl text-slate-300 mb-10"
-      >
-        {portfolio.role}
-      </motion.p>
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ delay: 0.6, duration: 1 }}
+  className="text-2xl text-slate-300 mb-10 font-mono"
+>
+  <TypeRole text={portfolio.role} />
+</motion.p>
 
 {/* ================= SOCIAL LINKS ================= */}
 {(portfolio.github_url ||
@@ -861,7 +955,7 @@ return (
       <Button
         variant="outline"
         size="lg"
-        className="rounded-full px-6 py-3 transition-all duration-300 hover:-translate-y-1"
+        className="rounded-full px-6 py-3 transition-all duration-300 hover:-translate-y-1 font-space"
         style={{
           borderColor: portfolio.theme_color,
           color: portfolio.theme_color,
@@ -876,7 +970,7 @@ return (
   <motion.div
     animate={{ y: [0, 12, 0] }}
     transition={{ repeat: Infinity, duration: 1.5 }}
-    className="text-slate-400"
+    className="text-slate-400 font-space"
   >
     Scroll ↓
   </motion.div>
@@ -889,6 +983,7 @@ return (
 
       {/* About */}
       {portfolio.bio && (
+        <section className="mb-16">
         <motion.section
           initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -896,19 +991,20 @@ return (
           transition={{ duration: 1 }}
           className="text-center mb-8"
         >
-          <h2 className="text-5xl font-bold mb-8" style={{ color: portfolio.theme_color }}>About</h2>
-          <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
+          <h2 className="text-5xl font-bold mb-6 font-orbitron tracking-wider" style={{ color: portfolio.theme_color }}>About</h2>
+          <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed font-space">
             {portfolio.bio}
           </p>
         </motion.section>
+        </section>
       )}
 
 {/* ================= SKILLS ================= */}
 {portfolio.skills?.length > 0 && (
-<section className="mb-20 overflow-hidden">
+<section className="mb-16 overflow-hidden">
 
 <h2
-className="text-5xl font-bold text-center mb-16"
+className="text-5xl font-bold text-center mb-8 font-orbitron tracking-wider"
 style={{ color: portfolio.theme_color }}
 >
 Tech Stack
@@ -934,7 +1030,7 @@ ease: "linear"
     scale: 1.2,
     boxShadow: `0 0 30px ${portfolio.theme_color}`
   }}
-  className="px-8 py-3 text-lg rounded-full border backdrop-blur transition-all"
+  className="px-8 py-3 text-lg rounded-full border backdrop-blur transition-all font-space"
   style={{
     borderColor: portfolio.theme_color,
     color: portfolio.theme_color,
@@ -955,8 +1051,8 @@ ease: "linear"
 
       {/* Projects */}
       {portfolio.projects?.length > 0 && (
-        <section>
-          <h2 className="text-5xl font-bold mb-16 text-center" style={{ color: portfolio.theme_color }}>Projects</h2>
+        <section className="mb-16">
+          <h2 className="text-5xl font-bold mb-10 text-center font-orbitron tracking-wider" style={{ color: portfolio.theme_color }}>Projects</h2>
 
           <div className="grid md:grid-cols-2 gap-12 mb-8">
             {portfolio.projects.map((p, i) => (
@@ -973,14 +1069,14 @@ ease: "linear"
                   boxShadow: `0 0 0px ${portfolio.theme_color}`
                 }}
               >
-                <h3 className="text-3xl font-bold mb-4" style={{ color: portfolio.theme_color }}>{p.title}</h3>
-                <p className="text-slate-400 mb-6">{p.description}</p>
+                <h3 className="text-3xl font-bold mb-4 font-space" style={{ color: portfolio.theme_color }}>{p.title}</h3>
+                <p className="text-slate-400 mb-6 font-space">{p.description}</p>
 
                 <div className="flex flex-wrap gap-2 mb-8">
                   {p.tech_stack?.map((t, j) => (
                     <span
                       key={j}
-                      className="text-xs px-3 py-1 bg-white/10 rounded-full"
+                      className="text-xs px-3 py-1 bg-white/10 rounded-full font-space"
                     >
                       {t}
                     </span>
@@ -993,7 +1089,7 @@ ease: "linear"
                   <Button
                     variant="outline"
                     size="sm"
-                    className="border transition-all duration-300 hover:-translate-y-1 hover:bg-transparent"
+                    className="border transition-all duration-300 hover:-translate-y-1 hover:bg-transparent font-space"
                     style={{
                       borderColor: portfolio.theme_color,
                       color: portfolio.theme_color,
@@ -1009,7 +1105,7 @@ ease: "linear"
                   <Button
                     variant="outline"
                     size="sm"
-                    className="border transition-all duration-300 hover:-translate-y-1 hover:bg-transparent"
+                    className="border transition-all duration-300 hover:-translate-y-1 hover:bg-transparent font-space"
                     style={{
                       borderColor: portfolio.theme_color,
                       color: portfolio.theme_color,
@@ -1028,7 +1124,7 @@ ease: "linear"
       )}
        {/* ================= EXPERIENCE ================= */}
 {portfolio.experience?.length > 0 && (
-  <section>
+  <section className="mb-16">
   <motion.section
       variants={fadeUp}
       initial="hidden"
@@ -1036,7 +1132,7 @@ ease: "linear"
       viewport={{ once: true }}
       className="mb-20"
     >
-      <h2 className="text-3xl font-bold mb-8" style={{ color: portfolio.theme_color }}>Experience</h2>
+      <h2 className="text-5xl font-bold mb-8 text-center font-orbitron tracking-wider" style={{ color: portfolio.theme_color }}>Experience</h2>
       <div className="space-y-6">
         {portfolio.experience.map((exp, i) => (
   <motion.div
@@ -1053,7 +1149,7 @@ ease: "linear"
       boxShadow: `0 0 80px ${portfolio.theme_color}cc`,
     }}
     transition={{ type: "spring", stiffness: 200, damping: 12 }}
-    className="relative rounded-2xl bg-white/5 backdrop-blur p-6 border overflow-hidden"
+    className="relative rounded-2xl bg-white/5 backdrop-blur p-6 border overflow-hidden mb-6"
     style={{
       borderColor: portfolio.theme_color + "66",
     }}
@@ -1069,11 +1165,11 @@ ease: "linear"
     />
 
     <div className="relative z-10">
-      <h3 className="text-xl font-semibold">{exp.title}</h3>
-      <p className="text-slate-400 text-sm mb-2">
+      <h3 className="text-xl font-semibold font-space">{exp.title}</h3>
+      <p className="text-slate-400 text-sm mb-2 font-space">
         {exp.company} • {exp.duration}
       </p>
-      <p className="text-slate-300">{exp.description}</p>
+      <p className="text-slate-300 font-space">{exp.description}</p>
     </div>
   </motion.div>
 ))}
@@ -1084,7 +1180,7 @@ ease: "linear"
 
 {/* ================= EDUCATION ================= */}
 {portfolio.education?.length > 0 && (
-  <section>
+  <section className="mb-16">
   <motion.section
       variants={fadeUp}
       initial="hidden"
@@ -1092,7 +1188,7 @@ ease: "linear"
       viewport={{ once: true }}
       className="mb-20"
     >
-      <h2 className="text-3xl font-bold mb-8" style={{ color: portfolio.theme_color }}>Education</h2>
+      <h2 className="text-5xl font-bold mb-8 text-center font-orbitron tracking-wider" style={{ color: portfolio.theme_color }}>Education</h2>
       <div className="space-y-6">
         {portfolio.education.map((edu, i) => (
           <motion.div
@@ -1109,7 +1205,7 @@ ease: "linear"
     boxShadow: `0 0 80px ${portfolio.theme_color}cc`,
   }}
   transition={{ type: "spring", stiffness: 200, damping: 12 }}
-  className="relative rounded-2xl bg-white/5 backdrop-blur p-6 border overflow-hidden"
+  className="relative rounded-2xl bg-white/5 backdrop-blur p-6 border overflow-hidden mb-6"
   style={{
     borderColor: portfolio.theme_color + "66",
   }}
@@ -1126,9 +1222,9 @@ ease: "linear"
 
   {/* Content */}
   <div className="relative z-10">
-    <h3 className="text-xl font-semibold">{edu.degree}</h3>
-    <p className="text-slate-400">{edu.institution}</p>
-    {edu.year && <p className="text-slate-500 text-sm">{edu.year}</p>}
+    <h3 className="text-xl font-semibold font-space">{edu.degree}</h3>
+    <p className="text-slate-400 font-space ">{edu.institution}</p>
+    {edu.year && <p className="text-slate-500 text-sm font-space">{edu.year}</p>}
   </div>
 </motion.div>
         ))}
@@ -1139,31 +1235,133 @@ ease: "linear"
 
 {/* ================= CONTACT ================= */}
 <section className="relative z-20 max-w-4xl mx-auto px-6 pb-32">
+
+  {/* Glow background */}
+  <div className="absolute inset-0 flex justify-center items-center -z-10 pointer-events-none">
+    <div
+      className="w-[500px] h-[500px] blur-[140px] opacity-30 rounded-full"
+      style={{ background: portfolio.theme_color }}
+    />
+  </div>
+
   <motion.div
-    initial={{ opacity: 0, y: 100 }}
-    whileInView={{ opacity: 1, y: 0 }}
+    initial={{ opacity: 0, y: 120, scale: 0.9 }}
+    whileInView={{ opacity: 1, y: 0, scale: 1 }}
     viewport={{ once: true }}
-    transition={{ duration: 0.8 }}
-    className="bg-white/5 backdrop-blur-xl border rounded-3xl p-10 shadow-2xl"
+    transition={{ duration: 0.8, ease: "easeOut" }}
+    whileHover={{ scale: 1.02 }}
+    className="relative bg-white/5 backdrop-blur-2xl border rounded-3xl p-10 md:p-14 shadow-[0_20px_80px_rgba(0,0,0,0.6)] overflow-hidden"
     style={{
-      borderColor: portfolio.theme_color + "44",
+      borderColor: portfolio.theme_color + "55",
     }}
   >
+
     <h2
-      className="text-4xl md:text-5xl font-bold text-center mb-10"
+      className="text-4xl md:text-5xl font-bold text-center mb-10 font-space"
       style={{ color: portfolio.theme_color }}
     >
-      Get In Touch
+      <TypeRole text="Let's Build Something Together" />
     </h2>
 
-    {/* 👇 This is the only thing inside */}
     <ContactForm slug={portfolio.slug} portfolio={portfolio} />
 
   </motion.div>
 </section>
 
     </div>
+{/* ================= FOOTER ================= */}
+<footer
+  className="relative z-20 border-t pt-16 pb-12 text-center"
+  style={{ borderColor: portfolio.theme_color + "33" }}
+>
 
+<motion.div
+  initial={{ opacity: 0, y: 40 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true }}
+  transition={{ duration: 0.8 }}
+  className="max-w-4xl mx-auto px-6"
+>
+
+{/* Name */}
+<h3
+  className="text-3xl font-bold mb-3 font-space"
+  style={{ color: portfolio.theme_color }}
+>
+  {portfolio.name}
+</h3>
+
+<p className="text-slate-400 mb-8 font-space">
+  {portfolio.role}
+</p>
+
+{/* Social Links */}
+<div className="flex justify-center gap-6 mb-10">
+
+{portfolio.github_url && (
+<a
+  href={portfolio.github_url}
+  target="_blank"
+  className="text-slate-400 hover:text-white transition"
+>
+<Github size={22}/>
+</a>
+)}
+
+{portfolio.linkedin_url && (
+<a
+  href={portfolio.linkedin_url}
+  target="_blank"
+  className="text-slate-400 hover:text-white transition"
+>
+<Linkedin size={22}/>
+</a>
+)}
+
+{portfolio.twitter_url && (
+<a
+  href={portfolio.twitter_url}
+  target="_blank"
+  className="text-slate-400 hover:text-white transition"
+>
+<Twitter size={22}/>
+</a>
+)}
+
+{portfolio.instagram_url && (
+<a
+  href={portfolio.instagram_url}
+  target="_blank"
+  className="text-slate-400 hover:text-white transition"
+>
+<Instagram size={22}/>
+</a>
+)}
+
+{portfolio.email && (
+<a
+  href={`mailto:${portfolio.email}`}
+  className="text-slate-400 hover:text-white transition"
+>
+<Mail size={22}/>
+</a>
+)}
+
+</div>
+
+{/* Divider */}
+<div
+  className="h-px w-full mb-6"
+  style={{ background: portfolio.theme_color + "22" }}
+/>
+
+<p className="text-xs text-slate-600 mt-2 font-space">
+© {new Date().getFullYear()} {portfolio.name}. All rights reserved.
+</p>
+
+</motion.div>
+
+</footer>
   </div>
 );
 
