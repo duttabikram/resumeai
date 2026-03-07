@@ -8,7 +8,9 @@ import { Github, Linkedin, Twitter, Mail, Instagram } from "lucide-react";
 import  ContactForm  from '@/components/ContactForm';
 import { Download } from "lucide-react";
 import { Share2, Link2 } from "lucide-react";
-
+import Planet from "@/components/Planet";
+import Stars from "@/components/Stars";
+import Rocket from "@/components/Rocket";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -373,19 +375,26 @@ const handleShare = async () => {
 
           {/* SHARE BUTTON */}
     <div className="fixed top-6 right-6 z-50">
-      <motion.button
-        whileHover={{ scale: 1.15 }}
-        whileTap={{ scale: 0.9 }}
-        onClick={handleShare}
-        className="p-3 rounded-full shadow-xl backdrop-blur border"
-        style={{
-          background: portfolio.theme_color,
-          borderColor: portfolio.theme_color + "55",
-        }}
-      >
-        <Share2 size={20} className="text-white" />
-      </motion.button>
-    </div>
+  <motion.button
+    whileHover={{ scale: 1.08, rotate: 8 }}
+    whileTap={{ scale: 0.95 }}
+    onClick={handleShare}
+    className="w-12 h-12 rounded-full flex items-center justify-center backdrop-blur-xl border transition-all duration-300"
+    style={{
+      borderColor: portfolio.theme_color + "40",
+      background: "rgba(255,255,255,0.04)",
+      color: portfolio.theme_color,
+    }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.boxShadow = `0 0 18px ${portfolio.theme_color}55`;
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.boxShadow = "none";
+    }}
+  >
+    <Share2 size={18} />
+  </motion.button>
+</div>
     
   <div className="max-w-7xl mx-auto px-6 py-24">
 
@@ -695,7 +704,11 @@ return (
       mouseY.set(e.clientY - 150);
     }}
   >
-
+  <Stars />
+  {/* 3D PLANET */}
+  <Planet color={portfolio.theme_color} />
+  <Rocket color={portfolio.theme_color} />
+  
 
   {/* SHARE BUTTON */}
   <div className="fixed top-6 right-6 z-50">
@@ -728,14 +741,10 @@ return (
 
 
     {/* Parallax Background */}
-    <motion.div
-      style={{ y: bgY }}
-      className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(99,102,241,0.35),transparent_60%)]"
-    />
-    <motion.div
-      style={{ y: bgY }}
-      className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(168,85,247,0.35),transparent_60%)]"
-    />
+<div
+  className="absolute top-[20%] right-[10%] w-[600px] h-[600px] rounded-full blur-[180px] opacity-10 z-0"
+  style={{ background: portfolio.theme_color }}
+/>
 
     {/* HERO */}
     <motion.section
@@ -893,6 +902,56 @@ return (
           </p>
         </motion.section>
       )}
+
+{/* ================= SKILLS ================= */}
+{portfolio.skills?.length > 0 && (
+<section className="mb-20 overflow-hidden">
+
+<h2
+className="text-5xl font-bold text-center mb-16"
+style={{ color: portfolio.theme_color }}
+>
+Tech Stack
+</h2>
+
+<div className="relative w-full overflow-hidden">
+
+<motion.div
+className="flex gap-10 whitespace-nowrap"
+animate={{ x: ["0%", "-50%"] }}
+transition={{
+duration: 25,
+repeat: Infinity,
+ease: "linear"
+}}
+>
+
+{[...portfolio.skills, ...portfolio.skills].map((skill, i) => (
+
+<motion.div
+  key={i}
+  whileHover={{
+    scale: 1.2,
+    boxShadow: `0 0 30px ${portfolio.theme_color}`
+  }}
+  className="px-8 py-3 text-lg rounded-full border backdrop-blur transition-all"
+  style={{
+    borderColor: portfolio.theme_color,
+    color: portfolio.theme_color,
+    background: "rgba(255,255,255,0.03)"
+  }}
+>
+  {skill}
+</motion.div>
+
+))}
+
+</motion.div>
+
+</div>
+
+</section>
+)}
 
       {/* Projects */}
       {portfolio.projects?.length > 0 && (

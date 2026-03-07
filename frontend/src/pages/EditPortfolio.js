@@ -64,6 +64,56 @@ export default function EditPortfolio() {
     }
   };
 
+  const addExperience = () => {
+  setFormData((prev) => ({
+    ...prev,
+    experience: [
+      ...(prev.experience || []),
+      { title: "", company: "", duration: "", description: "" },
+    ],
+  }));
+};
+
+const removeExperience = (index) => {
+  setFormData((prev) => ({
+    ...prev,
+    experience: prev.experience.filter((_, i) => i !== index),
+  }));
+};
+
+const addEducation = () => {
+  setFormData((prev) => ({
+    ...prev,
+    education: [
+      ...(prev.education || []),
+      { degree: "", institution: "", year: "" },
+    ],
+  }));
+};
+
+const removeEducation = (index) => {
+  setFormData((prev) => ({
+    ...prev,
+    education: prev.education.filter((_, i) => i !== index),
+  }));
+};
+
+const updateExperience = (index, field, value) => {
+  setFormData((prev) => {
+    const experience = [...prev.experience];
+    experience[index] = { ...experience[index], [field]: value };
+    return { ...prev, experience };
+  });
+};
+
+const updateEducation = (index, field, value) => {
+  setFormData((prev) => {
+    const education = [...prev.education];
+    education[index] = { ...education[index], [field]: value };
+    return { ...prev, education };
+  });
+};
+
   const addSkill = () => {
   if (!skillInput.trim()) return;
 
@@ -451,6 +501,148 @@ const removeSkill = (index) => {
 ))}
           </div>
         </div>
+
+        <div className="rounded-2xl bg-slate-900/40 p-6 backdrop-blur">
+  <div className="flex items-center justify-between mb-4">
+    <h2 className="text-xl font-semibold text-white">Experience</h2>
+
+    <Button
+      type="button"
+      onClick={addExperience}
+      className="bg-sky-500 hover:bg-sky-400 text-black"
+    >
+      <Plus className="w-4 h-4 mr-2" /> Add
+    </Button>
+  </div>
+
+  <div className="space-y-4">
+    {formData.experience?.map((exp, index) => (
+      <div
+        key={index}
+        className="rounded-xl bg-slate-950/60 p-4 space-y-3 border border-white/5 hover:border-sky-400/30"
+      >
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-white font-medium">
+            Experience {index + 1}
+          </span>
+
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => removeExperience(index)}
+            className="text-slate-300 hover:text-red-400"
+          >
+            <Trash2 className="w-4 h-4" />
+          </Button>
+        </div>
+
+        <Input
+          value={exp.title}
+          placeholder="Role"
+          onChange={(e) =>
+            updateExperience(index, "title", e.target.value)
+          }
+          className="bg-slate-900/60 border-slate-800 text-white"
+        />
+
+        <Input
+          value={exp.company}
+          placeholder="Company"
+          onChange={(e) =>
+            updateExperience(index, "company", e.target.value)
+          }
+          className="bg-slate-900/60 border-slate-800 text-white"
+        />
+
+        <Input
+          value={exp.duration}
+          placeholder="Duration"
+          onChange={(e) =>
+            updateExperience(index, "duration", e.target.value)
+          }
+          className="bg-slate-900/60 border-slate-800 text-white"
+        />
+
+        <Textarea
+          value={exp.description}
+          placeholder="Description"
+          onChange={(e) =>
+            updateExperience(index, "description", e.target.value)
+          }
+          rows={3}
+          className="bg-slate-900/60 border-slate-800 text-white"
+        />
+      </div>
+    ))}
+  </div>
+</div>
+
+<div className="rounded-2xl bg-slate-900/40 p-6 backdrop-blur">
+  <div className="flex items-center justify-between mb-4">
+    <h2 className="text-xl font-semibold text-white">Education</h2>
+
+    <Button
+      type="button"
+      onClick={addEducation}
+      className="bg-sky-500 hover:bg-sky-400 text-black"
+    >
+      <Plus className="w-4 h-4 mr-2" /> Add
+    </Button>
+  </div>
+
+  <div className="space-y-4">
+    {formData.education?.map((edu, index) => (
+      <div
+        key={index}
+        className="rounded-xl bg-slate-950/60 p-4 space-y-3 border border-white/5 hover:border-sky-400/30"
+      >
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-white font-medium">
+            Education {index + 1}
+          </span>
+
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => removeEducation(index)}
+            className="text-slate-300 hover:text-red-400"
+          >
+            <Trash2 className="w-4 h-4" />
+          </Button>
+        </div>
+
+        <Input
+          value={edu.degree}
+          placeholder="Degree"
+          onChange={(e) =>
+            updateEducation(index, "degree", e.target.value)
+          }
+          className="bg-slate-900/60 border-slate-800 text-white"
+        />
+
+        <Input
+          value={edu.institution}
+          placeholder="Institution"
+          onChange={(e) =>
+            updateEducation(index, "institution", e.target.value)
+          }
+          className="bg-slate-900/60 border-slate-800 text-white"
+        />
+
+        <Input
+          value={edu.year}
+          placeholder="Year"
+          onChange={(e) =>
+            updateEducation(index, "year", e.target.value)
+          }
+          className="bg-slate-900/60 border-slate-800 text-white"
+        />
+      </div>
+    ))}
+  </div>
+</div>
 
         {/* Template */}
         <div className="rounded-2xl bg-slate-900/40 p-6 backdrop-blur">
