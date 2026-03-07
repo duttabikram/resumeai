@@ -766,7 +766,7 @@ style={{ background: portfolio.theme_color + "22" }}
 />
 
 <p className="text-xs text-gray-600 mt-1">
-© {new Date().getFullYear()} {portfolio.name}
+© {new Date().getFullYear()} {portfolio.name}. All rights reserved.
 </p>
 
 </div>
