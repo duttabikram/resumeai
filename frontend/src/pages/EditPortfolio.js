@@ -202,52 +202,70 @@ const removeSkill = (index) => {
 
       {/* Navbar */}
        <nav className="relative z-20 fixed top-0 left-0 right-0 backdrop-blur-md bg-slate-950/70 border-b border-white/5">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link to="/dashboard">
-              <Button variant="ghost" size="icon" className="text-slate-300 bg-white/5 backdrop-blur border border-white/10 rounded-lg hover:text-white hover:bg-white/10 hover:border-sky-400/40 transition-all duration-300 hover:shadow-[0_0_12px_rgba(56,189,248,0.35)]">
-              <ArrowLeft className="w-5 h-5" />
-            </Button>
-            </Link>
-            <div className="flex items-center gap-2 text-white font-bold text-xl">
-              <Crown className="w-6 h-6 text-sky-400" />
-              <span style={{ fontFamily: "Outfit" }}>Edit Portfolio</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button
-              onClick={handleSave}
-              disabled={saving}
-              variant="outline"
-              className="border-slate-700 text-white hover:bg-slate-800"
-            >
-              <Save className="w-4 h-4 mr-2" />
-              {saving ? "Saving..." : "Save"}
-            </Button>
-            {formData?.is_published ? (
-              <a
-                href={`/p/${formData.slug}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button
-                  variant="outline"
-                  className="border-slate-700 text-white hover:bg-slate-800"
-                >
-                  <Eye className="w-4 h-4 mr-2" /> View
-                </Button>
-              </a>
-            ) : (
-              <Button
-                onClick={handlePublish}
-                className="bg-sky-500 hover:bg-sky-400 text-black font-semibold"
-              >
-                <Globe className="w-4 h-4 mr-2" /> Publish
-              </Button>
-            )}
-          </div>
-        </div>
-      </nav>
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+
+    {/* LEFT */}
+    <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+      <Link to="/dashboard">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="text-slate-300 bg-white/5 backdrop-blur border border-white/10 rounded-lg hover:text-white hover:bg-white/10 hover:border-sky-400/40 transition-all duration-300 hover:shadow-[0_0_12px_rgba(56,189,248,0.35)]"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </Button>
+      </Link>
+
+      <div className="flex items-center gap-2 text-white font-bold text-base sm:text-xl truncate">
+        <Crown className="w-5 h-5 sm:w-6 sm:h-6 text-sky-400" />
+        <span className="truncate" style={{ fontFamily: "Outfit" }}>
+          Edit Portfolio
+        </span>
+      </div>
+    </div>
+
+    {/* RIGHT */}
+    <div className="flex items-center gap-2 sm:gap-3">
+
+      <Button
+        onClick={handleSave}
+        disabled={saving}
+        variant="outline"
+        className="border-slate-700 text-white hover:bg-slate-800"
+      >
+        <Save className="w-4 h-4 sm:mr-2" />
+        <span className="hidden sm:inline">
+          {saving ? "Saving..." : "Save"}
+        </span>
+      </Button>
+
+      {formData?.is_published ? (
+        <a
+          href={`/p/${formData.slug}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Button
+            variant="outline"
+            className="border-slate-700 text-white hover:bg-slate-800"
+          >
+            <Eye className="w-4 h-4 sm:mr-2" />
+            <span className="hidden sm:inline">View</span>
+          </Button>
+        </a>
+      ) : (
+        <Button
+          onClick={handlePublish}
+          className="bg-sky-500 hover:bg-sky-400 text-black font-semibold"
+        >
+          <Globe className="w-4 h-4 sm:mr-2" />
+          <span className="hidden sm:inline">Publish</span>
+        </Button>
+      )}
+
+    </div>
+  </div>
+</nav>
 
       {/* Content */}
       <div className="relative z-10 max-w-4xl mx-auto px-6 pt-28 pb-20 space-y-8">

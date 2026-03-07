@@ -16,25 +16,28 @@ export default function Settings() {
 
       {/* Navbar */}
        <nav className="relative z-20 fixed top-0 left-0 right-0 backdrop-blur-md bg-slate-950/70 border-b border-white/5">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link to="/dashboard">
-              <Button variant="ghost" size="icon" className="text-slate-300 bg-white/5 backdrop-blur border border-white/10 rounded-lg hover:text-white hover:bg-white/10 hover:border-sky-400/40 transition-all duration-300 hover:shadow-[0_0_12px_rgba(56,189,248,0.35)]">
-              <ArrowLeft className="w-5 h-5" />
-            </Button>
-            </Link>
-            <div className="flex items-center gap-2">
-              <Crown className="w-6 h-6 text-sky-400" />
-              <span className="text-xl font-bold" style={{ fontFamily: "Outfit" }}>
-                Settings
-              </span>
-            </div>
-          </div>
-        </div>
-      </nav>
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+    <div className="flex items-center gap-3">
+      <Link to="/dashboard">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="text-slate-300 bg-white/5 backdrop-blur border border-white/10 rounded-lg hover:text-white hover:bg-white/10 hover:border-sky-400/40 transition-all duration-300 hover:shadow-[0_0_12px_rgba(56,189,248,0.35)]"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </Button>
+      </Link>
+
+      <div className="flex items-center gap-2 text-white font-bold text-lg sm:text-xl">
+        <Crown className="w-5 h-5 sm:w-6 sm:h-6 text-sky-400" />
+        <span style={{ fontFamily: "Outfit" }}>Settings</span>
+      </div>
+    </div>
+  </div>
+</nav>
 
       {/* Content */}
-      <div className="relative z-10 max-w-4xl mx-auto px-6 py-16">
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 pt-28 pb-16">
         <h1
           className="text-4xl md:text-5xl font-bold tracking-tight mb-10 text-white"
           style={{ fontFamily: "Outfit" }}
@@ -44,7 +47,11 @@ export default function Settings() {
 
         <div className="space-y-8">
           {/* Profile Section */}
-          <Card className="bg-slate-900/50 backdrop-blur rounded-2xl border border-white/5 rounded-2xl bg-slate-900/40 p-6 backdrop-blur hover:bg-slate-900/60 transition-colors group rounded-2xl bg-slate-900/40 p-6 backdrop-blur transition-all duration-300  hover:bg-slate-900/70 hover:scale-[1.02] hover:shadow-xl hover:shadow-sky-500/10 border border-white/5 hover:border-sky-400/30" data-testid="profile-section">
+          <Card
+  className="rounded-2xl bg-slate-900/40 backdrop-blur p-6 border border-white/5
+  hover:bg-slate-900/70 hover:scale-[1.02] hover:shadow-xl hover:shadow-sky-500/10
+  hover:border-sky-400/30 transition-all duration-300"
+>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-white" style={{ fontFamily: "Outfit" }}>
                 <User className="w-5 h-5 text-sky-400" /> Profile Information
@@ -69,7 +76,11 @@ export default function Settings() {
           </Card>
 
           {/* Subscription Section */}
-          <Card className="bg-slate-900/50 backdrop-blur rounded-2xl border border-white/5 rounded-2xl bg-slate-900/40 p-6 backdrop-blur hover:bg-slate-900/60 transition-colors group rounded-2xl bg-slate-900/40 p-6 backdrop-blur transition-all duration-300  hover:bg-slate-900/70 hover:scale-[1.02] hover:shadow-xl hover:shadow-sky-500/10 border border-white/5 hover:border-sky-400/30" data-testid="subscription-section">
+          <Card
+  className="rounded-2xl bg-slate-900/40 backdrop-blur p-6 border border-white/5
+  hover:bg-slate-900/70 hover:scale-[1.02] hover:shadow-xl hover:shadow-sky-500/10
+  hover:border-sky-400/30 transition-all duration-300"
+>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-white" style={{ fontFamily: "Outfit" }}>
                 <CreditCard className="w-5 h-5 text-sky-400" /> Subscription
@@ -79,7 +90,7 @@ export default function Settings() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                   <p className="text-lg font-medium mb-2 text-white">
                     Current Plan:{" "}

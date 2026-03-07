@@ -135,38 +135,56 @@ const handleUpgrade = async () => {
 
       {/* Navbar */}
        <nav className="relative z-20 fixed top-0 left-0 right-0 backdrop-blur-md bg-slate-950/70 border-b border-white/5">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <Link
-            to="/"
-            className="flex items-center gap-2 text-white font-bold text-xl"
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+
+    {/* Logo */}
+    <Link
+      to="/"
+      className="flex items-center gap-2 text-white font-bold text-lg sm:text-xl truncate"
+    >
+      <Crown className="w-5 h-5 sm:w-6 sm:h-6 text-sky-400" />
+      <span className="truncate" style={{ fontFamily: "Outfit" }}>
+        PortfolioAI
+      </span>
+    </Link>
+
+    {/* Right Side */}
+    <div className="flex items-center gap-2 sm:gap-4">
+
+      {user ? (
+        <Link to="/dashboard">
+          <Button
+            variant="outline"
+            className="border-slate-700/60 text-slate-200 bg-white/5 backdrop-blur hover:bg-white/10 hover:border-sky-400/50 hover:text-white transition-all duration-300 hover:shadow-[0_0_25px_rgba(56,189,248,0.35)]"
           >
-            <Crown className="w-6 h-6 text-sky-400" />
-            <span style={{ fontFamily: "Outfit" }}>PortfolioAI</span>
+            <span className="hidden sm:inline">Dashboard</span>
+            <span className="sm:hidden">📊</span>
+          </Button>
+        </Link>
+      ) : (
+        <>
+          <Link to="/login">
+            <Button
+              variant="ghost"
+              className="text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition-colors"
+            >
+              <span className="hidden sm:inline">Login</span>
+              <span className="sm:hidden">🔑</span>
+            </Button>
           </Link>
-          <div className="flex items-center gap-4">
-            {user ? (
-              <Link to="/dashboard">
-                <Button variant="outline" className="border-slate-700/60 text-slate-200 bg-white/5 backdrop-blur hover:bg-white/10 hover:border-sky-400/50 hover:text-white transition-all duration-300 hover:shadow-[0_0_25px_rgba(56,189,248,0.35)]"> Dashboard</Button>
-              </Link>
-            ) : (
-              <>
-                <Link to="/login">
-                  <Button
-                    variant="ghost" className="text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition-colors"
-                  >
-                    Login
-                  </Button>
-                </Link>
-                <Link to="/signup">
-                  <Button className="bg-sky-500 hover:bg-sky-400 text-black font-semibold">
-                    Get Started
-                  </Button>
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
-      </nav>
+
+          <Link to="/signup">
+            <Button className="bg-sky-500 hover:bg-sky-400 text-black font-semibold">
+              <span className="hidden sm:inline">Get Started</span>
+              <span className="sm:hidden">Start</span>
+            </Button>
+          </Link>
+        </>
+      )}
+
+    </div>
+  </div>
+</nav>
 
       {/* Pricing Content */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 pt-32 pb-24">

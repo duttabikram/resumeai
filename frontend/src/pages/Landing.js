@@ -82,7 +82,8 @@ export default function Landing() {
 
       {/* Navbar */}
       <nav className="relative z-20 fixed top-0 left-0 right-0 backdrop-blur-md bg-slate-950/70 border-b border-white/5">
-  <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+    
     <Link
       to="/"
       className="flex items-center gap-2 text-white font-bold text-xl"
@@ -91,7 +92,7 @@ export default function Landing() {
       <span style={{ fontFamily: "Outfit" }}>PortfolioAI</span>
     </Link>
 
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-3 sm:gap-4">
       {user ? (
         <Link to="/dashboard">
           <Button
@@ -120,6 +121,7 @@ export default function Landing() {
         </>
       )}
     </div>
+
   </div>
 </nav>
 

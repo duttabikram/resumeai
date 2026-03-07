@@ -67,53 +67,60 @@ export default function Dashboard() {
 
       {/* Navbar */}
        <nav className="relative z-20 fixed top-0 left-0 right-0 backdrop-blur-md bg-slate-950/70 border-b border-white/5">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-white font-bold text-xl">
-            <Crown className="w-6 h-6 text-sky-400" />
-            <span style={{ fontFamily: "Outfit" }}>PortfolioAI</span>
-          </div>
-          <div className="flex items-center gap-3">
-            {user?.subscription_plan === "free" && (
-              <Link to="/pricing">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="border-slate-700 text-white hover:bg-slate-800 gap-2"
-                >
-                  <Crown className="w-4 h-4" /> Upgrade
-                </Button>
-              </Link>
-            )}
-            <div className="flex items-center gap-3">
-  {user?.subscription_plan === "pro" && (
-    <Badge className="bg-yellow-400/15 text-yellow-300 font-semibold border border-yellow-400/30 px-2 py-0.5 rounded-md">
-      Pro
-    </Badge>
-  )}
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
 
-  <Link to="/settings">
-    <Button
-      variant="ghost"
-      size="icon"
-      className="text-slate-300 bg-white/5 backdrop-blur border border-white/10 rounded-lg hover:text-white hover:bg-white/10 hover:border-sky-400/40 transition-all duration-300 hover:shadow-[0_0_12px_rgba(56,189,248,0.35)]"
-    >
-      <SettingsIcon className="w-4 h-4" />
-    </Button>
-  </Link>
+    {/* LEFT */}
+    <div className="flex items-center gap-2 text-white font-bold text-lg sm:text-xl truncate">
+      <Crown className="w-5 h-5 sm:w-6 sm:h-6 text-sky-400" />
+      <span className="truncate" style={{ fontFamily: "Outfit" }}>
+        PortfolioAI
+      </span>
+    </div>
 
-  <Button
-    variant="ghost"
-    size="icon"
-    className="text-slate-300 bg-white/5 backdrop-blur border border-white/10 rounded-lg hover:text-red-400 hover:bg-white/10 hover:border-red-400/40 transition-all duration-300 hover:shadow-[0_0_12px_rgba(248,113,113,0.35)]"
-    onClick={handleLogout}
-  >
-    <LogOut className="w-4 h-4" />
-  </Button>
-</div>
+    {/* RIGHT */}
+    <div className="flex items-center gap-2 sm:gap-3">
 
-          </div>
-        </div>
-      </nav>
+      {user?.subscription_plan === "free" && (
+        <Link to="/pricing">
+          <Button
+            variant="outline"
+            size="sm"
+            className="border-slate-700 text-white hover:bg-slate-800"
+          >
+            <Crown className="w-4 h-4 sm:mr-2" />
+            <span className="hidden sm:inline">Upgrade</span>
+          </Button>
+        </Link>
+      )}
+
+      {user?.subscription_plan === "pro" && (
+        <Badge className="bg-yellow-400/15 text-yellow-300 font-semibold border border-yellow-400/30 px-2 py-0.5 rounded-md hidden sm:inline">
+          Pro
+        </Badge>
+      )}
+
+      <Link to="/settings">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="text-slate-300 bg-white/5 backdrop-blur border border-white/10 rounded-lg hover:text-white hover:bg-white/10 hover:border-sky-400/40 transition-all duration-300 hover:shadow-[0_0_12px_rgba(56,189,248,0.35)]"
+        >
+          <SettingsIcon className="w-4 h-4" />
+        </Button>
+      </Link>
+
+      <Button
+        variant="ghost"
+        size="icon"
+        className="text-slate-300 bg-white/5 backdrop-blur border border-white/10 rounded-lg hover:text-red-400 hover:bg-white/10 hover:border-red-400/40 transition-all duration-300 hover:shadow-[0_0_12px_rgba(248,113,113,0.35)]"
+        onClick={handleLogout}
+      >
+        <LogOut className="w-4 h-4" />
+      </Button>
+
+    </div>
+  </div>
+</nav>
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 pt-28 pb-16">
