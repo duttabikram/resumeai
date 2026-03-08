@@ -11,6 +11,8 @@ import Planet from "@/components/Planet";
 import Stars from "@/components/Stars";
 import Rocket from "@/components/Rocket";
 import TypeRole from "@/components/TypeRole";
+import CosmicBlast from "@/components/CosmicBlast";
+import SpaceLoader from "@/components/SpaceLoader";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -80,6 +82,8 @@ export default function PublicPortfolio() {
   const [portfolio, setPortfolio] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [blast, setBlast] = useState(false);
+const [showCreativeLoader, setShowCreativeLoader] = useState(false);
 
 const { scrollYProgress } = useScroll();
 const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
@@ -94,25 +98,38 @@ const mouseY = useMotionValue(0);
     fetchPortfolio();
     // eslint-disable-next-line
   }, [slug]);
+  
 
-  const fetchPortfolio = async () => {
-    try {
-      const res = await axios.get(`${API}/public/portfolio/${slug}`);
-      setPortfolio(res.data);
-    } catch {
-      setError(true);
-    } finally {
-      setLoading(false);
+const fetchPortfolio = async () => {
+  try {
+    const res = await axios.get(`${API}/public/portfolio/${slug}`);
+    setPortfolio(res.data);
+
+    if (
+      res.data.template !== "minimal" &&
+      res.data.template !== "modern"
+    ) {
+      setShowCreativeLoader(true);
+
+      setTimeout(() => {
+        setShowCreativeLoader(false);
+      }, 1800);
     }
-  };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="h-10 w-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
+  } catch {
+    setError(true);
+  } finally {
+    setLoading(false);
   }
+};
+
+if (loading) {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="h-10 w-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+    </div>
+  );
+}
 
   if (error || !portfolio) {
     return (
@@ -133,60 +150,44 @@ const mouseY = useMotionValue(0);
     </>
   );
 
-const SocialIcon = ({ href, icon, color, duration }) => {
+const SocialIcon = ({ href, icon, color }) => {
   return (
     <motion.a
       href={href}
       target="_blank"
       rel="noreferrer"
-      className="relative w-14 h-14 flex items-center justify-center"
-      whileHover={{ scale: 1.25 }}
-      whileTap={{ scale: 0.9 }}
+      className="w-14 h-14 flex items-center justify-center rounded-full border backdrop-blur-md"
+      whileHover={{
+        scale: 1.2,
+        y: -6
+      }}
+      transition={{ type: "spring", stiffness: 200 }}
+      style={{
+        borderColor: color,
+        color: color,
+        boxShadow: `0 0 12px ${color}`
+      }}
     >
-      {/* glow */}
-      <motion.div
-        className="absolute inset-0 rounded-full blur-xl opacity-40"
-        style={{ background: color }}
-        animate={{ scale: [1, 1.4, 1] }}
-        transition={{
-          duration: 2.5,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
-
-      {/* rotating icon container */}
-      <motion.div
-        animate={{ rotate: 360 }}
-        transition={{ duration: duration || 12, repeat: Infinity, ease: "linear" }}
-        className="relative w-12 h-12 flex items-center justify-center rounded-full border backdrop-blur-lg"
-        style={{
-          borderColor: color,
-          color: color,
-          boxShadow: `0 0 20px ${color}`,
-        }}
-      >
-        {icon}
-      </motion.div>
+      {icon}
     </motion.a>
   );
 };
 
 const handleShare = async () => {
-  const shareData = {
-    title: portfolio.name + "'s Portfolio",
-    text: `Check out ${portfolio.name}'s portfolio`,
-    url: window.location.href,
-  };
+  setBlast(true);
 
-  try {
-    if (navigator.share) {
-      await navigator.share(shareData);
-    } else {
-      alert("Sharing not supported on this browser");
-    }
-  } catch (err) {
-    console.log("Share cancelled", err);
+  setTimeout(() => {
+    setBlast(false);
+  }, 1200);
+
+  if (navigator.share) {
+    navigator.share({
+      title: portfolio.name,
+      text: "Check out this portfolio!",
+      url: window.location.href
+    });
+  } else {
+    navigator.clipboard.writeText(window.location.href);
   }
 };
 
@@ -828,6 +829,10 @@ return (
     mouseY.set(e.clientY - 150);
   }}
 >
+  {showCreativeLoader && (
+  <SpaceLoader color={portfolio?.theme_color} />
+)}
+  {blast && <CosmicBlast color={portfolio.theme_color} />}
   <Stars />
   {/* 3D PLANET */}
   <Planet color={portfolio.theme_color} />
@@ -944,7 +949,6 @@ return (
           href={portfolio.github_url}
           icon={<Github size={22} />}
           color={portfolio.theme_color}
-          duration={16}
         />
       )}
 
@@ -953,7 +957,6 @@ return (
           href={portfolio.linkedin_url}
           icon={<Linkedin size={22} />}
           color={portfolio.theme_color}
-          duration={10}
         />
       )}
 
@@ -962,7 +965,6 @@ return (
           href={portfolio.twitter_url}
           icon={<Twitter size={22} />}
           color={portfolio.theme_color}
-          duration={18}
         />
       )}
 
@@ -971,7 +973,6 @@ return (
           href={portfolio.instagram_url}
           icon={<Instagram size={22} />}
           color={portfolio.theme_color}
-          duration={14}
         />
       )}
 
@@ -980,7 +981,6 @@ return (
           href={`mailto:${portfolio.email}`}
           icon={<Mail size={22} />}
           color={portfolio.theme_color}
-          duration={12}
         />
       )}
     </div>
