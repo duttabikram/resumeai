@@ -1123,15 +1123,16 @@ ease: "linear"
   }}
 >
 <motion.div
-  className="absolute inset-0 opacity-30"
+  className="absolute inset-0 opacity-30 pointer-events-none"
   style={{
     background: `radial-gradient(circle at top left, ${portfolio.theme_color}55, transparent 60%)`
   }}
   animate={{ opacity: [0.2, 0.5, 0.2] }}
   transition={{ duration: 3, repeat: Infinity }}
 />
+
 <motion.div
-  className="absolute inset-0"
+  className="absolute inset-0 pointer-events-none"
   style={{
     background:
       "linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.2), transparent 70%)"
