@@ -239,39 +239,57 @@ const handleUpgrade = async () => {
                 </div>
 
                 {/* CTA */}
-                {plan.current ? (
-                  <Button
-                    variant="outline"
-                    disabled
-                    className="w-full border-slate-700 text-slate-400"
-                  >
-                    {plan.cta}
-                  </Button>
-                ) : plan.name === "Pro" ? (
-                  !user ? (
-                   <Link to="/login">
-                     <Button className="w-full bg-sky-500 hover:bg-sky-400 text-black font-semibold">
-                       {plan.cta}
-                     </Button>
-                   </Link>
-                 ) : (
-                   <Button
-                     onClick={handleUpgrade}
-                     className="w-full bg-sky-500 hover:bg-sky-400 text-black font-semibold"
-                   >
-                     {plan.cta}
-                   </Button>
-                 )
-                ) : (
-                  <Link to="/signup">
-                    <Button
-                      variant="outline"
-                      className="w-full border-slate-700 text-white hover:bg-slate-800"
-                    >
-                      Get Started Free
-                    </Button>
-                  </Link>
-                )}
+                {/* CTA */}
+{plan.name === "Free" ? (
+  !user ? (
+    <Link to="/signup">
+      <Button
+        variant="outline"
+        className="w-full border-slate-700 text-white hover:bg-slate-800"
+      >
+        Get Started Free
+      </Button>
+    </Link>
+  ) : user.subscription_plan === "free" ? (
+    <Button
+      variant="outline"
+      disabled
+      className="w-full border-slate-700 text-slate-400"
+    >
+      Current Plan
+    </Button>
+  ) : (
+    <Button
+      variant="outline"
+      disabled
+      className="w-full border-slate-700 text-slate-500"
+    >
+      Included in Pro
+    </Button>
+  )
+) : plan.name === "Pro" ? (
+  !user ? (
+    <Link to="/login">
+      <Button className="w-full bg-sky-500 hover:bg-sky-400 text-black font-semibold">
+        Upgrade to Pro
+      </Button>
+    </Link>
+  ) : user.subscription_plan === "pro" ? (
+    <Button
+      disabled
+      className="w-full border-slate-700 text-slate-400"
+    >
+      Current Plan
+    </Button>
+  ) : (
+    <Button
+      onClick={handleUpgrade}
+      className="w-full bg-sky-500 hover:bg-sky-400 text-black font-semibold"
+    >
+      Upgrade to Pro
+    </Button>
+  )
+) : null}
               </div>
 
               {/* Features */}

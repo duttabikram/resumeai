@@ -167,13 +167,40 @@ export default function Landing() {
 
           {/* Buttons */}
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link to="/signup">
-              <Button size="lg" className="bg-sky-500 hover:bg-sky-400 text-black font-semibold px-8 py-6 rounded-xl transition-all duration-300 hover:shadow-[0_0_30px_rgba(56,189,248,0.6)] hover:scale-[1.04]">Start Building <ArrowRight className="ml-2 w-5 h-5" /></Button>
-            </Link>
-            <Link to="/pricing">
-             <Button size="lg" variant="outline" className="border-slate-700/60 text-slate-200 bg-white/5 backdrop-blur hover:bg-white/10 hover:border-sky-400/50 hover:text-white px-8 py-6 rounded-xl transition-all duration-300 hover:shadow-[0_0_25px_rgba(56,189,248,0.35)]"> View Pricing</Button>
-            </Link>
-          </div>
+
+{user ? (
+  <Link to="/dashboard">
+    <Button
+      size="lg"
+      className="bg-sky-500 hover:bg-sky-400 text-black font-semibold px-8 py-6 rounded-xl transition-all duration-300 hover:shadow-[0_0_30px_rgba(56,189,248,0.6)] hover:scale-[1.04]"
+    >
+      Go to Dashboard
+      <ArrowRight className="ml-2 w-5 h-5" />
+    </Button>
+  </Link>
+) : (
+  <Link to="/signup">
+    <Button
+      size="lg"
+      className="bg-sky-500 hover:bg-sky-400 text-black font-semibold px-8 py-6 rounded-xl transition-all duration-300 hover:shadow-[0_0_30px_rgba(56,189,248,0.6)] hover:scale-[1.04]"
+    >
+      Start Building
+      <ArrowRight className="ml-2 w-5 h-5" />
+    </Button>
+  </Link>
+)}
+
+<Link to="/pricing">
+  <Button
+    size="lg"
+    variant="outline"
+    className="border-slate-700/60 text-slate-200 bg-white/5 backdrop-blur hover:bg-white/10 hover:border-sky-400/50 hover:text-white px-8 py-6 rounded-xl transition-all duration-300 hover:shadow-[0_0_25px_rgba(56,189,248,0.35)]"
+  >
+    View Pricing
+  </Button>
+</Link>
+
+</div>
 
           {/* Subtle divider glow */}
           <div className="mt-20 flex justify-center">
@@ -242,14 +269,25 @@ export default function Landing() {
             <p className="text-slate-400 mb-8">
               Join thousands of professionals showcasing their work beautifully.
             </p>
-            <Link to="/signup">
-              <Button
-                size="lg"
-                className="bg-sky-500 hover:bg-sky-400 text-black font-semibold px-8 py-6 rounded-xl"
-              >
-                Get Started Now <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
-            </Link>
+            {user ? (
+  <Link to="/dashboard">
+    <Button
+      size="lg"
+      className="bg-sky-500 hover:bg-sky-400 text-black font-semibold px-8 py-6 rounded-xl"
+    >
+      Go to Dashboard <ArrowRight className="ml-2 w-5 h-5" />
+    </Button>
+  </Link>
+) : (
+  <Link to="/signup">
+    <Button
+      size="lg"
+      className="bg-sky-500 hover:bg-sky-400 text-black font-semibold px-8 py-6 rounded-xl"
+    >
+      Get Started Now <ArrowRight className="ml-2 w-5 h-5" />
+    </Button>
+  </Link>
+)}
           </motion.div>
         </div>
       </section>
