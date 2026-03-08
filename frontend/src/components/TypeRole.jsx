@@ -1,19 +1,40 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-export default function TypeRole({ text }) {
+export default function TypeRole({ text, texts }) {
+
+  const list = texts ? texts : [text];
+
+  const [textIndex, setTextIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
-  const [index, setIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    if (index < text.length) {
-      const timeout = setTimeout(() => {
-        setDisplayText((prev) => prev + text[index]);
-        setIndex(index + 1);
-      }, 60); // typing speed
+    const current = list[textIndex];
 
-      return () => clearTimeout(timeout);
-    }
-  }, [index, text]);
+    if (!current) return;
+
+    let speed = isDeleting ? 40 : 80;
+
+    const timer = setTimeout(() => {
+      if (!isDeleting) {
+        setDisplayText(current.substring(0, displayText.length + 1));
+
+        if (displayText === current) {
+          setTimeout(() => setIsDeleting(true), 1200);
+        }
+      } else {
+        setDisplayText(current.substring(0, displayText.length - 1));
+
+        if (displayText === "") {
+          setIsDeleting(false);
+          setTextIndex((prev) => (prev + 1) % list.length);
+        }
+      }
+    }, speed);
+
+    return () => clearTimeout(timer);
+
+  }, [displayText, isDeleting, textIndex, list]);
 
   return (
     <span>

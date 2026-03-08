@@ -45,28 +45,6 @@ const crazyCard = {
   },
 };
 
-const SocialIcon = ({ href, icon, color }) => {
-  return (
-    <a href={href} target="_blank" rel="noreferrer">
-      <motion.div
-        whileHover={{
-          scale: 1.2,
-          rotate: 8,
-          boxShadow: `0 0 40px ${color}`,
-        }}
-        transition={{ type: "spring", stiffness: 300 }}
-        className="w-14 h-14 flex items-center justify-center rounded-xl border bg-white/5 backdrop-blur cursor-pointer"
-        style={{
-          borderColor: color + "66",
-          color: color,
-        }}
-      >
-        {icon}
-      </motion.div>
-    </a>
-  );
-};
-
 const splitText = (text) =>
   text.split("").map((char, i) => (
     <motion.span
@@ -79,6 +57,22 @@ const splitText = (text) =>
       {char === " " ? "\u00A0" : char}
     </motion.span>
   ));
+
+  const footerMessages = [
+  "Built with ❤️ and lots of coffee",
+  "Crafted with passion by developers",
+  "Made with love for the web",
+  "Powered by curiosity and creativity",
+  "Built late at night with too much caffeine ☕",
+  "Designed with passion and clean code",
+  "Crafted carefully by developers",
+  "Made with pixels, code and coffee",
+  "Created with ❤️ by curious developers",
+  "Built with creativity and caffeine"
+];
+
+const randomFooter =
+  footerMessages[Math.floor(Math.random() * footerMessages.length)];
 
 /* ---------------- Main ---------------- */
 export default function PublicPortfolio() {
@@ -139,25 +133,42 @@ const mouseY = useMotionValue(0);
     </>
   );
 
-  const SocialIcon = ({ href, icon, color }) => {
+const SocialIcon = ({ href, icon, color, duration }) => {
   return (
-    <a href={href} target="_blank" rel="noreferrer">
+    <motion.a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      className="relative w-14 h-14 flex items-center justify-center"
+      whileHover={{ scale: 1.25 }}
+      whileTap={{ scale: 0.9 }}
+    >
+      {/* glow */}
       <motion.div
-        whileHover={{
-          scale: 1.2,
-          rotate: 8,
-          boxShadow: `0 0 40px ${color}`,
+        className="absolute inset-0 rounded-full blur-xl opacity-40"
+        style={{ background: color }}
+        animate={{ scale: [1, 1.4, 1] }}
+        transition={{
+          duration: 2.5,
+          repeat: Infinity,
+          ease: "easeInOut",
         }}
-        transition={{ type: "spring", stiffness: 300 }}
-        className="w-14 h-14 flex items-center justify-center rounded-xl border bg-white/5 backdrop-blur cursor-pointer"
+      />
+
+      {/* rotating icon container */}
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: duration || 12, repeat: Infinity, ease: "linear" }}
+        className="relative w-12 h-12 flex items-center justify-center rounded-full border backdrop-blur-lg"
         style={{
-          borderColor: color + "66",
+          borderColor: color,
           color: color,
+          boxShadow: `0 0 20px ${color}`,
         }}
       >
         {icon}
       </motion.div>
-    </a>
+    </motion.a>
   );
 };
 
@@ -359,11 +370,39 @@ const handleShare = async () => {
       </section>
     )}
 
-    <div className="text-center pt-12 text-slate-500 text-sm">
-      Built with AI Portfolio Builder
-    </div>
-
   </div>
+
+  
+{/* ================= FOOTER ================= */}
+<footer className="mt-24 border-t border-slate-800 py-12 text-center bg-slate-950/40 backdrop-blur">
+
+<div className="max-w-4xl mx-auto px-6">
+
+<h3
+className="text-lg font-semibold mb-1"
+style={{ color: portfolio.theme_color }}
+>
+{portfolio.name}
+</h3>
+
+<p className="text-slate-400 text-sm mb-6">
+{portfolio.role}
+</p>
+
+<div className="h-px bg-slate-800 w-full mb-6" />
+
+<p className="text-xs text-slate-600 mt-1">
+Built with <span style={{ color: portfolio.theme_color }}>AI Portfolio Builder</span>
+</p>
+
+<p className="text-xs text-slate-500">
+© {new Date().getFullYear()} {portfolio.name}. All rights reserved.
+</p>
+
+</div>
+
+</footer>
+
 </div>
     );
   }
@@ -765,6 +804,10 @@ className="h-px w-full mb-6"
 style={{ background: portfolio.theme_color + "22" }}
 />
 
+<p className="text-xs text-gray-500 mt-1 italic">
+{randomFooter}
+</p>
+
 <p className="text-xs text-gray-600 mt-1">
 © {new Date().getFullYear()} {portfolio.name}. All rights reserved.
 </p>
@@ -901,6 +944,7 @@ return (
           href={portfolio.github_url}
           icon={<Github size={22} />}
           color={portfolio.theme_color}
+          duration={16}
         />
       )}
 
@@ -909,6 +953,7 @@ return (
           href={portfolio.linkedin_url}
           icon={<Linkedin size={22} />}
           color={portfolio.theme_color}
+          duration={10}
         />
       )}
 
@@ -917,6 +962,7 @@ return (
           href={portfolio.twitter_url}
           icon={<Twitter size={22} />}
           color={portfolio.theme_color}
+          duration={18}
         />
       )}
 
@@ -925,6 +971,7 @@ return (
           href={portfolio.instagram_url}
           icon={<Instagram size={22} />}
           color={portfolio.theme_color}
+          duration={14}
         />
       )}
 
@@ -933,6 +980,7 @@ return (
           href={`mailto:${portfolio.email}`}
           icon={<Mail size={22} />}
           color={portfolio.theme_color}
+          duration={12}
         />
       )}
     </div>
@@ -1055,22 +1103,50 @@ ease: "linear"
 
           <div className="grid md:grid-cols-2 gap-12 mb-8">
             {portfolio.projects.map((p, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 120, rotateX: 25 }}
-                whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.9, delay: i * 0.1 }}
-                whileHover={{rotateY: 15, rotateX: -15, scale: 1.07, boxShadow: `0 0 80px ${portfolio.theme_color}99`}}
-                className="relative p-10 rounded-3xl bg-white/5 backdrop-blur border transform-gpu transition-all"
-                style={{
-                  borderColor: portfolio.theme_color + "44",
-                  boxShadow: `0 0 0px ${portfolio.theme_color}`
-                }}
-              >
+             <motion.div
+  key={i}
+  initial={{ opacity: 0, y: 120, scale: 0.9 }}
+  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+  viewport={{ once: true }}
+  transition={{ duration: 0.9, delay: i * 0.1 }}
+
+  whileHover={{
+    scale: 1.08,
+    rotateX: 10,
+    rotateY: -10,
+    boxShadow: `0 0 120px ${portfolio.theme_color}88`
+  }}
+
+  className="relative p-10 rounded-3xl bg-white/5 backdrop-blur border transform-gpu transition-all overflow-hidden"
+  style={{
+    borderColor: portfolio.theme_color + "44"
+  }}
+>
+<motion.div
+  className="absolute inset-0 opacity-30"
+  style={{
+    background: `radial-gradient(circle at top left, ${portfolio.theme_color}55, transparent 60%)`
+  }}
+  animate={{ opacity: [0.2, 0.5, 0.2] }}
+  transition={{ duration: 3, repeat: Infinity }}
+/>
+<motion.div
+  className="absolute inset-0"
+  style={{
+    background:
+      "linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.2), transparent 70%)"
+  }}
+  animate={{ x: ["-100%", "200%"] }}
+  transition={{
+    duration: 3,
+    repeat: Infinity,
+    ease: "linear"
+  }}
+/>
+<div className="relative z-10">
                 <h3 className="text-3xl font-bold mb-4 font-space" style={{ color: portfolio.theme_color }}>{p.title}</h3>
                 <p className="text-slate-400 mb-6 font-space">{p.description}</p>
-
+</div>
                 <div className="flex flex-wrap gap-2 mb-8">
                   {p.tech_stack?.map((t, j) => (
                     <span
@@ -1114,6 +1190,7 @@ ease: "linear"
                   </Button>
                 </a>
               )}
+             
              </div>
 
               </motion.div>
@@ -1121,245 +1198,467 @@ ease: "linear"
           </div>
         </section>
       )}
-       {/* ================= EXPERIENCE ================= */}
+      
+{/* ================= EXPERIENCE ================= */}
 {portfolio.experience?.length > 0 && (
-  <section className="mb-16">
-  <motion.section
-      variants={fadeUp}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true }}
-      className="mb-20"
-    >
-      <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-8 text-center font-orbitron tracking-wider" style={{ color: portfolio.theme_color }}>Experience</h2>
-      <div className="space-y-6">
-        {portfolio.experience.map((exp, i) => (
-  <motion.div
-    key={i}
-    variants={crazyCard}
-    initial="hidden"
-    whileInView="show"
-    viewport={{ once: true }}
-    whileHover={{
-      scale: 1.08,
-      rotateX: 8,
-      rotateY: -8,
-      y: -8,
-      boxShadow: `0 0 80px ${portfolio.theme_color}cc`,
-    }}
-    transition={{ type: "spring", stiffness: 200, damping: 12 }}
-    className="relative rounded-2xl bg-white/5 backdrop-blur p-6 border overflow-hidden mb-6"
-    style={{
-      borderColor: portfolio.theme_color + "66",
-    }}
-  >
-    {/* Glow layer */}
-    <motion.div
-      className="absolute inset-0 opacity-30"
-      style={{
-        background: `radial-gradient(circle at top left, ${portfolio.theme_color}55, transparent 60%)`,
-      }}
-      animate={{ opacity: [0.2, 0.5, 0.2] }}
-      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-    />
+<section className="mb-24 relative">
 
-    <div className="relative z-10">
-      <h3 className="text-xl font-semibold font-space">{exp.title}</h3>
-      <p className="text-slate-400 text-sm mb-2 font-space">
-        {exp.company} • {exp.duration}
-      </p>
-      <p className="text-slate-300 font-space">{exp.description}</p>
-    </div>
-  </motion.div>
+<motion.section
+variants={fadeUp}
+initial="hidden"
+whileInView="show"
+viewport={{ once: true }}
+>
+
+<h2
+className="text-3xl sm:text-4xl md:text-5xl font-bold mb-12 text-center font-orbitron tracking-wider"
+style={{ color: portfolio.theme_color }}
+>
+Experience
+</h2>
+
+<div className="relative max-w-5xl mx-auto">
+
+{/* Cosmic Timeline Beam */}
+<div
+className="absolute left-6 top-0 bottom-0 w-[2px]"
+style={{
+background: `linear-gradient(${portfolio.theme_color}, transparent)`
+}}
+/>
+
+<div className="space-y-12">
+
+{portfolio.experience.map((exp, i) => (
+
+<motion.div
+key={i}
+
+initial={{ opacity: 0, y: 120, scale: 0.9 }}
+whileInView={{ opacity: 1, y: 0, scale: 1 }}
+viewport={{ once: true }}
+
+animate={{ y: [0, -6, 0] }}
+
+transition={{
+duration: 0.9,
+delay: i * 0.15,
+y: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+}}
+
+whileHover={{
+scale: 1.08,
+rotateX: 10,
+rotateY: -10,
+boxShadow: `0 0 120px ${portfolio.theme_color}cc`
+}}
+
+className="relative ml-12 rounded-2xl bg-white/5 backdrop-blur p-8 border overflow-hidden"
+style={{ borderColor: portfolio.theme_color + "66" }}
+>
+
+{/* Timeline Node */}
+<div
+className="absolute -left-[34px] top-8 w-4 h-4 rounded-full"
+style={{
+background: portfolio.theme_color,
+boxShadow: `0 0 20px ${portfolio.theme_color}`
+}}
+/>
+
+{/* Glow Layer */}
+<motion.div
+className="absolute inset-0 opacity-30"
+style={{
+background: `radial-gradient(circle at top left, ${portfolio.theme_color}55, transparent 60%)`
+}}
+animate={{ opacity: [0.2, 0.5, 0.2] }}
+transition={{ duration: 4, repeat: Infinity }}
+/>
+
+{/* Scan Light */}
+<motion.div
+className="absolute inset-0"
+style={{
+background:
+"linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.25), transparent 70%)"
+}}
+animate={{ x: ["-100%", "200%"] }}
+transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+/>
+
+<div className="relative z-10">
+
+<h3 className="text-xl font-semibold font-space">
+{exp.title}
+</h3>
+
+<p className="text-slate-400 text-sm mb-2 font-space">
+{exp.company} • {exp.duration}
+</p>
+
+<p className="text-slate-300 font-space">
+{exp.description}
+</p>
+</div>
+</motion.div>
 ))}
-      </div>
-    </motion.section>
-    </section>
+</div>
+</div>
+</motion.section>
+</section>
 )}
+
 
 {/* ================= EDUCATION ================= */}
 {portfolio.education?.length > 0 && (
-  <section className="mb-16">
-  <motion.section
-      variants={fadeUp}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true }}
-      className="mb-20"
-    >
-      <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-8 text-center font-orbitron tracking-wider" style={{ color: portfolio.theme_color }}>Education</h2>
-      <div className="space-y-6">
-        {portfolio.education.map((edu, i) => (
-          <motion.div
-  key={i}
-  variants={crazyCard}
-  initial="hidden"
-  whileInView="show"
-  viewport={{ once: true }}
-  whileHover={{
-    scale: 1.08,
-    rotateX: 8,
-    rotateY: -8,
-    y: -8,
-    boxShadow: `0 0 80px ${portfolio.theme_color}cc`,
-  }}
-  transition={{ type: "spring", stiffness: 200, damping: 12 }}
-  className="relative rounded-2xl bg-white/5 backdrop-blur p-6 border overflow-hidden mb-6"
-  style={{
-    borderColor: portfolio.theme_color + "66",
-  }}
->
-  {/* 🔥 Animated glow layer */}
-  <motion.div
-    className="absolute inset-0 opacity-30"
-    style={{
-      background: `radial-gradient(circle at top left, ${portfolio.theme_color}55, transparent 60%)`,
-    }}
-    animate={{ opacity: [0.2, 0.5, 0.2] }}
-    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-  />
+<section className="mb-24 relative">
 
-  {/* Content */}
-  <div className="relative z-10">
-    <h3 className="text-xl font-semibold font-space">{edu.degree}</h3>
-    <p className="text-slate-400 font-space ">{edu.institution}</p>
-    {edu.year && <p className="text-slate-500 text-sm font-space">{edu.year}</p>}
-  </div>
+<motion.section
+variants={fadeUp}
+initial="hidden"
+whileInView="show"
+viewport={{ once: true }}
+>
+
+<h2
+className="text-3xl sm:text-4xl md:text-5xl font-bold mb-12 text-center font-orbitron tracking-wider"
+style={{ color: portfolio.theme_color }}
+>
+Education
+</h2>
+
+<div className="relative max-w-5xl mx-auto">
+
+{/* Cosmic Timeline Beam */}
+<div
+className="absolute left-6 top-0 bottom-0 w-[2px]"
+style={{
+background: `linear-gradient(${portfolio.theme_color}, transparent)`
+}}
+/>
+
+<div className="space-y-12">
+
+{portfolio.education.map((edu, i) => (
+
+<motion.div
+key={i}
+
+initial={{ opacity: 0, y: 120, scale: 0.9 }}
+whileInView={{ opacity: 1, y: 0, scale: 1 }}
+viewport={{ once: true }}
+
+animate={{ y: [0, -6, 0] }}
+
+transition={{
+duration: 0.9,
+delay: i * 0.15,
+y: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+}}
+
+whileHover={{
+scale: 1.08,
+rotateX: 10,
+rotateY: -10,
+boxShadow: `0 0 120px ${portfolio.theme_color}cc`
+}}
+
+className="relative ml-12 rounded-2xl bg-white/5 backdrop-blur p-8 border overflow-hidden"
+style={{ borderColor: portfolio.theme_color + "66" }}
+>
+
+{/* Timeline Node */}
+<div
+className="absolute -left-[34px] top-8 w-4 h-4 rounded-full"
+style={{
+background: portfolio.theme_color,
+boxShadow: `0 0 20px ${portfolio.theme_color}`
+}}
+/>
+
+{/* Glow Layer */}
+<motion.div
+className="absolute inset-0 opacity-30"
+style={{
+background: `radial-gradient(circle at top left, ${portfolio.theme_color}55, transparent 60%)`
+}}
+animate={{ opacity: [0.2, 0.5, 0.2] }}
+transition={{ duration: 4, repeat: Infinity }}
+/>
+
+{/* Scan Light */}
+<motion.div
+className="absolute inset-0"
+style={{
+background:
+"linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.25), transparent 70%)"
+}}
+animate={{ x: ["-100%", "200%"] }}
+transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+/>
+
+<div className="relative z-10">
+
+<h3 className="text-xl font-semibold font-space">
+{edu.degree}
+</h3>
+
+<p className="text-slate-400 font-space">
+{edu.institution}
+</p>
+
+{edu.year && (
+<p className="text-slate-500 text-sm font-space mt-1">
+{edu.year}
+</p>
+)}
+
+</div>
+
 </motion.div>
-        ))}
-      </div>
-    </motion.section>
-    </section>
+
+))}
+
+</div>
+</div>
+
+</motion.section>
+</section>
 )}
 
 {/* ================= CONTACT ================= */}
 <section className="relative z-20 max-w-4xl mx-auto px-6 pb-32">
 
-  {/* Glow background */}
-  <div className="absolute inset-0 flex justify-center items-center -z-10 pointer-events-none">
-    <div
-      className="w-[500px] h-[500px] blur-[140px] opacity-30 rounded-full"
-      style={{ background: portfolio.theme_color }}
-    />
-  </div>
-
-  <motion.div
-    initial={{ opacity: 0, y: 120, scale: 0.9 }}
-    whileInView={{ opacity: 1, y: 0, scale: 1 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.8, ease: "easeOut" }}
-    whileHover={{ scale: 1.02 }}
-    className="relative bg-white/5 backdrop-blur-2xl border rounded-3xl p-10 md:p-14 shadow-[0_20px_80px_rgba(0,0,0,0.6)] overflow-hidden"
-    style={{
-      borderColor: portfolio.theme_color + "55",
-    }}
-  >
-
-    <h2
-      className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-10 font-space"
-      style={{ color: portfolio.theme_color }}
-    >
-      <TypeRole text="Let's Build Something Together" />
-    </h2>
-
-    <ContactForm slug={portfolio.slug} portfolio={portfolio} />
-
-  </motion.div>
-</section>
-
-    </div>
-{/* ================= FOOTER ================= */}
-<footer
-  className="relative z-20 border-t pt-16 pb-12 text-center"
-  style={{ borderColor: portfolio.theme_color + "33" }}
->
+{/* Cosmic glow core */}
+<div className="absolute inset-0 flex justify-center items-center -z-10 pointer-events-none">
 
 <motion.div
-  initial={{ opacity: 0, y: 40 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true }}
-  transition={{ duration: 0.8 }}
-  className="max-w-4xl mx-auto px-6"
->
-
-{/* Name */}
-<h3
-  className="text-3xl font-bold mb-3 font-space"
-  style={{ color: portfolio.theme_color }}
->
-  {portfolio.name}
-</h3>
-
-<p className="text-slate-400 mb-8 font-space">
-  {portfolio.role}
-</p>
-
-{/* Social Links */}
-<div className="flex justify-center gap-6 mb-10">
-
-{portfolio.github_url && (
-<a
-  href={portfolio.github_url}
-  target="_blank"
-  className="text-slate-400 hover:text-white transition"
->
-<Github size={22}/>
-</a>
-)}
-
-{portfolio.linkedin_url && (
-<a
-  href={portfolio.linkedin_url}
-  target="_blank"
-  className="text-slate-400 hover:text-white transition"
->
-<Linkedin size={22}/>
-</a>
-)}
-
-{portfolio.twitter_url && (
-<a
-  href={portfolio.twitter_url}
-  target="_blank"
-  className="text-slate-400 hover:text-white transition"
->
-<Twitter size={22}/>
-</a>
-)}
-
-{portfolio.instagram_url && (
-<a
-  href={portfolio.instagram_url}
-  target="_blank"
-  className="text-slate-400 hover:text-white transition"
->
-<Instagram size={22}/>
-</a>
-)}
-
-{portfolio.email && (
-<a
-  href={`mailto:${portfolio.email}`}
-  className="text-slate-400 hover:text-white transition"
->
-<Mail size={22}/>
-</a>
-)}
+className="w-[520px] h-[520px] rounded-full blur-[160px]"
+style={{ background: portfolio.theme_color }}
+animate={{
+scale: [1, 1.2, 1],
+opacity: [0.25, 0.45, 0.25]
+}}
+transition={{
+duration: 6,
+repeat: Infinity,
+ease: "easeInOut"
+}}
+/>
 
 </div>
 
-{/* Divider */}
-<div
-  className="h-px w-full mb-6"
-  style={{ background: portfolio.theme_color + "22" }}
+{/* Orbit rings */}
+<div className="absolute inset-0 flex justify-center items-center pointer-events-none -z-10">
+
+<motion.div
+className="w-[620px] h-[620px] rounded-full border opacity-20"
+style={{ borderColor: portfolio.theme_color }}
+animate={{ rotate: 360 }}
+transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
 />
 
-<p className="text-xs text-slate-600 mt-2 font-space">
-© {new Date().getFullYear()} {portfolio.name}. All rights reserved.
-</p>
+<motion.div
+className="absolute w-[420px] h-[420px] rounded-full border opacity-20"
+style={{ borderColor: portfolio.theme_color }}
+animate={{ rotate: -360 }}
+transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+/>
+
+</div>
+
+<motion.div
+
+initial={{ opacity: 0, y: 120, scale: 0.9 }}
+whileInView={{ opacity: 1, y: 0, scale: 1 }}
+viewport={{ once: true }}
+
+animate={{ y: [0, -6, 0] }}
+
+transition={{
+duration: 0.9,
+y: { duration: 5, repeat: Infinity, ease: "easeInOut" }
+}}
+
+whileHover={{
+scale: 1.03,
+rotateX: 6,
+rotateY: -6,
+boxShadow: `0 0 120px ${portfolio.theme_color}aa`
+}}
+
+className="relative bg-white/5 backdrop-blur-2xl border rounded-3xl p-10 md:p-14 shadow-[0_20px_80px_rgba(0,0,0,0.6)] overflow-hidden"
+
+style={{
+borderColor: portfolio.theme_color + "55",
+}}
+>
+
+{/* cosmic glow inside card */}
+<motion.div
+className="absolute inset-0 opacity-25"
+style={{
+background: `radial-gradient(circle at center, ${portfolio.theme_color}55, transparent 70%)`
+}}
+animate={{ opacity: [0.2, 0.5, 0.2] }}
+transition={{ duration: 4, repeat: Infinity }}
+/>
+
+{/* scanning beam */}
+<motion.div
+className="absolute inset-0"
+style={{
+background:
+"linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.2), transparent 70%)"
+}}
+animate={{ x: ["-100%", "200%"] }}
+transition={{
+duration: 3,
+repeat: Infinity,
+ease: "linear"
+}}
+/>
+
+{/* title */}
+<h2
+className="relative z-10 text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-10 font-space"
+style={{ color: portfolio.theme_color }}
+>
+<TypeRole text="Send Transmission" />
+</h2>
+
+{/* form */}
+<div className="relative z-10">
+<ContactForm slug={portfolio.slug} portfolio={portfolio} />
+</div>
 
 </motion.div>
 
+</section>
+
+    </div>
+
+{/* ================= FOOTER ================= */}
+<footer
+className="relative z-20 border-t pt-16 pb-12 text-center overflow-hidden"
+style={{ borderColor: portfolio.theme_color + "33" }}
+>
+{/* cosmic glow */}
+<div className="absolute inset-0 flex justify-center items-center pointer-events-none -z-10">
+  <div
+    className="w-[500px] h-[300px] blur-[140px] opacity-20 rounded-full"
+    style={{ background: portfolio.theme_color }}
+  />
+</div>
+<motion.div
+initial={{ opacity: 0, y: 40 }}
+whileInView={{ opacity: 1, y: 0 }}
+viewport={{ once: true }}
+transition={{ duration: 0.8 }}
+className="max-w-4xl mx-auto px-6"
+>
+{/* Name */}
+<h3
+className="text-3xl font-bold mb-3 font-space"
+style={{
+color: portfolio.theme_color,
+textShadow: `0 0 20px ${portfolio.theme_color}`
+}}
+>
+{portfolio.name}
+</h3>
+<p className="text-slate-400 mb-8 font-space">
+{portfolio.role}
+</p>
+{/* Social Links */}
+<div className="flex justify-center gap-6 mb-10">
+{portfolio.github_url && (
+<motion.a
+href={portfolio.github_url}
+target="_blank"
+whileHover={{
+scale: 1.2,
+color: "#fff",
+boxShadow: `0 0 20px ${portfolio.theme_color}`
+}}
+className="text-slate-400 transition"
+>
+<Github size={22}/>
+</motion.a>
+)}
+{portfolio.linkedin_url && (
+<motion.a
+href={portfolio.linkedin_url}
+target="_blank"
+whileHover={{
+scale: 1.2,
+color: "#fff",
+boxShadow: `0 0 20px ${portfolio.theme_color}`
+}}
+className="text-slate-400 transition"
+>
+<Linkedin size={22}/>
+</motion.a>
+)}
+{portfolio.twitter_url && (
+<motion.a
+href={portfolio.twitter_url}
+target="_blank"
+whileHover={{
+scale: 1.2,
+color: "#fff",
+boxShadow: `0 0 20px ${portfolio.theme_color}`
+}}
+className="text-slate-400 transition"
+>
+<Twitter size={22}/>
+</motion.a>
+)}
+{portfolio.instagram_url && (
+<motion.a
+href={portfolio.instagram_url}
+target="_blank"
+whileHover={{
+scale: 1.2,
+color: "#fff",
+boxShadow: `0 0 20px ${portfolio.theme_color}`
+}}
+className="text-slate-400 transition"
+>
+<Instagram size={22}/>
+</motion.a>
+)}
+{portfolio.email && (
+<motion.a
+href={`mailto:${portfolio.email}`}
+whileHover={{
+scale: 1.2,
+color: "#fff",
+boxShadow: `0 0 20px ${portfolio.theme_color}`
+}}
+className="text-slate-400 transition"
+>
+<Mail size={22}/>
+</motion.a>
+)}
+</div>
+{/* Energy Divider */}
+<div
+className="h-[1px] w-full mb-6"
+style={{
+background: `linear-gradient(90deg, transparent, ${portfolio.theme_color}, transparent)`
+}}
+/>
+{/* Terminal footer message */}
+<p className="text-xs text-green-400 font-mono italic">
+<TypeRole texts={footerMessages} />
+</p>
+{/* Copyright */}
+<p className="text-xs text-slate-600 mt-2 font-space">
+© {new Date().getFullYear()} {portfolio.name}. All rights reserved.
+</p>
+</motion.div>
 </footer>
   </div>
 );
