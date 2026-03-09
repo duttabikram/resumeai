@@ -898,13 +898,23 @@ return (
     transition={{ duration: 0.8 }}
     className="mb-8 flex justify-center"
   >
-    <img
+    <motion.img
       src={portfolio.profile_image}
       alt="Profile"
       className="w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-44 lg:h-44 rounded-full object-cover border-4 shadow-xl"
       style={{
         borderColor: portfolio.theme_color,
         boxShadow: `0 0 25px ${portfolio.theme_color}`
+      }}
+
+      animate={{
+        opacity: [1, 0.1, 1, 0.2, 1, 0.05, 1]
+      }}
+
+      transition={{
+        duration: 0.15,
+        repeat: Infinity,
+        repeatDelay: 3
       }}
     />
   </motion.div>
