@@ -4,12 +4,14 @@ import { Crown, Check } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
 import axios from "axios";
+import { useState } from "react";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 export default function Pricing() {
   const { user } = useAuth();
+  const [openFAQ, setOpenFAQ] = useState(null);
 
 const handleUpgrade = async () => {
   try {
@@ -126,6 +128,41 @@ const handleUpgrade = async () => {
       cta: user?.subscription_plan === "pro" ? "Current Plan" : "Upgrade to Pro",
     },
   ];
+
+  const faqs = [
+  {
+    q: "What is PortfolioAI?",
+    a: "PortfolioAI is an AI-powered portfolio builder that helps developers create professional portfolios in minutes. Just add your details, choose a template, and publish instantly."
+  },
+  {
+    q: "Do I need coding knowledge to build my portfolio?",
+    a: "No. PortfolioAI is designed for everyone. You simply fill in your information, and our AI organizes it into a beautiful portfolio automatically."
+  },
+  {
+    q: "Can I edit my portfolio after publishing?",
+    a: "Yes. You can edit your portfolio anytime from your dashboard. Changes are instantly reflected on your public portfolio link."
+  },
+  {
+    q: "What extra features do I get with Pro?",
+    a: "Pro unlocks AI-powered content generation, premium templates, resume parsing, custom themes, image uploads, and up to 5 portfolios."
+  },
+  {
+    q: "Can I connect my GitHub projects?",
+    a: "Yes. PortfolioAI allows you to link your GitHub projects so they automatically appear in your portfolio."
+  },
+  {
+    q: "Will my portfolio have a public link?",
+    a: "Yes. Every portfolio gets a unique shareable link that you can send to recruiters or add to your resume and LinkedIn."
+  },
+  {
+    q: "Can I upgrade later?",
+    a: "Absolutely. You can upgrade to Pro anytime from the pricing page to unlock advanced features."
+  },
+  {
+  q: "Is my data secure?",
+  a: "Yes. Your data is securely stored and only accessible by you. PortfolioAI never shares your personal information with third parties."
+}
+];
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
@@ -304,6 +341,35 @@ const handleUpgrade = async () => {
             </div>
           ))}
         </div>
+
+        {/* FAQ SECTION */}
+<div className="max-w-4xl mx-auto mt-28">
+  
+  <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-white">
+    Frequently Asked Questions
+  </h2>
+
+  <div className="space-y-6">
+    {faqs.map((faq, i) => (
+      <div
+        key={i}
+        className="bg-slate-900/40 border border-white/10 rounded-xl p-6 cursor-pointer transition hover:bg-slate-900/60"
+        onClick={() => setOpenFAQ(openFAQ === i ? null : i)}
+      >
+        <h3 className="text-lg font-semibold text-white mb-2">
+          {faq.q}
+        </h3>
+
+        {openFAQ === i && (
+          <p className="text-slate-400 text-sm">
+            {faq.a}
+          </p>
+        )}
+      </div>
+    ))}
+  </div>
+
+</div>
 
         {/* Footer note */}
         <div className="mt-20 text-center">
