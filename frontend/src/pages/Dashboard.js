@@ -102,22 +102,22 @@ export default function Dashboard() {
 
       <Link to="/settings">
         <Button
-          variant="ghost"
-          size="icon"
-          className="text-slate-300 bg-white/5 backdrop-blur border border-white/10 rounded-lg hover:text-white hover:bg-white/10 hover:border-sky-400/40 transition-all duration-300 hover:shadow-[0_0_12px_rgba(56,189,248,0.35)]"
-        >
-          <SettingsIcon className="w-4 h-4" />
-        </Button>
+  variant="ghost"
+  className="flex items-center gap-2 text-slate-300 bg-white/5 backdrop-blur border border-white/10 rounded-lg hover:text-white hover:bg-white/10 hover:border-sky-400/40 transition-all duration-300 hover:shadow-[0_0_12px_rgba(56,189,248,0.35)]"
+>
+  <SettingsIcon className="w-4 h-4" />
+  <span className="hidden sm:inline">Settings</span>
+</Button>
       </Link>
 
       <Button
-        variant="ghost"
-        size="icon"
-        className="text-slate-300 bg-white/5 backdrop-blur border border-white/10 rounded-lg hover:text-red-400 hover:bg-white/10 hover:border-red-400/40 transition-all duration-300 hover:shadow-[0_0_12px_rgba(248,113,113,0.35)]"
-        onClick={handleLogout}
-      >
-        <LogOut className="w-4 h-4" />
-      </Button>
+  variant="ghost"
+  className="flex items-center gap-2 text-slate-300 bg-white/5 backdrop-blur border border-white/10 rounded-lg hover:text-red-400 hover:bg-white/10 hover:border-red-400/40 transition-all duration-300 hover:shadow-[0_0_12px_rgba(248,113,113,0.35)]"
+  onClick={handleLogout}
+>
+  <LogOut className="w-4 h-4" />
+  <span className="hidden sm:inline">Logout</span>
+</Button>
 
     </div>
   </div>
